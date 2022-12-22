@@ -16,6 +16,11 @@ void triggerActivity()
   triggerActivityTime = millis();
 }
 
+int httpRssi(void)
+{
+  return WiFi.RSSI();
+}
+
 void handleJson()
 {
   // see: https://arduinojson.org/
@@ -95,6 +100,8 @@ void httpSetup(void)
   Serial.println(WiFi.SSID());
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  Serial.print("signal strength (RSSI):");
+  Serial.println(WiFi.RSSI());
 
   Serial.println("HttSetup");
 

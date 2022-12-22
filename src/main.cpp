@@ -35,5 +35,7 @@ void loop()
         digitalWrite(toggelLedPin, ledState);
 
         mqttPublishLong("test/livemillis", currentMillis);
+
+        mqttPublishLong("test/rssi", httpRssi());
     }
 }
