@@ -78,7 +78,7 @@ void httpSetup(void)
   Serial.println("HttpSetup --> Start");
 
   pinMode(led, OUTPUT);
-  digitalWrite(led, 0);
+  digitalWrite(led, 1);
 
   // WiFi.mode(WIFI_STA);
   // WiFi.begin(ssid, password);
