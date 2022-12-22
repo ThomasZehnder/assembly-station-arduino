@@ -6,11 +6,19 @@
 
 ESP8266WebServer server(80);
 
-const int led = 13;
+const int led = LED_BUILTIN;
+
+long triggerActivityTime = 0;
+
+void triggerActivity()
+{
+  digitalWrite(led, 0);
+  triggerActivityTime = millis();
+}
 
 void handleJson()
 {
-  //see: https://arduinojson.org/
+  // see: https://arduinojson.org/
 
   // Allocate a temporary JsonDocument
   // Use https://arduinojson.org/v6/assistant to compute the capacity.
@@ -37,20 +45,17 @@ void handleJson()
   String output;
   serializeJson(doc, output);
   server.send(200, "application/json", output);
-
 }
 
 void handleRoot()
 {
-  digitalWrite(led, 1);
+  triggerActivity();
   server.send(200, "text/plain", "hello from esp8266!");
-  delay(200);
-  digitalWrite(led, 0);
 }
 
 void handleNotFound()
 {
-  digitalWrite(led, 1);
+  triggerActivity();
   String message = "File Not Found\n\n";
   message += "URI: ";
   message += server.uri();
@@ -64,7 +69,7 @@ void handleNotFound()
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
   server.send(404, "text/plain", message);
-  digitalWrite(led, 0);
+  Serial.println(message);
 }
 
 void httpSetup(void)
@@ -99,7 +104,6 @@ void httpSetup(void)
   server.on("/inline", []()
             { server.send(200, "text/plain", "this works as well"); });
 
-
   server.onNotFound(handleNotFound);
 
   server.begin();
@@ -111,4 +115,13 @@ void httpSetup(void)
 void httpLoop(void)
 {
   server.handleClient();
+  long actualMillis = millis();
+  if (triggerActivityTime != 0)
+  {
+    if (actualMillis - triggerActivityTime - 200 > 0)
+    {
+      digitalWrite(led, 1);
+      triggerActivityTime = 0;
+    }
+  }
 }
