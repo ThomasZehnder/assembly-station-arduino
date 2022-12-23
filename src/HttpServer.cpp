@@ -31,7 +31,9 @@ void handleJson()
   // Use https://arduinojson.org/v6/assistant to compute the capacity.
   StaticJsonDocument<500> doc;
 
-  //doc.add("xs");
+  doc["assembly"] = "001";
+  doc["millis"] = millis();
+  doc["rssi"] = httpRssi();
 
   // Create the "digital" array
   JsonArray digitalValues = doc.createNestedArray("digital");
@@ -42,8 +44,8 @@ void handleJson()
 
     // Add the value at the end of the array
     digitalValues.add(value);
-    digitalValues.add(pin);
-    digitalValues.add("pin");
+    //digitalValues.add(pin);
+    //digitalValues.add("pin");
   }
 
   Serial.print(F("Sending: "));
