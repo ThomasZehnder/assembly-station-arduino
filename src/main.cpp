@@ -2,6 +2,7 @@
 
 #include "HttpServer.h"
 #include "MqttServer.h"
+#include "HwInterface.h"
 
 const long interval = 1000; // interval at which to blink (milliseconds)
 long previousMillis = millis();
@@ -16,6 +17,7 @@ void setup()
 
     mqttSetup();
     httpSetup();
+    hwSetup();
 
     pinMode(toggelLedPin, OUTPUT);
 }
@@ -24,6 +26,7 @@ void loop()
 {
     mqttLoop();
     httpLoop();
+    hwLoop();
 
     // secound tick
     unsigned long currentMillis = millis();

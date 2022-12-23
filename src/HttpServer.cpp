@@ -37,7 +37,7 @@ void handleJson()
 
   // Create the "digital" array
   JsonArray digitalValues = doc.createNestedArray("digital");
-  for (int pin = 0; pin < 14; pin++)
+  for (int pin = 0; pin < 17; pin++)
   {
     // Read the digital input
     int value = digitalRead(pin);
