@@ -6,13 +6,13 @@
 
 ESP8266WebServer server(80);
 
-const int led = LED_BUILTIN;
+#define ACTIVITY_LED_PIN LED_BUILTIN
 
 long triggerActivityTime = 0;
 
 void triggerActivity()
 {
-  digitalWrite(led, 0);
+  digitalWrite(ACTIVITY_LED_PIN, 0);
   triggerActivityTime = millis();
 }
 
@@ -88,8 +88,8 @@ void httpSetup(void)
 
   Serial.println("HttpSetup --> Start");
 
-  pinMode(led, OUTPUT);
-  digitalWrite(led, 1);
+  pinMode(ACTIVITY_LED_PIN, OUTPUT);
+  digitalWrite(ACTIVITY_LED_PIN, 1);
 
   // WiFi.mode(WIFI_STA);
   // WiFi.begin(ssid, password);
@@ -128,12 +128,13 @@ void httpSetup(void)
 void httpLoop(void)
 {
   server.handleClient();
-  long actualMillis = millis();
+  
   if (triggerActivityTime != 0)
   {
+    long actualMillis = millis();
     if (actualMillis - triggerActivityTime - 200 > 0)
     {
-      digitalWrite(led, 1);
+      digitalWrite(ACTIVITY_LED_PIN, 1);
       triggerActivityTime = 0;
     }
   }
