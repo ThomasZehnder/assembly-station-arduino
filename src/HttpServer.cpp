@@ -23,11 +23,15 @@ int httpRssi(void)
 
 void handleJson()
 {
+  triggerActivity();
+
   // see: https://arduinojson.org/
 
   // Allocate a temporary JsonDocument
   // Use https://arduinojson.org/v6/assistant to compute the capacity.
   StaticJsonDocument<500> doc;
+
+  //doc.add("xs");
 
   // Create the "digital" array
   JsonArray digitalValues = doc.createNestedArray("digital");
