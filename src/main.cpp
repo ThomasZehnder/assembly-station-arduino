@@ -3,6 +3,7 @@
 #include "HttpServer.h"
 #include "MqttServer.h"
 #include "HwInterface.h"
+#include "Oled.h"
 
 void setup()
 {
@@ -12,6 +13,7 @@ void setup()
     mqttSetup();
     httpSetup();
     hwSetup();
+    oledSetup();
 }
 
 void loop()
@@ -28,4 +30,5 @@ void loop()
 
     mqttLoop();
     httpLoop();
+    oledLoop();
 }
