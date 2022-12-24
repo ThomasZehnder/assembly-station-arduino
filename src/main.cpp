@@ -25,6 +25,7 @@ void loop()
     if (hwSecoundTick())
     {
         mqttPublishLong("assembly-001/millis", hwGetMillis());
+        mqttPublishLong("assembly-001/jitter", hwGetMillis()%1000);
         mqttPublishLong("assembly-001/rssi", httpRssi());
     }
 
