@@ -11,28 +11,31 @@ void setup()
     Serial.begin(115200);
     Serial.println();
 
-/*     mqttSetup();
+    ws2812Setup();
+
+    mqttSetup();
     httpSetup();
     hwSetup();
-    oledSetup(); */
-    ws2812Setup();
+    oledSetup();
 }
 
 void loop()
 {
 
-/*     hwLoop();
+    hwLoop();
 
     // secound tick
     if (hwSecoundTick())
     {
         mqttPublishLong("assembly-001/millis", hwGetMillis());
-        mqttPublishLong("assembly-001/jitter", hwGetMillis()%1000);
+        mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
         mqttPublishLong("assembly-001/rssi", httpRssi());
+
+        ws2812Demo();
     }
 
     mqttLoop();
     httpLoop();
-    oledLoop(); */
+    oledLoop();
     ws2812Loop();
 }

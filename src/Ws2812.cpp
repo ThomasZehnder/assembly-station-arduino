@@ -24,8 +24,6 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(7, PIN, NEO_GRB + NEO_KHZ800);
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
-
-
 // Fill the dots one after the other with a color
 void colorWipe(uint32_t c, uint8_t wait)
 {
@@ -37,28 +35,66 @@ void colorWipe(uint32_t c, uint8_t wait)
     }
 }
 
+void fullCollorWipe(void)
+{
+    // Some example procedures showing how to display to the pixels:
+    strip.setBrightness(50);
+    colorWipe(strip.Color(255, 0, 0), 50);     // Red
+    colorWipe(strip.Color(0, 255, 0), 50);     // Green
+    colorWipe(strip.Color(0, 0, 255), 50);     // Blue
+    colorWipe(strip.Color(255, 255, 255), 50); // White RGB
+}
+
 void ws2812Setup()
 {
     Serial.println("Ws2812Setup --> Start");
-// This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
-#if defined(__AVR_ATtiny85__)
-    if (F_CPU == 16000000)
-        clock_prescale_set(clock_div_1);
-#endif
-    // End of trinket special code
 
     strip.begin();
     strip.setBrightness(50);
     strip.show(); // Initialize all pixels to 'off'
+
+    fullCollorWipe();
+
     Serial.println("Ws2812Setup --> End");
+}
+
+int ledIdx = 0;
+byte ledColor = 0;
+
+void ws2812Demo(void)
+{
+    uint32_t c = strip.Color(0, 0, 0);
+    strip.setPixelColor(ledIdx, c); // reset old led
+
+    ledColor++;
+    ledIdx++;
+    if (ledIdx >= strip.numPixels())
+    {
+        ledIdx = 0;
+    }
+    
+    if (ledColor % 3 == 0)
+    {
+        strip.setBrightness(20);
+        c = strip.Color(255, 0, 0); // red
+    }
+    else if (ledColor % 3 == 1)
+    {
+        strip.setBrightness(50);
+        c = strip.Color(0, 255, 0); // green
+    }
+    else
+    {
+        strip.setBrightness(255);
+        c = strip.Color(0, 0, 255); // blue
+    }
+    
+
+    strip.setPixelColor(ledIdx, c);
+    strip.show();
 }
 
 void ws2812Loop()
 {
-    Serial.println("Ws2812Loop --> Start");
-    // Some example procedures showing how to display to the pixels:
-    colorWipe(strip.Color(255, 0, 0), 50); // Red
-    colorWipe(strip.Color(0, 255, 0), 50); // Green
-    colorWipe(strip.Color(0, 0, 255), 50); // Blue
-    colorWipe(strip.Color(255, 255, 255), 50); // White RGB
+    //
 }
