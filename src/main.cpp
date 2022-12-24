@@ -4,22 +4,24 @@
 #include "MqttServer.h"
 #include "HwInterface.h"
 #include "Oled.h"
+#include "Ws2812.h"
 
 void setup()
 {
     Serial.begin(115200);
     Serial.println();
 
-    mqttSetup();
+/*     mqttSetup();
     httpSetup();
     hwSetup();
-    oledSetup();
+    oledSetup(); */
+    ws2812Setup();
 }
 
 void loop()
 {
 
-    hwLoop();
+/*     hwLoop();
 
     // secound tick
     if (hwSecoundTick())
@@ -31,5 +33,6 @@ void loop()
 
     mqttLoop();
     httpLoop();
-    oledLoop();
+    oledLoop(); */
+    ws2812Loop();
 }

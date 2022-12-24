@@ -2,9 +2,9 @@
 
 //D4 is reserved for build In led
 
-#define KEY1_PIN D3
-#define KEY2_PIN D5
-#define KEY3_PIN D6
+#define KEY1_PIN D5
+#define KEY2_PIN D6
+#define KEY3_PIN D7
 
 
 void hwSetup(void);
