@@ -56,7 +56,7 @@ void loop()
     hwLoop();
 
     // secound tick
-    /*
+    
     if (hwSecoundTick())
     {
         mqttPublishLong("assembly-001/millis", hwGetMillis());
@@ -65,7 +65,7 @@ void loop()
 
         ws2812Demo();
     }
-    */
+    
 
     mqttLoop();
     httpLoop();

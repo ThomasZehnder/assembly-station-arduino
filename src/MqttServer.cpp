@@ -8,8 +8,8 @@
 // #define WIFI_PASSWORD "...."
 
 // 192.168.1.95
-#define MQTT_HOST IPAddress(192, 168, 1, 95)
-#define MQTT_PORT 1883
+// #define MQTT_HOST IPAddress(192, 168, 1, 95)
+// #define MQTT_PORT 1883
 
 AsyncMqttClient mqttClient;
 Ticker mqttReconnectTimer;
@@ -17,44 +17,6 @@ Ticker mqttReconnectTimer;
 WiFiEventHandler wifiConnectHandler;
 WiFiEventHandler wifiDisconnectHandler;
 Ticker wifiReconnectTimer;
-
-void scanNetworks() {
-
-  // Set WiFi to station mode and disconnect from an AP if it was previously connected
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-  delay(100);
-
-  Serial.println("scanNetworks -->  start");
-
-  // WiFi.scanNetworks will return the number of networks found
-  int n = WiFi.scanNetworks();
-  Serial.println("scan done");
-  if (n == 0)
-    Serial.println("no networks found");
-  else
-  {
-    Serial.print(n);
-    Serial.println(" networks found");
-    for (int i = 0; i < n; ++i)
-    {
-      // Print SSID and RSSI for each network found
-      Serial.print(i + 1);
-      Serial.print(": ");
-      Serial.print(WiFi.SSID(i));
-      Serial.print(" (");
-      Serial.print(WiFi.RSSI(i));
-      Serial.print(")");
-      Serial.println((WiFi.encryptionType(i) == ENC_TYPE_NONE)?" ":"*");
-      delay(10);
-    }
-  }
-  Serial.println("");
-    Serial.println("scanNetworks -->  end");
-
-
-}
-
 
 void connectToWifi()
 {
@@ -98,6 +60,8 @@ void onMqttConnect(bool sessionPresent)
   uint16_t packetIdPub2 = mqttClient.publish("test/lol", 2, true, "test 3");
   Serial.print("Publishing at QoS 2, packetId: ");
   Serial.println(packetIdPub2);
+
+  mqttPublishString("assembly-001/myIpAddr", WiFi.localIP().toString().c_str());
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason)
@@ -155,14 +119,21 @@ void onMqttPublish(uint16_t packetId)
 void mqttPublishLong(const char *topic, long x)
 {
   char s[200];
-  ltoa(x,s,10);
+  ltoa(x, s, 10);
   mqttClient.publish(topic, 0, true, s);
   Serial.println("Publishing long at QoS 0");
   Serial.print(topic);
   Serial.print(" : ");
   Serial.println(x);
 }
-
+void mqttPublishString(const char *topic, String s)
+{
+  mqttClient.publish(topic, 0, true, s.c_str());
+  Serial.println("Publishing String at QoS 0");
+  Serial.print(topic);
+  Serial.print(" : ");
+  Serial.println(s);
+}
 void mqttSetup()
 {
 
