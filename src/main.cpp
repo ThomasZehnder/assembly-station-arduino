@@ -6,17 +6,41 @@
 #include "Oled.h"
 #include "Ws2812.h"
 
+#include "LittleFS.h"
+
+void checkFs(void)
+{
+    File file = LittleFS.open("/test.txt", "r");
+    if (!file)
+    {
+        Serial.println("Failed to open file for reading");
+        return;
+    }
+
+    Serial.println("File Content:");
+    while (file.available())
+    {
+        Serial.write(file.read());
+    }
+    file.close();
+}
+
 void setup()
 {
     Serial.begin(115200);
     Serial.println();
 
+    checkFs();
+
     ws2812Setup();
+
+    scanNetworks();
 
     mqttSetup();
     httpSetup();
     hwSetup();
     oledSetup();
+
 }
 
 void loop()

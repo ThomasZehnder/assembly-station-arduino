@@ -128,6 +128,7 @@ void oledLoop()
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
     display.drawString(128, 54, String(millis()));
+    display.drawString(128, 0, String(millis()));
     // write the buffer to the display
     display.display();
 
