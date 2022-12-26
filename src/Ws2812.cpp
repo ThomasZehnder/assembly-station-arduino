@@ -40,9 +40,9 @@ void fullColorWipe(void)
     Serial.println("fullColorWipe --> Start");
     // Some example procedures showing how to display to the pixels:
     colorWipe(strip.Color(255, 0, 0), 50);     // Red
-    colorWipe(strip.Color(0, 255, 0), 50);     // Green
+    //colorWipe(strip.Color(0, 255, 0), 50);     // Green
     colorWipe(strip.Color(0, 0, 255), 50);     // Blue
-    colorWipe(strip.Color(16, 32, 255), 50); // White RGB
+    ///colorWipe(strip.Color(16, 32, 255), 50); // White RGB
 }
 
 void ws2812Setup()
