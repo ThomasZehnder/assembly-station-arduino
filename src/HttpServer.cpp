@@ -23,6 +23,7 @@ void handleFileUpload();                // upload a new file to the SPIFFS
 #define ACTIVITY_LED_PIN LED_BUILTIN
 
 long triggerActivityTime = 0;
+bool rebootStart = false;
 
 void triggerActivity()
 {
@@ -137,6 +138,14 @@ void handleNotFound()
   server.send(404, "text/plain", message);
   Serial.println(message);
 }
+void (*rebootFunc)(void) = 0; // declare reset function @ address 0
+
+void reboot(void)
+{
+  server.send(200, "text/plain", "reboot arduino !!!");
+  rebootStart = true;
+  triggerActivity();
+}
 
 void httpSetup(void)
 {
@@ -194,6 +203,8 @@ void httpSetup(void)
   server.on("/inline", []()
             { server.send(200, "text/plain", "this works as well"); });
 
+  server.on("/reboot", reboot);
+
   server.on("/upload", HTTP_GET, []() {                 // if the client requests the upload page
     if (!handleFileRead("/upload.html"))                // send it if it exists
       server.send(404, "text/plain", "404: Not Found"); // otherwise, respond with a 404 (Not Found) error
@@ -207,9 +218,9 @@ void httpSetup(void)
   );
 
   // server.onNotFound(handleNotFound);
-  server.onNotFound([]() {                              // If the client requests any URI
-    if (!handleFileRead(server.uri()))                  // send it if it exists
-      handleNotFound(); // otherwise, respond with a 404 (Not Found) error
+  server.onNotFound([]() {             // If the client requests any URI
+    if (!handleFileRead(server.uri())) // send it if it exists
+      handleNotFound();                // otherwise, respond with a 404 (Not Found) error
   });
 
   server.begin();
@@ -229,6 +240,12 @@ void httpLoop(void)
     {
       digitalWrite(ACTIVITY_LED_PIN, 1);
       triggerActivityTime = 0;
+      if (rebootStart)
+      {
+        Serial.println("httpLoop --> Reboot REST service");
+        delay(500);
+        rebootFunc(); // call reboot
+      }
     }
   }
 }

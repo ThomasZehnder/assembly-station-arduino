@@ -40,3 +40,7 @@ Configure two WLAN, in case noone is connected, ESP8266 will act as WLAN Hotspot
 
 e.g. for Updating configuration or other files.
 http://192.168.1.157/upload
+
+
+### Reboot Arduino ba REST
+http://192.168.1.157/reboot
