@@ -17,7 +17,7 @@ void checkFs(void)
         return;
     }
 
-    File file = LittleFS.open("/test.txt", "r");
+    File file = LittleFS.open("/config.cfg", "r");
     if (!file)
     {
         Serial.println("Failed to open file for reading");
@@ -42,10 +42,12 @@ void setup()
 
     ws2812Setup();
 
-    scanNetworks();
+    scanNetworks(); // call before httpSetup
 
-    mqttSetup();
+    mqttSetup(); //call before httpSetup, to engage callback functions
+
     httpSetup();
+
     hwSetup();
     oledSetup();
 }
@@ -59,13 +61,12 @@ void loop()
     
     if (hwSecoundTick())
     {
-        mqttPublishLong("assembly-001/millis", hwGetMillis());
-        mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
+        //mqttPublishLong("assembly-001/millis", hwGetMillis());
+        //mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
         mqttPublishLong("assembly-001/rssi", httpRssi());
 
         ws2812Demo();
     }
-    
 
     mqttLoop();
     httpLoop();

@@ -29,3 +29,14 @@ After creating and saving the file or files you want to upload under the data fo
 * Expand the Platform menu.
 * Select Build Filesystem Image.
 * Finally, click Upload Filesystem Image.
+
+## configure Wifi and Webserver
+
+https://tttapa.github.io/ESP8266/Chap12%20-%20Uploading%20to%20Server.html
+
+Configure two WLAN, in case noone is connected, ESP8266 will act as WLAN Hotspot. 
+
+### Upload Files to ESP8266
+
+e.g. for Updating configuration or other files.
+http://192.168.1.157/upload

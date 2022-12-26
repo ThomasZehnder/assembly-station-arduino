@@ -1,10 +1,24 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
+#include <ESP8266WiFiMulti.h>
 #include <ESP8266WebServer.h>
+#include <LittleFS.h>
 
 #include <ArduinoJson.h>
 
+#include "HttpServer.h"
+
+#include "credentials.h"
+
+ESP8266WiFiMulti wifiMulti; // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
+
 ESP8266WebServer server(80);
+
+File fsUploadFile; // a File object to temporarily store the received file
+
+String getContentType(String filename); // convert the file extension to the MIME type
+bool handleFileRead(String path);       // send the right file to the client (if it exists)
+void handleFileUpload();                // upload a new file to the SPIFFS
 
 #define ACTIVITY_LED_PIN LED_BUILTIN
 
@@ -26,7 +40,8 @@ String httpLocalIP(void)
   return WiFi.localIP().toString();
 }
 
-void scanNetworks() {
+void scanNetworks()
+{
 
   // Set WiFi to station mode and disconnect from an AP if it was previously connected
   WiFi.mode(WIFI_STA);
@@ -53,14 +68,12 @@ void scanNetworks() {
       Serial.print(" (");
       Serial.print(WiFi.RSSI(i));
       Serial.print(")");
-      Serial.println((WiFi.encryptionType(i) == ENC_TYPE_NONE)?" ":"*");
+      Serial.println((WiFi.encryptionType(i) == ENC_TYPE_NONE) ? " " : "*");
       delay(10);
     }
   }
   Serial.println("");
-    Serial.println("scanNetworks -->  end");
-
-
+  Serial.println("scanNetworks -->  end");
 }
 
 void handleJson()
@@ -86,8 +99,8 @@ void handleJson()
 
     // Add the value at the end of the array
     digitalValues.add(value);
-    //digitalValues.add(pin);
-    //digitalValues.add("pin");
+    // digitalValues.add(pin);
+    // digitalValues.add("pin");
   }
 
   Serial.print(F("Sending: "));
@@ -133,9 +146,22 @@ void httpSetup(void)
   pinMode(ACTIVITY_LED_PIN, OUTPUT);
   digitalWrite(ACTIVITY_LED_PIN, 1);
 
+  wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD); // add Wi-Fi networks you want to connect to, see credentials.h
+  wifiMulti.addAP(WIFI_SSID_1, WIFI_PASSWORD_1);
+  // wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
+
+  Serial.println("HttpSetup --> Connecting wifi Multi ...");
+  int i = 0;
+  while (wifiMulti.run() != WL_CONNECTED)
+  { // Wait for the Wi-Fi to connect
+    delay(500);
+    Serial.print(++i);
+    Serial.print('+');
+  }
+
+  Serial.println("HttpSetup --> Connecting Wifi ...");
   // WiFi.mode(WIFI_STA);
   // WiFi.begin(ssid, password);
-  Serial.println("Wifi startet from MqttSetup() :-)");
 
   // Wait for connection
   while (WiFi.status() != WL_CONNECTED)
@@ -143,6 +169,7 @@ void httpSetup(void)
     delay(500);
     Serial.print(".");
   }
+
   Serial.println("");
   Serial.print("Connected to ");
   Serial.println(WiFi.SSID());
@@ -150,6 +177,14 @@ void httpSetup(void)
   Serial.println(WiFi.localIP());
   Serial.print("signal strength (RSSI):");
   Serial.println(WiFi.RSSI());
+
+  Serial.println("Mound File System: LittleFS");
+  // Start the SPI Flash Files System
+  if (!LittleFS.begin())
+  {
+    Serial.println("An Error has occurred while mounting LittleFS");
+    delay(1000);
+  }
 
   Serial.println("HttSetup");
 
@@ -159,7 +194,24 @@ void httpSetup(void)
   server.on("/inline", []()
             { server.send(200, "text/plain", "this works as well"); });
 
-  server.onNotFound(handleNotFound);
+  server.on("/upload", HTTP_GET, []() {                 // if the client requests the upload page
+    if (!handleFileRead("/upload.html"))                // send it if it exists
+      server.send(404, "text/plain", "404: Not Found"); // otherwise, respond with a 404 (Not Found) error
+  });
+
+  server.on(
+      "/upload", HTTP_POST, // if the client posts to the upload page
+      []()
+      { server.send(200); }, // Send status 200 (OK) to tell the client we are ready to receive
+      handleFileUpload       // Receive and save the file
+  );
+
+  // server.onNotFound(handleNotFound);
+
+  server.onNotFound([]() {                              // If the client requests any URI
+    if (!handleFileRead(server.uri()))                  // send it if it exists
+      server.send(404, "text/plain", "404: Not Found"); // otherwise, respond with a 404 (Not Found) error
+  });
 
   server.begin();
   Serial.println("HTTP server started");
@@ -170,7 +222,7 @@ void httpSetup(void)
 void httpLoop(void)
 {
   server.handleClient();
-  
+
   if (triggerActivityTime != 0)
   {
     long actualMillis = millis();
@@ -178,6 +230,77 @@ void httpLoop(void)
     {
       digitalWrite(ACTIVITY_LED_PIN, 1);
       triggerActivityTime = 0;
+    }
+  }
+}
+
+String getContentType(String filename)
+{ // convert the file extension to the MIME type
+  if (filename.endsWith(".html"))
+    return "text/html";
+  else if (filename.endsWith(".css"))
+    return "text/css";
+  else if (filename.endsWith(".js"))
+    return "application/javascript";
+  else if (filename.endsWith(".ico"))
+    return "image/x-icon";
+  else if (filename.endsWith(".gz"))
+    return "application/x-gzip";
+  return "text/plain";
+}
+
+bool handleFileRead(String path)
+{ // send the right file to the client (if it exists)
+  Serial.println("handleFileRead: " + path);
+  if (path.endsWith("/"))
+    path += "index.html";                    // If a folder is requested, send the index file
+  String contentType = getContentType(path); // Get the MIME type
+  String pathWithGz = path + ".gz";
+  if (LittleFS.exists(pathWithGz) || LittleFS.exists(path))
+  {                                                     // If the file exists, either as a compressed archive, or normal
+    if (LittleFS.exists(pathWithGz))                    // If there's a compressed version available
+      path += ".gz";                                    // Use the compressed verion
+    File file = LittleFS.open(path, "r");               // Open the file
+    size_t sent = server.streamFile(file, contentType); // Send it to the client
+    file.close();                                       // Close the file again
+    Serial.println(String("\tSent file: ") + path + " size: " + sent);
+    return true;
+  }
+  Serial.println(String("\tFile Not Found: ") + path); // If the file doesn't exist, return false
+  return false;
+}
+
+void handleFileUpload()
+{ // upload a new file to the LittleFS
+  HTTPUpload &upload = server.upload();
+  if (upload.status == UPLOAD_FILE_START)
+  {
+    String filename = upload.filename;
+    if (!filename.startsWith("/"))
+      filename = "/" + filename;
+    Serial.print("handleFileUpload Name: ");
+    Serial.println(filename);
+    fsUploadFile = LittleFS.open(filename, "w"); // Open the file for writing in SPIFFS (create if it doesn't exist)
+    filename = String();
+  }
+  else if (upload.status == UPLOAD_FILE_WRITE)
+  {
+    if (fsUploadFile)
+      fsUploadFile.write(upload.buf, upload.currentSize); // Write the received bytes to the file
+  }
+  else if (upload.status == UPLOAD_FILE_END)
+  {
+    if (fsUploadFile)
+    {                       // If the file was successfully created
+      fsUploadFile.close(); // Close the file again
+      Serial.print("handleFileUpload Size: ");
+      Serial.println(upload.totalSize);
+      server.sendHeader("Location", "/success.html"); // Redirect the client to the success page
+      server.send(303);
+    }
+    else
+    {
+      server.send(500, "text/plain", "500: couldn't create file");
     }
   }
 }

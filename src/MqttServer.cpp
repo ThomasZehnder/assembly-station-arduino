@@ -3,6 +3,7 @@
 #include <AsyncMqttClient.h>
 
 #include "credentials.h"
+
 #include "MqttServer.h"
 // #define WIFI_SSID "..."
 // #define WIFI_PASSWORD "...."
@@ -18,30 +19,31 @@ WiFiEventHandler wifiConnectHandler;
 WiFiEventHandler wifiDisconnectHandler;
 Ticker wifiReconnectTimer;
 
-void connectToWifi()
-{
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-}
-
 void connectToMqtt()
 {
-  Serial.println("Connecting to MQTT...");
+  Serial.println("MqttSetup --> Connecting to MQTT...");
   mqttClient.connect();
 }
 
 void onWifiConnect(const WiFiEventStationModeGotIP &event)
 {
-  Serial.println("Connected to Wi-Fi.");
+  Serial.println("MqttSetup --> Connected to Wi-Fi.");
+
+  //get config in dependecy of connected WLAN
+  if (WiFi.SSID()== WIFI_SSID_1){
+    mqttClient.setServer(MQTT_HOST_1, MQTT_PORT_1);  //see  credentials.h
+  } else {
+    mqttClient.setServer(MQTT_HOST, MQTT_PORT);  //see  credentials.h
+  }
+
   connectToMqtt();
 }
 
 void onWifiDisconnect(const WiFiEventStationModeDisconnected &event)
 {
-  Serial.println("Disconnected from Wi-Fi.");
+  Serial.println("MqttSetup --> Disconnected from Wi-Fi.");
   mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-  wifiReconnectTimer.once(2, connectToWifi);
+  //wifiReconnectTimer.once(2, connectToWifi);
 }
 
 void onMqttConnect(bool sessionPresent)
@@ -148,9 +150,9 @@ void mqttSetup()
   mqttClient.onUnsubscribe(onMqttUnsubscribe);
   mqttClient.onMessage(onMqttMessage);
   mqttClient.onPublish(onMqttPublish);
-  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
+  //wait until WLAN is recogniced to set MQTT server configuration
+  //mqttClient.setServer(MQTT_HOST, MQTT_PORT);  //see  credentials.h
 
-  connectToWifi();
 
   Serial.println("MqttSetup --> End");
 }
