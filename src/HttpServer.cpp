@@ -25,6 +25,8 @@ void handleFileUpload();                // upload a new file to the SPIFFS
 long triggerActivityTime = 0;
 bool rebootStart = false;
 
+String lastDownloadFilename;
+
 void triggerActivity()
 {
   digitalWrite(ACTIVITY_LED_PIN, 0);
@@ -147,6 +149,11 @@ void reboot(void)
   triggerActivity();
 }
 
+void success(void){
+  String msg = "last uploaded file: "  + lastDownloadFilename;
+  server.send(200, "text/html", msg);
+}
+
 void httpSetup(void)
 {
 
@@ -204,6 +211,9 @@ void httpSetup(void)
             { server.send(200, "text/plain", "this works as well"); });
 
   server.on("/reboot", reboot);
+
+  server.on("/success", success);
+            
 
   server.on("/upload", HTTP_GET, []() {                 // if the client requests the upload page
     if (!handleFileRead("/upload.html"))                // send it if it exists
@@ -296,6 +306,7 @@ void handleFileUpload()
       filename = "/" + filename;
     Serial.print("handleFileUpload Name: ");
     Serial.println(filename);
+    lastDownloadFilename = filename;
     fsUploadFile = LittleFS.open(filename, "w"); // Open the file for writing in SPIFFS (create if it doesn't exist)
     filename = String();
   }
@@ -311,7 +322,7 @@ void handleFileUpload()
       fsUploadFile.close(); // Close the file again
       Serial.print("handleFileUpload Size: ");
       Serial.println(upload.totalSize);
-      server.sendHeader("Location", "/success.html"); // Redirect the client to the success page
+      server.sendHeader("Location", "/success"); // Redirect the client to the success page
       server.send(303);
     }
     else
