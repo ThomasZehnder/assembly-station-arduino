@@ -35,9 +35,9 @@ void colorWipe(uint32_t c, uint8_t wait)
     }
 }
 
-void fullCollorWipe(void)
+void fullColorWipe(void)
 {
-    Serial.println("fullCollorWipe --> Start");
+    Serial.println("fullColorWipe --> Start");
     // Some example procedures showing how to display to the pixels:
     colorWipe(strip.Color(255, 0, 0), 50);     // Red
     colorWipe(strip.Color(0, 255, 0), 50);     // Green
@@ -53,7 +53,7 @@ void ws2812Setup()
     strip.setBrightness(50);
     strip.show(); // Initialize all pixels to 'off'
 
-    fullCollorWipe();
+    fullColorWipe();
 
     Serial.println("Ws2812Setup --> End");
 }

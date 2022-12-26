@@ -10,6 +10,13 @@
 
 void checkFs(void)
 {
+    if (!LittleFS.begin())
+    {
+        Serial.println("An Error has occurred while mounting LittleFS");
+        delay(1000);
+        return;
+    }
+
     File file = LittleFS.open("/test.txt", "r");
     if (!file)
     {
@@ -23,6 +30,7 @@ void checkFs(void)
         Serial.write(file.read());
     }
     file.close();
+    Serial.println("");
 }
 
 void setup()
@@ -40,7 +48,6 @@ void setup()
     httpSetup();
     hwSetup();
     oledSetup();
-
 }
 
 void loop()
@@ -49,6 +56,7 @@ void loop()
     hwLoop();
 
     // secound tick
+    /*
     if (hwSecoundTick())
     {
         mqttPublishLong("assembly-001/millis", hwGetMillis());
@@ -57,6 +65,7 @@ void loop()
 
         ws2812Demo();
     }
+    */
 
     mqttLoop();
     httpLoop();
