@@ -19,9 +19,11 @@ WiFiEventHandler wifiConnectHandler;
 WiFiEventHandler wifiDisconnectHandler;
 Ticker wifiReconnectTimer;
 
+String mqttHost;
+
 void connectToMqtt()
 {
-  Serial.println("MqttSetup --> Connecting to MQTT...");
+  Serial.println("MqttSetup --> Connecting to MQTT..." + mqttHost);
   mqttClient.connect();
 }
 
@@ -29,11 +31,20 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
 {
   Serial.println("MqttSetup --> Connected to Wi-Fi.");
 
-  //get config in dependecy of connected WLAN
-  if (WiFi.SSID()== WIFI_SSID_1){
-    mqttClient.setServer(MQTT_HOST_1, MQTT_PORT_1);  //see  credentials.h
-  } else {
-    mqttClient.setServer(MQTT_HOST, MQTT_PORT);  //see  credentials.h
+  // get config in dependecy of connected WLAN
+  if (WiFi.SSID() == WIFI_SSID_1)
+  {
+    Serial.println(WIFI_SSID_1);
+    mqttHost = WIFI_SSID_1;
+    mqttHost += "-" + MQTT_HOST_1.toString();
+    mqttClient.setServer(MQTT_HOST_1, MQTT_PORT_1); // see  credentials.h
+  }
+  else
+  {
+    Serial.println(WIFI_SSID);
+    mqttHost = WIFI_SSID;
+    mqttHost += "-" + MQTT_HOST.toString();
+    mqttClient.setServer(MQTT_HOST, MQTT_PORT); // see  credentials.h
   }
 
   connectToMqtt();
@@ -41,9 +52,9 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
 
 void onWifiDisconnect(const WiFiEventStationModeDisconnected &event)
 {
-  Serial.println("MqttSetup --> Disconnected from Wi-Fi.");
+  Serial.println("MqttSetup --> Disconnected from Wi-Fi." + mqttHost);
   mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-  //wifiReconnectTimer.once(2, connectToWifi);
+  // wifiReconnectTimer.once(2, connectToWifi);
 }
 
 void onMqttConnect(bool sessionPresent)
@@ -150,9 +161,8 @@ void mqttSetup()
   mqttClient.onUnsubscribe(onMqttUnsubscribe);
   mqttClient.onMessage(onMqttMessage);
   mqttClient.onPublish(onMqttPublish);
-  //wait until WLAN is recogniced to set MQTT server configuration
-  //mqttClient.setServer(MQTT_HOST, MQTT_PORT);  //see  credentials.h
-
+  // wait until WLAN is recogniced to set MQTT server configuration
+  // mqttClient.setServer(MQTT_HOST, MQTT_PORT);  //see  credentials.h
 
   Serial.println("MqttSetup --> End");
 }
