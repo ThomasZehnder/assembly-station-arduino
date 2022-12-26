@@ -149,8 +149,35 @@ void reboot(void)
   triggerActivity();
 }
 
-void success(void){
-  String msg = "last uploaded file: "  + lastDownloadFilename;
+void success(void)
+{
+  String msg = "last uploaded file: " + lastDownloadFilename;
+  server.send(200, "text/html", msg);
+}
+
+void dir(void)
+{
+  String msg = "directory root: <table><tr><th>FILE</th><th>SIZE</th></tr>";
+  const char dirname[] = "/";
+  Serial.printf("Listing directory: %s\n", dirname);
+
+  Dir root = LittleFS.openDir(dirname);
+
+  while (root.next())
+  {
+    File file = root.openFile("r");
+    Serial.print(" FILE: ");
+    Serial.print(root.fileName());
+    Serial.print(" SIZE: ");
+    char sz[200];
+    ltoa(file.size(), sz, 10);
+    msg += "<tr><td><a href=\"/"+root.fileName()+"\">" + root.fileName()+ "</a> </td><td>" + sz + "</td></tr>";
+    Serial.println(sz);
+    file.close();
+  }
+  Serial.println("");
+
+  msg += "</table>";
   server.send(200, "text/html", msg);
 }
 
@@ -213,7 +240,7 @@ void httpSetup(void)
   server.on("/reboot", reboot);
 
   server.on("/success", success);
-            
+  server.on("/dir", dir);
 
   server.on("/upload", HTTP_GET, []() {                 // if the client requests the upload page
     if (!handleFileRead("/upload.html"))                // send it if it exists

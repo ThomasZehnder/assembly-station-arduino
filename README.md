@@ -42,5 +42,8 @@ e.g. for Updating configuration or other files.
 http://192.168.1.157/upload
 
 
-### Reboot Arduino ba REST
+### Reboot Arduino by REST Call
 http://192.168.1.157/reboot
+
+### File Directory Arduino by REST Call
+http://192.168.1.157/dir
