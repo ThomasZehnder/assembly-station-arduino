@@ -1,6 +1,12 @@
 #define TOGGLE_LED_PIN D0 
 
-//D4 is reserved for build In led
+//D1 = SDL for OLED display
+//D2 = SDA for OLED display
+
+//D3 = WS2812 data line (LEDS need 5V, signal only 3.3V works)
+
+//D4 is reserved for build In led -> show http activity
+ 
 
 #define KEY1_PIN D5
 #define KEY2_PIN D6

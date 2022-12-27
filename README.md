@@ -10,6 +10,21 @@ see https://randomnerdtutorials.com/vs-code-platformio-ide-esp32-esp8266-arduino
 
 ![ESP8266 Pinout](/images/ESP-12E-Development-Board-ESP8266-NodeMCU-Pinout.png)
 
+### Wirering
+    // Secound Timer
+    #define TOGGLE_LED_PIN D0 
+
+    //D1 = SDL for OLED display
+    //D2 = SDA for OLED display
+
+    //D3 = WS2812 data line (LEDS need 5V, signal only 3.3V works)
+
+    //D4 is reserved for build In led -> show http activity
+    
+    #define KEY1_PIN D5
+    #define KEY2_PIN D6
+    #define KEY3_PIN D7
+
 ## Use PlatformIO
 In VSCode see elements in the buttom left corner to transfer projekt to arduino board.
 
