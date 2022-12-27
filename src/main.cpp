@@ -73,6 +73,19 @@ void loop()
         ws2812Loop();
     }
 
+    if (keyPressed(0))
+    {
+        mqttPublishLong("assembly-001/key-1", keyPressedCounter(0));
+    }
+    if (keyPressed(1))
+    {
+        mqttPublishLong("assembly-001/key-2", keyPressedCounter(1));
+    }
+    if (keyPressed(2))
+    {
+        mqttPublishLong("assembly-001/key-3", keyPressedCounter(2));
+    }
+
     mqttLoop();
     httpLoop();
 }
