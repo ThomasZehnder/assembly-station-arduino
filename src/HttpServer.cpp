@@ -25,7 +25,7 @@ void handleFileUpload();                // upload a new file to the SPIFFS
 long triggerActivityTime = 0;
 bool rebootStart = false;
 
-String lastDownloadFilename;
+String lastDownloadFilename = "-";
 
 void triggerActivity()
 {
@@ -151,12 +151,14 @@ void reboot(void)
 
 void success(void)
 {
+  triggerActivity();
   String msg = "last uploaded file: " + lastDownloadFilename;
   server.send(200, "text/html", msg);
 }
 
 void dir(void)
 {
+  triggerActivity();
   String msg = "directory root: <table><tr><th>FILE</th><th>SIZE</th></tr>";
   const char dirname[] = "/";
   Serial.printf("Listing directory: %s\n", dirname);
