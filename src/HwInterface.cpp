@@ -3,16 +3,25 @@
 
 int key1Click = 0;
 
- // interval at which to blink (milliseconds)
-const long INTERVAL = 1000;
-unsigned long  preMillis = 0;
-unsigned long  currentMillis = 0;
+// interval at which to blink (milliseconds)
+const long SECOUND_INTERVAL = 1000;
+unsigned long  preSecoundMillis = 0;
 bool secoundTick = false;
 
-// 
-const int toggelLedPin = TOGGLE_LED_PIN; // the number of the LED pin
-int ledState = LOW;          // ledState used to set the LED
+// 10ms tick (milliseconds)
+const long CENTI_SECOUND_INTERVAL = 10;
+unsigned long  preCentiSecoundMillis = 0;
+bool centiSecoundTick = false;
 
+unsigned long  currentMillis = 0;
+
+// ledState used to set the LED
+int ledState = LOW;          
+
+
+bool hwCentiSecoundTick(void){
+    return centiSecoundTick;
+}
 bool hwSecoundTick(void){
     return secoundTick;
 }
@@ -32,19 +41,28 @@ void hwSetup(void)
 
 void hwLoop(void)
 {
-    // secound tick
     currentMillis = millis();
-    if ((long)(currentMillis-preMillis) - INTERVAL > 0)
+    // secound tick
+    if ((long)(currentMillis-preSecoundMillis) > 0)
     {
-        preMillis += 1000;
+        preSecoundMillis += SECOUND_INTERVAL;
         secoundTick = true;
 
         // set the LED with the ledState of the variable:
         ledState = !ledState;
-        digitalWrite(toggelLedPin, ledState);
+        digitalWrite(TOGGLE_LED_PIN, ledState);
 
     } else {
         secoundTick = false;
     }
+    //10ms tick
+    if ((long)(currentMillis-preCentiSecoundMillis) > 0)
+    {
+        preCentiSecoundMillis += CENTI_SECOUND_INTERVAL;
+        centiSecoundTick = true;
 
+
+    } else {
+        centiSecoundTick = false;
+    }
 }

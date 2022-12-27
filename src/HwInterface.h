@@ -17,4 +17,5 @@ void hwSetup(void);
 void hwLoop(void);
 
 bool hwSecoundTick(void);
+bool hwCentiSecoundTick(void);
 unsigned long hwGetMillis(void);

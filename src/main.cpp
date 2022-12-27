@@ -44,7 +44,7 @@ void setup()
 
     scanNetworks(); // call before httpSetup
 
-    mqttSetup(); //call before httpSetup, to engage callback functions
+    mqttSetup(); // call before httpSetup, to engage callback functions
 
     httpSetup();
 
@@ -58,18 +58,21 @@ void loop()
     hwLoop();
 
     // secound tick
-    
     if (hwSecoundTick())
     {
-        //mqttPublishLong("assembly-001/millis", hwGetMillis());
-        //mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
+        // mqttPublishLong("assembly-001/millis", hwGetMillis());
+        // mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
         mqttPublishLong("assembly-001/rssi", httpRssi());
 
         ws2812Demo();
     }
+    // 10ms tick
+    if (hwCentiSecoundTick())
+    {
+        oledLoop();
+        ws2812Loop();
+    }
 
     mqttLoop();
     httpLoop();
-    oledLoop();
-    ws2812Loop();
 }
