@@ -1,32 +1,42 @@
 #include <Arduino.h>
 #include <HwInterface.h>
 
-int key1Click = 0;
+struct tstKey
+{
+    int pin;
+    bool pressed;
+    bool oldState;
+    int pressedCounter;
+};
+
+struct tstKey keys[3];
 
 // interval at which to blink (milliseconds)
 const long SECOUND_INTERVAL = 1000;
-unsigned long  preSecoundMillis = 0;
+unsigned long preSecoundMillis = 0;
 bool secoundTick = false;
 
 // 10ms tick (milliseconds)
 const long CENTI_SECOUND_INTERVAL = 10;
-unsigned long  preCentiSecoundMillis = 0;
+unsigned long preCentiSecoundMillis = 0;
 bool centiSecoundTick = false;
 
-unsigned long  currentMillis = 0;
+unsigned long currentMillis = 0;
 
 // ledState used to set the LED
-int ledState = LOW;          
+int ledState = LOW;
 
-
-bool hwCentiSecoundTick(void){
+bool hwCentiSecoundTick(void)
+{
     return centiSecoundTick;
 }
-bool hwSecoundTick(void){
+bool hwSecoundTick(void)
+{
     return secoundTick;
 }
 
-unsigned long hwGetMillis(void){
+unsigned long hwGetMillis(void)
+{
     return currentMillis;
 }
 
@@ -34,16 +44,22 @@ void hwSetup(void)
 {
     pinMode(TOGGLE_LED_PIN, OUTPUT);
 
-    pinMode(KEY1_PIN, INPUT_PULLUP);
-    pinMode(KEY2_PIN, INPUT_PULLUP);
-    pinMode(KEY3_PIN, INPUT_PULLUP);   
+    keys[0].pin = KEY1_PIN;
+    keys[1].pin = KEY2_PIN;
+    keys[2].pin = KEY3_PIN;
+
+    int i = 0;
+    for (i = 0; i < 3; i++)
+    {
+        pinMode(keys[i].pin, INPUT_PULLUP);
+    }
 }
 
 void hwLoop(void)
 {
     currentMillis = millis();
     // secound tick
-    if ((long)(currentMillis-preSecoundMillis) > 0)
+    if ((long)(currentMillis - preSecoundMillis) > 0)
     {
         preSecoundMillis += SECOUND_INTERVAL;
         secoundTick = true;
@@ -51,18 +67,42 @@ void hwLoop(void)
         // set the LED with the ledState of the variable:
         ledState = !ledState;
         digitalWrite(TOGGLE_LED_PIN, ledState);
-
-    } else {
+    }
+    else
+    {
         secoundTick = false;
     }
-    //10ms tick
-    if ((long)(currentMillis-preCentiSecoundMillis) > 0)
+    // 10ms tick
+    if ((long)(currentMillis - preCentiSecoundMillis) > 0)
     {
         preCentiSecoundMillis += CENTI_SECOUND_INTERVAL;
         centiSecoundTick = true;
-
-
-    } else {
+    }
+    else
+    {
         centiSecoundTick = false;
     }
+
+    int i = 0;
+    for (i = 0; i < 3; i++)
+    {
+        bool state = digitalRead(keys[i].pin);
+        //false = pressed
+        if ((state==false)&&(state!=keys[i].oldState)){
+            keys[i].pressed = true;
+            keys[i].pressedCounter++;
+        } else {
+            keys[i].pressed = false;
+        }
+        keys[i].oldState = state;
+    }
+}
+
+bool keyPressed(int keyNumber)
+{
+    return keys[keyNumber].pressed;
+}
+int keyPressedCounter(int keyNumber)
+{
+    return keys[keyNumber].pressedCounter;
 }

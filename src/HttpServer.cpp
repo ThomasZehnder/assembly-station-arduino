@@ -299,6 +299,10 @@ String getContentType(String filename)
     return "application/javascript";
   else if (filename.endsWith(".ico"))
     return "image/x-icon";
+  else if (filename.endsWith(".pdf"))
+    return "application/pdf";  
+  else if (filename.endsWith(".png"))
+    return "image/png";  
   else if (filename.endsWith(".gz"))
     return "application/x-gzip";
   return "text/plain";
