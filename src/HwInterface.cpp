@@ -3,15 +3,7 @@
 
 #include "MqttServer.h"
 
-struct tstKey
-{
-    int pin;
-    bool pressed;
-    bool oldState;
-    int pressedCounter;
-};
-
-struct tstKey keys[3];
+#include "Global.h"
 
 // interval at which to blink (milliseconds)
 const long SECOUND_INTERVAL = 1000;
@@ -46,14 +38,14 @@ void hwSetup(void)
 {
     pinMode(TOGGLE_LED_PIN, OUTPUT);
 
-    keys[0].pin = KEY1_PIN;
-    keys[1].pin = KEY2_PIN;
-    keys[2].pin = KEY3_PIN;
+    Assembly.keys[0].pin = KEY1_PIN;
+    Assembly.keys[1].pin = KEY2_PIN;
+    Assembly.keys[2].pin = KEY3_PIN;
 
     int i = 0;
     for (i = 0; i < 3; i++)
     {
-        pinMode(keys[i].pin, INPUT_PULLUP);
+        pinMode(Assembly.keys[i].pin, INPUT_PULLUP);
     }
 }
 
@@ -90,11 +82,11 @@ void hwLoop(void)
 //getter
 bool keyPressed(int keyNumber)
 {
-    return keys[keyNumber].pressed;
+    return Assembly.keys[keyNumber].pressed;
 }
 int keyPressedCounter(int keyNumber)
 {
-    return keys[keyNumber].pressedCounter;
+    return Assembly.keys[keyNumber].pressedCounter;
 }
 
 //key pressed detection
@@ -103,18 +95,18 @@ void pollKeyPressed (void)
     int i = 0;
     for (i = 0; i < 3; i++)
     {
-        bool state = digitalRead(keys[i].pin);
+        bool state = digitalRead(Assembly.keys[i].pin);
         // false = pressed
-        if ((state == false) && (state != keys[i].oldState))
+        if ((state == false) && (state != Assembly.keys[i].oldState))
         {
-            keys[i].pressed = true;
-            keys[i].pressedCounter++;
+            Assembly.keys[i].pressed = true;
+            Assembly.keys[i].pressedCounter++;
         }
         else
         {
-            keys[i].pressed = false;
+            Assembly.keys[i].pressed = false;
         }
-        keys[i].oldState = state;
+        Assembly.keys[i].oldState = state;
     }
 }
 

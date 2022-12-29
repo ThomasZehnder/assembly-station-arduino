@@ -77,32 +77,6 @@ void drawTextAlignmentDemo()
     display.drawString(128, 33, "Right aligned (128,33)");
 }
 
-void drawRectDemo()
-{
-    // Draw a line horizontally
-    display.drawHorizontalLine(0, Y_OFFSET-1, 128);  //last yellow
-    //display.drawHorizontalLine(20, Y_OFFSET, 20);   //first blue
-    //display.drawHorizontalLine(40, Y_OFFSET+1, 20);
-    
-    // Draw a pixel at given position
-    for (int i = 0; i < 10; i++)
-    {
-        display.setPixel(i, i);
-        display.setPixel(10 - i, i);
-    }
-    display.drawRect(12, 12, 20, 20);
-
-    // Fill the rectangle
-    display.fillRect(14, 14, 17, 17);
-
-    // Draw a line horizontally
-    display.drawHorizontalLine(0, 40, 20);
-
-    // Draw a line horizontally
-    display.drawVerticalLine(40, 0, 20);
-}
-
-
 void drawProgressBarDemo()
 {
     int progress = (counter / 5) % 100;
@@ -137,11 +111,10 @@ void drawAssemblyInfo()
 
     // Draw Key Counter
     display.drawString(0, Y_OFFSET+24, "Key [1,2,3]: ");   //top right
-    display.drawString(X_OFFSET_1, Y_OFFSET+24, "123");   //top right
-    display.drawString(X_OFFSET_1+24, Y_OFFSET+24, "456");   //top right
-    display.drawString(X_OFFSET_1+24+24, Y_OFFSET+24, "789");   //top right
-    //display.drawString(80, Y_OFFSET+24, String(Assembly.key[0].pressedCounter));   //top right
-}
+    display.drawString(X_OFFSET_1, Y_OFFSET+24, String(Assembly.keys[0].pressedCounter));   //top right
+    display.drawString(X_OFFSET_1+24, Y_OFFSET+24, String(Assembly.keys[1].pressedCounter));   //top right
+    display.drawString(X_OFFSET_1+24+24, Y_OFFSET+24, String(Assembly.keys[2].pressedCounter));   //top right
+ }
 
 
 
