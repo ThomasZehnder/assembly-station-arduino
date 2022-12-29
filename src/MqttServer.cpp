@@ -4,6 +4,8 @@
 
 #include "credentials.h"
 
+#include "Global.h"
+
 #include "MqttServer.h"
 // #define WIFI_SSID "..."
 // #define WIFI_PASSWORD "...."
@@ -30,6 +32,7 @@ void connectToMqtt()
 void onWifiConnect(const WiFiEventStationModeGotIP &event)
 {
   Serial.println("MqttSetup --> Connected to Wi-Fi.");
+  Assembly.wifiConnected = true;
 
   // get config in dependecy of connected WLAN
   if (WiFi.SSID() == WIFI_SSID_1)
@@ -53,6 +56,7 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
 void onWifiDisconnect(const WiFiEventStationModeDisconnected &event)
 {
   Serial.println("MqttSetup --> Disconnected from Wi-Fi." + mqttHost);
+  Assembly.wifiConnected = false;
   mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
   // wifiReconnectTimer.once(2, connectToWifi);
 }
@@ -60,6 +64,7 @@ void onWifiDisconnect(const WiFiEventStationModeDisconnected &event)
 void onMqttConnect(bool sessionPresent)
 {
   Serial.println("Connected to MQTT.");
+  Assembly.mqttConnected = true;
   Serial.print("Session present: ");
   Serial.println(sessionPresent);
   uint16_t packetIdSub = mqttClient.subscribe("test/lol", 2);
@@ -74,12 +79,13 @@ void onMqttConnect(bool sessionPresent)
   Serial.print("Publishing at QoS 2, packetId: ");
   Serial.println(packetIdPub2);
 
-  mqttPublishString("assembly-001/myIpAddr", WiFi.localIP().toString().c_str());
+  mqttPublishString("assembly-001/myIpAddr", Assembly.localIp.c_str());
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason)
 {
   Serial.println("Disconnected from MQTT.");
+  Assembly.mqttConnected = false;
 
   if (WiFi.isConnected())
   {

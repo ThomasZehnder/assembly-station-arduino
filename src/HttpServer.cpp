@@ -10,6 +10,8 @@
 
 #include "credentials.h"
 
+#include "Global.h"
+
 ESP8266WiFiMulti wifiMulti; // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
 
 ESP8266WebServer server(80);
@@ -109,6 +111,29 @@ void handleJson()
   Serial.print(F("Sending: "));
   serializeJson(doc, Serial);
   Serial.println();
+
+  // Lastly, you can print the resulting JSON to a String
+  String output;
+  serializeJson(doc, output);
+  server.send(200, "application/json", output);
+}
+
+void assemblyJson()
+{
+  triggerActivity();
+
+  // see: https://arduinojson.org/
+
+  // Allocate a temporary JsonDocument
+  // Use https://arduinojson.org/v6/assistant to compute the capacity.
+  StaticJsonDocument<500> doc;
+
+  doc["assembly"] = "001";
+  doc["millis"] = millis();
+  doc["rssi"] = httpRssi();
+  doc["wifiConnected"] = Assembly.wifiConnected;
+  doc["mqttConnected"] = Assembly.mqttConnected;
+  
 
   // Lastly, you can print the resulting JSON to a String
   String output;
@@ -220,6 +245,7 @@ void httpSetup(void)
   Serial.println(WiFi.SSID());
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  Assembly.localIp = WiFi.localIP().toString();
   Serial.print("signal strength (RSSI):");
   Serial.println(WiFi.RSSI());
 
@@ -234,7 +260,8 @@ void httpSetup(void)
   Serial.println("HttSetup");
 
   server.on("/", handleRoot);
-  server.on("/json", handleJson);
+  server.on("/json", handleJson); //test only
+  server.on("/assembly", assemblyJson);
 
   server.on("/inline", []()
             { server.send(200, "text/plain", "this works as well"); });
