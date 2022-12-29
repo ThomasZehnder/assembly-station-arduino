@@ -23,6 +23,8 @@ Ticker wifiReconnectTimer;
 
 String mqttHost;
 
+#define ASSENMBLY_JOB_TOPIC "assembly-001/job"
+
 void connectToMqtt()
 {
   Serial.println("MqttSetup --> Connecting to MQTT..." + mqttHost);
@@ -67,7 +69,7 @@ void onMqttConnect(bool sessionPresent)
   Assembly.mqttConnected = true;
   Serial.print("Session present: ");
   Serial.println(sessionPresent);
-  uint16_t packetIdSub = mqttClient.subscribe("test/lol", 2);
+/*   uint16_t packetIdSub = mqttClient.subscribe("test/lol", 2);
   Serial.print("Subscribing at QoS 2, packetId: ");
   Serial.println(packetIdSub);
   mqttClient.publish("test/lol", 0, true, "test 1");
@@ -77,9 +79,15 @@ void onMqttConnect(bool sessionPresent)
   Serial.println(packetIdPub1);
   uint16_t packetIdPub2 = mqttClient.publish("test/lol", 2, true, "test 3");
   Serial.print("Publishing at QoS 2, packetId: ");
-  Serial.println(packetIdPub2);
+  Serial.println(packetIdPub2); */
 
-  mqttPublishString("assembly-001/myIpAddr", Assembly.localIp.c_str());
+  mqttPublishString("assembly-001/myIpAddr", Assembly.localIp);
+  mqttPublishString("assembly-001/processState", Assembly.getProcessState());
+
+  //subscribe assembly job
+  uint16_t packetIdSub = mqttClient.subscribe(ASSENMBLY_JOB_TOPIC, 2);
+  Serial.print("Subscribing at QoS 2, packetId: ");
+  Serial.println(packetIdSub);
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason)
@@ -126,6 +134,10 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   Serial.println(index);
   Serial.print("  total: ");
   Serial.println(total);
+
+  if (strcmp(topic,ASSENMBLY_JOB_TOPIC)==0){
+    Assembly.startProcess();
+  }
 }
 
 void onMqttPublish(uint16_t packetId)
