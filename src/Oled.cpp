@@ -12,11 +12,10 @@ SSD1306Wire display(0x3c, SDA, SCL); // ADDRESS, SDA, SCL  -  SDA and SCL usuall
 
 #include "Global.h"
 
-//start pixel of blue area
+// start pixel of blue area
 #define Y_OFFSET 16
 //"table line 1"
 #define X_OFFSET_1 54
-    
 
 #define DEMO_DURATION 3000
 typedef void (*Demo)(void);
@@ -48,7 +47,7 @@ void drawFontFaceDemo()
     display.setFont(ArialMT_Plain_16);
     display.drawString(0, Y_OFFSET, "Hello world");
     display.setFont(ArialMT_Plain_24);
-    display.drawString(0, 10+Y_OFFSET, "Hello world");
+    display.drawString(0, 10 + Y_OFFSET, "Hello world");
 }
 
 void drawTextFlowDemo()
@@ -70,7 +69,7 @@ void drawTextAlignmentDemo()
 
     // The coordinates define the center of the text
     display.setTextAlignment(TEXT_ALIGN_CENTER);
-    display.drawString(64, 12+Y_OFFSET, "Center aligned (64,22)");
+    display.drawString(64, 12 + Y_OFFSET, "Center aligned (64,22)");
 
     // The coordinates define the right end of the text
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
@@ -91,34 +90,35 @@ void drawProgressBarDemo()
 void drawAssemblyInfo()
 {
     // Draw a line horizontally
-    display.drawHorizontalLine(0, Y_OFFSET-1, 128);  //last yellow
+    display.drawHorizontalLine(0, Y_OFFSET - 1, 128); // last yellow
 
     // Draw actual millis top right
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 0, String(millis()));   //top right
+    display.drawString(128, 0, String(millis())); // top right
 
     // DraW ip
     display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawString(0, 0, Assembly.localIp);   //top right
+    display.drawString(0, 0, Assembly.localIp); // top right
 
-     // Draw Connection Status
+    // Draw Connection Status
     display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawString(0, Y_OFFSET, "Wifi On: ");   //top right
-    display.drawString(X_OFFSET_1, Y_OFFSET, String(Assembly.wifiConnected));   //top right
-    display.drawString(0, Y_OFFSET+12, "MQTT On: ");   //top right
-    display.drawString(X_OFFSET_1, Y_OFFSET+12, String(Assembly.mqttConnected));   //top right
+    display.drawString(0, Y_OFFSET, "Wifi On: ");                                  // top right
+    display.drawString(X_OFFSET_1, Y_OFFSET, String(Assembly.wifiConnected));      // top right
+    display.drawString(0, Y_OFFSET + 12, "MQTT On: ");                             // top right
+    display.drawString(X_OFFSET_1, Y_OFFSET + 12, String(Assembly.mqttConnected)); // top right
 
     // Draw Key Counter
-    display.drawString(0, Y_OFFSET+24, "Key [1,2,3]: ");   //top right
-    display.drawString(X_OFFSET_1, Y_OFFSET+24, String(Assembly.keys[0].pressedCounter));   //top right
-    display.drawString(X_OFFSET_1+24, Y_OFFSET+24, String(Assembly.keys[1].pressedCounter));   //top right
-    display.drawString(X_OFFSET_1+24+24, Y_OFFSET+24, String(Assembly.keys[2].pressedCounter));   //top right
- }
+    display.drawString(0, Y_OFFSET + 24, "Key [1,2,3]: ");                                            // top right
+    display.drawString(X_OFFSET_1, Y_OFFSET + 24, String(Assembly.keys[0].pressedCounter));           // top right
+    display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 24, String(Assembly.keys[1].pressedCounter));      // top right
+    display.drawString(X_OFFSET_1 + 24 + 24, Y_OFFSET + 24, String(Assembly.keys[2].pressedCounter)); // top right
+    // Draw Key Counter
+    display.drawString(0, Y_OFFSET + 36, "Assembly State: ");                       // top right
+    display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState()); // top right
+}
 
-
-
-//Demo demos[] = {drawFontFaceDemo, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
+// Demo demos[] = {drawFontFaceDemo, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
 Demo demos[] = {drawAssemblyInfo, drawAssemblyInfo, drawProgressBarDemo};
 int demoLength = (sizeof(demos) / sizeof(Demo));
 long timeSinceLastModeSwitch = 0;
@@ -130,13 +130,13 @@ void oledLoop()
     // draw the current demo method
     demos[demoMode]();
 
-    //display.setFont(ArialMT_Plain_10);
-    //display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    //display.drawString(128, 54, String(millis())); //bottom right
-    // The coordinates define the right end of the text
-    //display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    //display.drawString(128, 0, String(millis()));   //top right
-    // write the buffer to the display
+    // display.setFont(ArialMT_Plain_10);
+    // display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    // display.drawString(128, 54, String(millis())); //bottom right
+    //  The coordinates define the right end of the text
+    // display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    // display.drawString(128, 0, String(millis()));   //top right
+    //  write the buffer to the display
     display.display();
 
     if (millis() - timeSinceLastModeSwitch > DEMO_DURATION)

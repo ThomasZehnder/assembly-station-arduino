@@ -32,6 +32,8 @@ public:
     void startProcess();
     void finishProcess();
     void abortProcess();
+
+    String getProcessState();
 };
 
 extern clAssembly Assembly;
