@@ -6,39 +6,10 @@
 #include "Oled.h"
 #include "Ws2812.h"
 
-#include "LittleFS.h"
-
-void checkFs(void)
-{
-    if (!LittleFS.begin())
-    {
-        Serial.println("An Error has occurred while mounting LittleFS");
-        delay(1000);
-        return;
-    }
-
-    File file = LittleFS.open("/config.cfg", "r");
-    if (!file)
-    {
-        Serial.println("Failed to open file for reading");
-        return;
-    }
-
-    Serial.println("File Content:");
-    while (file.available())
-    {
-        Serial.write(file.read());
-    }
-    file.close();
-    Serial.println("");
-}
-
 void setup()
 {
     Serial.begin(115200);
     Serial.println();
-
-    checkFs();
 
     ws2812Setup();
 
@@ -75,7 +46,6 @@ void loop()
         pollKeyPressed();
         hwKeyMqttPublish();
     }
-
 
     mqttLoop();
     httpLoop();
