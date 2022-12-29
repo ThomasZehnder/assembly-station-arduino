@@ -10,6 +10,9 @@ SSD1306Wire display(0x3c, SDA, SCL); // ADDRESS, SDA, SCL  -  SDA and SCL usuall
 
 #include "Oled.h"
 
+//start pixel of blue area
+#define Y_OFFSET 16
+
 #define DEMO_DURATION 3000
 typedef void (*Demo)(void);
 
@@ -38,16 +41,16 @@ void drawFontFaceDemo()
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0, "Hello world");
     display.setFont(ArialMT_Plain_16);
-    display.drawString(0, 10, "Hello world");
+    display.drawString(0, Y_OFFSET, "Hello world");
     display.setFont(ArialMT_Plain_24);
-    display.drawString(0, 26, "Hello world");
+    display.drawString(0, 10+Y_OFFSET, "Hello world");
 }
 
 void drawTextFlowDemo()
 {
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawStringMaxWidth(0, 0, 128,
+    display.drawStringMaxWidth(0, Y_OFFSET, 128,
                                "Lorem ipsum\n dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.");
 }
 
@@ -58,11 +61,11 @@ void drawTextAlignmentDemo()
 
     // The coordinates define the left starting point of the text
     display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawString(0, 10, "Left aligned (0,10)");
+    display.drawString(0, Y_OFFSET, "Left aligned (0,Y_OFFSET)");
 
     // The coordinates define the center of the text
     display.setTextAlignment(TEXT_ALIGN_CENTER);
-    display.drawString(64, 22, "Center aligned (64,22)");
+    display.drawString(64, 12+Y_OFFSET, "Center aligned (64,22)");
 
     // The coordinates define the right end of the text
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
@@ -71,6 +74,11 @@ void drawTextAlignmentDemo()
 
 void drawRectDemo()
 {
+    // Draw a line horizontally
+    display.drawHorizontalLine(0, Y_OFFSET-1, 128);  //last yellow
+    //display.drawHorizontalLine(20, Y_OFFSET, 20);   //first blue
+    //display.drawHorizontalLine(40, Y_OFFSET+1, 20);
+    
     // Draw a pixel at given position
     for (int i = 0; i < 10; i++)
     {
@@ -89,19 +97,6 @@ void drawRectDemo()
     display.drawVerticalLine(40, 0, 20);
 }
 
-void drawCircleDemo()
-{
-    for (int i = 1; i < 8; i++)
-    {
-        display.setColor(WHITE);
-        display.drawCircle(32, 32, i * 3);
-        if (i % 2 == 0)
-        {
-            display.setColor(BLACK);
-        }
-        display.fillCircle(96, 32, 32 - i * 3);
-    }
-}
 
 void drawProgressBarDemo()
 {
@@ -114,7 +109,7 @@ void drawProgressBarDemo()
     display.drawString(64, 15, String(progress) + "%");
 }
 
-Demo demos[] = {drawFontFaceDemo, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawCircleDemo, drawProgressBarDemo};
+Demo demos[] = {drawFontFaceDemo, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
 int demoLength = (sizeof(demos) / sizeof(Demo));
 long timeSinceLastModeSwitch = 0;
 
@@ -127,8 +122,10 @@ void oledLoop()
 
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 54, String(millis()));
-    display.drawString(128, 0, String(millis()));
+    display.drawString(128, 54, String(millis())); //bottom right
+    // The coordinates define the right end of the text
+    display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    display.drawString(128, 0, String(millis()));   //top right
     // write the buffer to the display
     display.display();
 
