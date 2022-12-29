@@ -6,16 +6,25 @@ clAssembly Assembly;
 void clAssembly::startProcess()
 {
     processState = 1;
+    changedState = true;
 }
 
 void clAssembly::finishProcess()
 {
     processState = 2;
+    changedState = true;
 }
 
 void clAssembly::abortProcess()
 {
     processState = 3;
+    changedState = true;
+}
+// gettter will reset flag
+bool clAssembly::getChangeState(){
+    bool returnValue = changedState;
+    changedState = false;
+    return returnValue;
 }
 
 String clAssembly::getProcessState()

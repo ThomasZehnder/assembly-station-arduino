@@ -49,6 +49,11 @@ void loop()
         hwKeyMqttPublish();
 
         Assembly.processKeys();
+
+        if (Assembly.getChangeState())
+        {
+            mqttPublishString("assembly-001/processState", Assembly.getProcessState());
+        }
     }
 
     mqttLoop();

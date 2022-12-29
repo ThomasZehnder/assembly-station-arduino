@@ -22,6 +22,7 @@ public:
 
 private:
     int processState = 0;
+    bool changedState = false;
 
 public:
     void startProcess();
@@ -29,6 +30,7 @@ public:
     void abortProcess();
 
     String getProcessState();
+    bool getChangeState();
 
     void processKeys();
 };
