@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <HwInterface.h>
 
+#include "MqttServer.h"
+
 struct tstKey
 {
     int pin;
@@ -83,21 +85,9 @@ void hwLoop(void)
         centiSecoundTick = false;
     }
 
-    int i = 0;
-    for (i = 0; i < 3; i++)
-    {
-        bool state = digitalRead(keys[i].pin);
-        //false = pressed
-        if ((state==false)&&(state!=keys[i].oldState)){
-            keys[i].pressed = true;
-            keys[i].pressedCounter++;
-        } else {
-            keys[i].pressed = false;
-        }
-        keys[i].oldState = state;
-    }
 }
 
+//getter
 bool keyPressed(int keyNumber)
 {
     return keys[keyNumber].pressed;
@@ -106,3 +96,42 @@ int keyPressedCounter(int keyNumber)
 {
     return keys[keyNumber].pressedCounter;
 }
+
+//key pressed detection
+void pollKeyPressed (void)
+{
+    int i = 0;
+    for (i = 0; i < 3; i++)
+    {
+        bool state = digitalRead(keys[i].pin);
+        // false = pressed
+        if ((state == false) && (state != keys[i].oldState))
+        {
+            keys[i].pressed = true;
+            keys[i].pressedCounter++;
+        }
+        else
+        {
+            keys[i].pressed = false;
+        }
+        keys[i].oldState = state;
+    }
+}
+
+//Key pressed counter publisher
+void hwKeyMqttPublish(void)
+{
+    if (keyPressed(0))
+    {
+        mqttPublishLong("assembly-001/key-1", keyPressedCounter(0));
+    }
+    if (keyPressed(1))
+    {
+        mqttPublishLong("assembly-001/key-2", keyPressedCounter(1));
+    }
+    if (keyPressed(2))
+    {
+        mqttPublishLong("assembly-001/key-3", keyPressedCounter(2));
+    }
+}
+

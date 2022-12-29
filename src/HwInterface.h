@@ -22,3 +22,6 @@ unsigned long hwGetMillis(void);
 
 bool keyPressed(int keyNumber);
 int keyPressedCounter(int keyNumber);
+
+void pollKeyPressed (void);
+void hwKeyMqttPublish(void);
