@@ -10,8 +10,13 @@ SSD1306Wire display(0x3c, SDA, SCL); // ADDRESS, SDA, SCL  -  SDA and SCL usuall
 
 #include "Oled.h"
 
+#include "Global.h"
+
 //start pixel of blue area
 #define Y_OFFSET 16
+//"table line 1"
+#define X_OFFSET_1 54
+    
 
 #define DEMO_DURATION 3000
 typedef void (*Demo)(void);
@@ -109,7 +114,39 @@ void drawProgressBarDemo()
     display.drawString(64, 15, String(progress) + "%");
 }
 
-Demo demos[] = {drawFontFaceDemo, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
+void drawAssemblyInfo()
+{
+    // Draw a line horizontally
+    display.drawHorizontalLine(0, Y_OFFSET-1, 128);  //last yellow
+
+    // Draw actual millis top right
+    display.setFont(ArialMT_Plain_10);
+    display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    display.drawString(128, 0, String(millis()));   //top right
+
+    // DraW ip
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.drawString(0, 0, Assembly.localIp);   //top right
+
+     // Draw Connection Status
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.drawString(0, Y_OFFSET, "Wifi On: ");   //top right
+    display.drawString(X_OFFSET_1, Y_OFFSET, String(Assembly.wifiConnected));   //top right
+    display.drawString(0, Y_OFFSET+12, "MQTT On: ");   //top right
+    display.drawString(X_OFFSET_1, Y_OFFSET+12, String(Assembly.mqttConnected));   //top right
+
+    // Draw Key Counter
+    display.drawString(0, Y_OFFSET+24, "Key [1,2,3]: ");   //top right
+    display.drawString(X_OFFSET_1, Y_OFFSET+24, "123");   //top right
+    display.drawString(X_OFFSET_1+24, Y_OFFSET+24, "456");   //top right
+    display.drawString(X_OFFSET_1+24+24, Y_OFFSET+24, "789");   //top right
+    //display.drawString(80, Y_OFFSET+24, String(Assembly.key[0].pressedCounter));   //top right
+}
+
+
+
+//Demo demos[] = {drawFontFaceDemo, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
+Demo demos[] = {drawAssemblyInfo, drawAssemblyInfo, drawProgressBarDemo};
 int demoLength = (sizeof(demos) / sizeof(Demo));
 long timeSinceLastModeSwitch = 0;
 
@@ -120,12 +157,12 @@ void oledLoop()
     // draw the current demo method
     demos[demoMode]();
 
-    display.setFont(ArialMT_Plain_10);
-    display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 54, String(millis())); //bottom right
+    //display.setFont(ArialMT_Plain_10);
+    //display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    //display.drawString(128, 54, String(millis())); //bottom right
     // The coordinates define the right end of the text
-    display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 0, String(millis()));   //top right
+    //display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    //display.drawString(128, 0, String(millis()));   //top right
     // write the buffer to the display
     display.display();
 
@@ -135,5 +172,4 @@ void oledLoop()
         timeSinceLastModeSwitch = millis();
     }
     counter++;
-    delay(10);
 }
