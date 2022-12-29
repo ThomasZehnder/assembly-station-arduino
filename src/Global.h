@@ -14,11 +14,6 @@ struct tstKey
 class clAssembly
 {
 public:
-    int pin;
-    bool pressed;
-    bool oldState;
-    int pressedCounter;
-
     bool wifiConnected = false;
     bool mqttConnected = false;
     String localIp;
@@ -34,8 +29,10 @@ public:
     void abortProcess();
 
     String getProcessState();
+
+    void processKeys();
 };
 
 extern clAssembly Assembly;
 
-#endif //GLOBAL_H
+#endif // GLOBAL_H

@@ -6,6 +6,8 @@
 #include "Oled.h"
 #include "Ws2812.h"
 
+#include "Global.h"
+
 void setup()
 {
     Serial.begin(115200);
@@ -45,6 +47,8 @@ void loop()
 
         pollKeyPressed();
         hwKeyMqttPublish();
+
+        Assembly.processKeys();
     }
 
     mqttLoop();

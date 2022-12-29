@@ -37,3 +37,19 @@ String clAssembly::getProcessState()
         return String("undef");
     }
 }
+
+void clAssembly::processKeys()
+{
+    if (keys[0].pressed)
+    {
+        startProcess();
+    }
+    else if (keys[1].pressed)
+    {
+        finishProcess();
+    }
+    else if (keys[2].pressed)
+    {
+        abortProcess();
+    }
+}
