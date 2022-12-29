@@ -133,7 +133,12 @@ void assemblyJson()
   doc["rssi"] = httpRssi();
   doc["wifiConnected"] = Assembly.wifiConnected;
   doc["mqttConnected"] = Assembly.mqttConnected;
-  
+
+  doc["key-1"] = Assembly.keys[0].pressedCounter;
+  doc["key-2"] = Assembly.keys[1].pressedCounter;
+  doc["key-3"] = Assembly.keys[2].pressedCounter;
+
+  doc["processState"] = Assembly.getProcessState();
 
   // Lastly, you can print the resulting JSON to a String
   String output;
@@ -198,7 +203,7 @@ void dir(void)
     Serial.print(" SIZE: ");
     char sz[200];
     ltoa(file.size(), sz, 10);
-    msg += "<tr><td><a href=\"/"+root.fileName()+"\">" + root.fileName()+ "</a> </td><td>" + sz + "</td></tr>";
+    msg += "<tr><td><a href=\"/" + root.fileName() + "\">" + root.fileName() + "</a> </td><td>" + sz + "</td></tr>";
     Serial.println(sz);
     file.close();
   }
@@ -260,7 +265,7 @@ void httpSetup(void)
   Serial.println("HttSetup");
 
   server.on("/", handleRoot);
-  server.on("/json", handleJson); //test only
+  server.on("/json", handleJson); // test only
   server.on("/assembly", assemblyJson);
 
   server.on("/inline", []()
@@ -327,9 +332,9 @@ String getContentType(String filename)
   else if (filename.endsWith(".ico"))
     return "image/x-icon";
   else if (filename.endsWith(".pdf"))
-    return "application/pdf";  
+    return "application/pdf";
   else if (filename.endsWith(".png"))
-    return "image/png";  
+    return "image/png";
   else if (filename.endsWith(".gz"))
     return "application/x-gzip";
   return "text/plain";
