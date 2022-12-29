@@ -17,7 +17,10 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(40, WS2812_PIN, NEO_GRB + NEO_KHZ800);
+
+//double ring has 40 leds
+// assembly is equiped with 4 leds
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(4, WS2812_PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -34,14 +37,14 @@ void colorWipe(uint32_t c, uint8_t wait)
         delay(wait);
     }
 }
-
+#define DEMO_DELAY 200
 void fullColorWipe(void)
 {
     Serial.println("fullColorWipe --> Start");
     // Some example procedures showing how to display to the pixels:
-    colorWipe(strip.Color(255, 0, 0), 50);     // Red
-    //colorWipe(strip.Color(0, 255, 0), 50);     // Green
-    colorWipe(strip.Color(0, 0, 255), 50);     // Blue
+    colorWipe(strip.Color(255, 0, 0), DEMO_DELAY);     // Red
+    colorWipe(strip.Color(0, 255, 0), DEMO_DELAY);     // Green
+    colorWipe(strip.Color(0, 0, 255), DEMO_DELAY);     // Blue
     ///colorWipe(strip.Color(16, 32, 255), 50); // White RGB
 }
 
