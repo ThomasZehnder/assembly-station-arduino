@@ -136,7 +136,7 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   Serial.println(total);
 
   if (strcmp(topic,ASSENMBLY_JOB_TOPIC)==0){
-    Assembly.startProcess();
+    Assembly.newProcess();
   }
 }
 

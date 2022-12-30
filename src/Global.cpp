@@ -3,21 +3,26 @@
 // global object definition
 clAssembly Assembly;
 
-void clAssembly::startProcess()
+void clAssembly::newProcess()
 {
     processState = 1;
+    changedState = true;
+}
+void clAssembly::startProcess()
+{
+    processState = 11;
     changedState = true;
 }
 
 void clAssembly::finishProcess()
 {
-    processState = 2;
+    processState = 12;
     changedState = true;
 }
 
 void clAssembly::abortProcess()
 {
-    processState = 3;
+    processState = 13;
     changedState = true;
 }
 // gettter will reset flag
@@ -31,13 +36,17 @@ String clAssembly::getProcessState()
 {
     if (processState == 1)
     {
+        return String("new");
+    }
+    else if (processState == 11)
+    {
         return String("started");
     }
-    else if (processState == 2)
+    else if (processState == 12)
     {
         return String("finished");
     }
-    else if (processState == 3)
+    else if (processState == 13)
     {
         return String("aborted");
     }

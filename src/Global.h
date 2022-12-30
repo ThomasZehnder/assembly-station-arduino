@@ -25,6 +25,7 @@ private:
     bool changedState = false;
 
 public:
+    void newProcess();
     void startProcess();
     void finishProcess();
     void abortProcess();
