@@ -76,10 +76,9 @@ void hwLoop(void)
     {
         centiSecoundTick = false;
     }
-
 }
 
-//getter
+// getter
 bool keyPressed(int keyNumber)
 {
     return Assembly.keys[keyNumber].pressed;
@@ -89,8 +88,8 @@ int keyPressedCounter(int keyNumber)
     return Assembly.keys[keyNumber].pressedCounter;
 }
 
-//key pressed detection
-void pollKeyPressed (void)
+// key pressed detection
+void pollKeyPressed(void)
 {
     int i = 0;
     for (i = 0; i < 3; i++)
@@ -110,7 +109,7 @@ void pollKeyPressed (void)
     }
 }
 
-//Key pressed counter publisher
+// Key pressed counter publisher
 void hwKeyMqttPublish(void)
 {
     if (keyPressed(0))
@@ -126,4 +125,3 @@ void hwKeyMqttPublish(void)
         mqttPublishLong("assembly-001/key-3", keyPressedCounter(2));
     }
 }
-

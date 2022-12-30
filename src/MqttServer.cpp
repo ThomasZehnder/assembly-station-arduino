@@ -69,22 +69,22 @@ void onMqttConnect(bool sessionPresent)
   Assembly.mqttConnected = true;
   Serial.print("Session present: ");
   Serial.println(sessionPresent);
-/*   uint16_t packetIdSub = mqttClient.subscribe("test/lol", 2);
-  Serial.print("Subscribing at QoS 2, packetId: ");
-  Serial.println(packetIdSub);
-  mqttClient.publish("test/lol", 0, true, "test 1");
-  Serial.println("Publishing at QoS 0");
-  uint16_t packetIdPub1 = mqttClient.publish("test/lol", 1, true, "test 2");
-  Serial.print("Publishing at QoS 1, packetId: ");
-  Serial.println(packetIdPub1);
-  uint16_t packetIdPub2 = mqttClient.publish("test/lol", 2, true, "test 3");
-  Serial.print("Publishing at QoS 2, packetId: ");
-  Serial.println(packetIdPub2); */
+  /*   uint16_t packetIdSub = mqttClient.subscribe("test/lol", 2);
+    Serial.print("Subscribing at QoS 2, packetId: ");
+    Serial.println(packetIdSub);
+    mqttClient.publish("test/lol", 0, true, "test 1");
+    Serial.println("Publishing at QoS 0");
+    uint16_t packetIdPub1 = mqttClient.publish("test/lol", 1, true, "test 2");
+    Serial.print("Publishing at QoS 1, packetId: ");
+    Serial.println(packetIdPub1);
+    uint16_t packetIdPub2 = mqttClient.publish("test/lol", 2, true, "test 3");
+    Serial.print("Publishing at QoS 2, packetId: ");
+    Serial.println(packetIdPub2); */
 
   mqttPublishString("assembly-001/myIpAddr", Assembly.localIp);
   mqttPublishString("assembly-001/processState", Assembly.getProcessState());
 
-  //subscribe assembly job
+  // subscribe assembly job
   uint16_t packetIdSub = mqttClient.subscribe(ASSENMBLY_JOB_TOPIC, 2);
   Serial.print("Subscribing at QoS 2, packetId: ");
   Serial.println(packetIdSub);
@@ -135,7 +135,8 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   Serial.print("  total: ");
   Serial.println(total);
 
-  if (strcmp(topic,ASSENMBLY_JOB_TOPIC)==0){
+  if (strcmp(topic, ASSENMBLY_JOB_TOPIC) == 0)
+  {
     Assembly.newProcess();
   }
 }
@@ -152,18 +153,18 @@ void mqttPublishLong(const char *topic, long x)
   char s[200];
   ltoa(x, s, 10);
   mqttClient.publish(topic, 0, true, s);
-  //Serial.println("Publishing long at QoS 0");
-  //Serial.print(topic);
-  //Serial.print(" : ");
-  //Serial.println(x);
+  // Serial.println("Publishing long at QoS 0");
+  // Serial.print(topic);
+  // Serial.print(" : ");
+  // Serial.println(x);
 }
 void mqttPublishString(const char *topic, String s)
 {
   mqttClient.publish(topic, 0, true, s.c_str());
-  //Serial.println("Publishing String at QoS 0");
-  //Serial.print(topic);
-  //Serial.print(" : ");
-  //Serial.println(s);
+  // Serial.println("Publishing String at QoS 0");
+  // Serial.print(topic);
+  // Serial.print(" : ");
+  // Serial.println(s);
 }
 void mqttSetup()
 {

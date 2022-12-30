@@ -26,7 +26,8 @@ void clAssembly::abortProcess()
     changedState = true;
 }
 // gettter will reset flag
-bool clAssembly::getChangeState(){
+bool clAssembly::getChangeState()
+{
     bool returnValue = changedState;
     changedState = false;
     return returnValue;

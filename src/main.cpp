@@ -33,12 +33,12 @@ void loop()
     // secound tick
     if (hwSecoundTick())
     {
-        if (Assembly.mqttConnected){
-        mqttPublishLong("assembly-001/millis", hwGetMillis());
-        mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
-        mqttPublishLong("assembly-001/rssi", httpRssi());
+        if (Assembly.mqttConnected)
+        {
+            mqttPublishLong("assembly-001/millis", hwGetMillis());
+            mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
+            mqttPublishLong("assembly-001/rssi", httpRssi());
         }
-
 
         ws2812Demo();
     }
