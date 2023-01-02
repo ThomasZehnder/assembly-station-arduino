@@ -77,7 +77,7 @@ void scanNetworks()
       delay(10);
     }
   }
-  //Serial.println("");
+  // Serial.println("");
   // Get Current Hostname
   Serial.printf("Default hostname: %s\n", WiFi.hostname().c_str());
   Serial.println("scanNetworks -->  end");
@@ -338,6 +338,10 @@ String getContentType(String filename)
     return "application/pdf";
   else if (filename.endsWith(".png"))
     return "image/png";
+  else if (filename.endsWith(".gif"))
+    return "image/gif";
+  else if (filename.endsWith(".jpg"))
+    return "image/jpeg";
   else if (filename.endsWith(".gz"))
     return "application/x-gzip";
   return "text/plain";
