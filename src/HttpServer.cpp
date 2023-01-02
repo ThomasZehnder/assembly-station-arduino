@@ -77,7 +77,9 @@ void scanNetworks()
       delay(10);
     }
   }
-  Serial.println("");
+  //Serial.println("");
+  // Get Current Hostname
+  Serial.printf("Default hostname: %s\n", WiFi.hostname().c_str());
   Serial.println("scanNetworks -->  end");
 }
 
@@ -128,6 +130,7 @@ void assemblyJson()
   // Use https://arduinojson.org/v6/assistant to compute the capacity.
   StaticJsonDocument<500> doc;
 
+  doc["hostname"] = WiFi.hostname();
   doc["assembly"] = "001";
   doc["millis"] = millis();
   doc["rssi"] = httpRssi();
