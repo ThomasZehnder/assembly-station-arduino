@@ -22,6 +22,7 @@ typedef void (*Demo)(void);
 
 int demoMode = 0;
 int counter = 1;
+void drawFontFaceDemo();
 
 void oledSetup()
 {
@@ -33,6 +34,11 @@ void oledSetup()
 
     display.flipScreenVertically();
     display.setFont(ArialMT_Plain_10);
+
+    // clear the display
+    display.clear();
+    drawFontFaceDemo();
+    display.display();
 
     Serial.println("OledSetup --> End");
 }
@@ -48,14 +54,6 @@ void drawFontFaceDemo()
     display.drawString(0, Y_OFFSET, "Hello world");
     display.setFont(ArialMT_Plain_24);
     display.drawString(0, 10 + Y_OFFSET, "Hello world");
-}
-
-void drawTextFlowDemo()
-{
-    display.setFont(ArialMT_Plain_10);
-    display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawStringMaxWidth(0, Y_OFFSET, 128,
-                               "Lorem ipsum\n dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.");
 }
 
 void drawTextAlignmentDemo()

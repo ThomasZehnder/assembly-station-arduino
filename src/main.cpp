@@ -14,6 +14,8 @@ void setup()
     Serial.println();
 
     ws2812Setup();
+    oledSetup();
+
 
     scanNetworks(); // call before httpSetup
 
@@ -22,7 +24,6 @@ void setup()
     httpSetup();
 
     hwSetup();
-    oledSetup();
 }
 
 void loop()
