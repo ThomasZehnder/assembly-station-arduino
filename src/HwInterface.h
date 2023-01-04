@@ -1,17 +1,15 @@
-#define TOGGLE_LED_PIN D0 
+#define TOGGLE_LED_PIN D0
 
-//D1 = SDL for OLED display
-//D2 = SDA for OLED display
+// D1 = SDL for OLED display
+// D2 = SDA for OLED display
 
-//D3 = WS2812 data line (LEDS need 5V, signal only 3.3V works)
+// D3 = WS2812 data line (LEDS need 5V, signal only 3.3V works)
 
-//D4 is reserved for build In led -> show http activity
- 
+// D4 is reserved for build In led -> show http activity
 
-#define KEY1_PIN D5
+#define KEY1_PIN D7
 #define KEY2_PIN D6
-#define KEY3_PIN D7
-
+#define KEY3_PIN D5
 
 void hwSetup(void);
 void hwLoop(void);
@@ -23,5 +21,5 @@ unsigned long hwGetMillis(void);
 bool keyPressed(int keyNumber);
 int keyPressedCounter(int keyNumber);
 
-void pollKeyPressed (void);
+void pollKeyPressed(void);
 void hwKeyMqttPublish(void);
