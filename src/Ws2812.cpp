@@ -1,6 +1,5 @@
-
-
 #include "Ws2812.h"
+#include "Arduino.h"
 
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
@@ -42,8 +41,8 @@ void fullColorWipe(void)
 {
     Serial.println("fullColorWipe --> Start");
     // Some example procedures showing how to display to the pixels:
-    colorWipe(strip.Color(16, 0, 0), DEMO_DELAY); // Red
-    colorWipe(strip.Color(0, 32, 0), DEMO_DELAY); // Green
+    colorWipe(strip.Color(16, 0, 0), DEMO_DELAY);  // Red
+    colorWipe(strip.Color(0, 32, 0), DEMO_DELAY);  // Green
     colorWipe(strip.Color(0, 0, 255), DEMO_DELAY); // Blue
     /// colorWipe(strip.Color(16, 32, 255), 50); // White RGB
 }
@@ -90,6 +89,29 @@ void ws2812Demo(void)
     }
 
     strip.setPixelColor(ledIdx, c);
+    strip.show();
+}
+
+void ledSetState(String s)
+{
+    strip.clear();
+    if (s == "new")
+    {
+        strip.setPixelColor(3, strip.Color(0, 0, 255)); // blue
+    }
+    else if (s == "started")
+    {
+        strip.setPixelColor(3, strip.Color(0, 0, 128)); // blue
+        strip.setPixelColor(2, strip.Color(16, 32, 128)); // white
+    }
+    else if (s == "finished")
+    {
+        strip.setPixelColor(1, strip.Color(0, 32, 0)); // green
+    }
+    else if (s == "aborted")
+    {
+        strip.setPixelColor(0, strip.Color(16, 0, 0)); // red
+    }
     strip.show();
 }
 

@@ -16,7 +16,6 @@ void setup()
     ws2812Setup();
     oledSetup();
 
-
     scanNetworks(); // call before httpSetup
 
     mqttSetup(); // call before httpSetup, to engage callback functions
@@ -40,8 +39,10 @@ void loop()
             mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
             mqttPublishLong("assembly-001/rssi", httpRssi());
         }
-
-        ws2812Demo();
+        if (Assembly.getProcessState() == "undef")
+        {
+            ws2812Demo();
+        }
     }
     // 10ms tick
     if (hwCentiSecoundTick())
@@ -57,6 +58,7 @@ void loop()
         if (Assembly.getChangeState())
         {
             mqttPublishString("assembly-001/processState", Assembly.getProcessState());
+            ledSetState(Assembly.getProcessState());
         }
     }
 
