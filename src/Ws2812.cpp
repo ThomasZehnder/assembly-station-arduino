@@ -42,8 +42,8 @@ void fullColorWipe(void)
 {
     Serial.println("fullColorWipe --> Start");
     // Some example procedures showing how to display to the pixels:
-    colorWipe(strip.Color(255, 0, 0), DEMO_DELAY); // Red
-    colorWipe(strip.Color(0, 255, 0), DEMO_DELAY); // Green
+    colorWipe(strip.Color(16, 0, 0), DEMO_DELAY); // Red
+    colorWipe(strip.Color(0, 32, 0), DEMO_DELAY); // Green
     colorWipe(strip.Color(0, 0, 255), DEMO_DELAY); // Blue
     /// colorWipe(strip.Color(16, 32, 255), 50); // White RGB
 }
