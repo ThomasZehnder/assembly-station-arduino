@@ -178,7 +178,8 @@ void (*rebootFunc)(void) = 0; // declare reset function @ address 0
 
 void reboot(void)
 {
-  server.send(200, "text/plain", "reboot arduino !!!");
+  handleFileRead("reboot.html");
+  server.send(200, "text/plain", "reboot arduino in 1 second !!!");
   rebootStart = true;
   triggerActivity();
 }
