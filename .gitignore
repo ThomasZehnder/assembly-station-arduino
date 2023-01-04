@@ -1,2 +1,3 @@
 .pio
 src/credentials.h
+data/config.json

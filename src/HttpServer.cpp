@@ -152,7 +152,8 @@ void assemblyJson()
 void handleRoot()
 {
   triggerActivity();
-  server.send(200, "text/plain", "hello from esp8266!");
+  handleFileRead("index.html");
+  //server.send(200, "text/plain", "hello from esp8266!");
 }
 
 void handleNotFound()
@@ -344,6 +345,8 @@ String getContentType(String filename)
     return "image/jpeg";
   else if (filename.endsWith(".gz"))
     return "application/x-gzip";
+  else if (filename.endsWith(".json"))
+      return "application/json";
   return "text/plain";
 }
 
