@@ -187,7 +187,9 @@ void reboot(void)
 void success(void)
 {
   triggerActivity();
-  String msg = "last uploaded file: " + lastDownloadFilename;
+  String msg = "<h1>Upload Result</h1>";
+  msg += "Last uploaded file: " + lastDownloadFilename;
+  msg += "<br><a href=\"/\">Back to main page.</a>";
   server.send(200, "text/html", msg);
 }
 
