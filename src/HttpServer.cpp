@@ -153,7 +153,7 @@ void handleRoot()
 {
   triggerActivity();
   handleFileRead("index.html");
-  //server.send(200, "text/plain", "hello from esp8266!");
+  // server.send(200, "text/plain", "hello from esp8266!");
 }
 
 void handleNotFound()
@@ -283,7 +283,8 @@ void httpSetup(void)
   server.on("/success", success);
   server.on("/dir", dir);
 
-  server.on("/upload", HTTP_GET, []() {                 // if the client requests the upload page
+  server.on("/upload", HTTP_GET, []() { // if the client requests the upload page
+    triggerActivity();
     if (!handleFileRead("/upload.html"))                // send it if it exists
       server.send(404, "text/plain", "404: Not Found"); // otherwise, respond with a 404 (Not Found) error
   });
@@ -349,7 +350,7 @@ String getContentType(String filename)
   else if (filename.endsWith(".gz"))
     return "application/x-gzip";
   else if (filename.endsWith(".json"))
-      return "application/json";
+    return "application/json";
   return "text/plain";
 }
 
