@@ -18,8 +18,8 @@
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
 
-//double ring has 40 leds
-// assembly is equiped with 4 leds
+// double ring has 40 leds
+//  assembly is equiped with 4 leds
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(4, WS2812_PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
@@ -32,7 +32,7 @@ void colorWipe(uint32_t c, uint8_t wait)
 {
     for (uint16_t i = 0; i < strip.numPixels(); i++)
     {
-        strip.setPixelColor(i, c);
+        strip.setPixelColor(strip.numPixels() - i - 1, c);
         strip.show();
         delay(wait);
     }
@@ -42,10 +42,10 @@ void fullColorWipe(void)
 {
     Serial.println("fullColorWipe --> Start");
     // Some example procedures showing how to display to the pixels:
-    colorWipe(strip.Color(255, 0, 0), DEMO_DELAY);     // Red
-    colorWipe(strip.Color(0, 255, 0), DEMO_DELAY);     // Green
-    colorWipe(strip.Color(0, 0, 255), DEMO_DELAY);     // Blue
-    ///colorWipe(strip.Color(16, 32, 255), 50); // White RGB
+    colorWipe(strip.Color(255, 0, 0), DEMO_DELAY); // Red
+    colorWipe(strip.Color(0, 255, 0), DEMO_DELAY); // Green
+    colorWipe(strip.Color(0, 0, 255), DEMO_DELAY); // Blue
+    /// colorWipe(strip.Color(16, 32, 255), 50); // White RGB
 }
 
 void ws2812Setup()
@@ -70,10 +70,10 @@ void ws2812Demo(void)
     strip.setPixelColor(ledIdx, c); // reset old led
 
     ledColor++;
-    ledIdx++;
-    if (ledIdx >= strip.numPixels())
+    ledIdx--;
+    if (ledIdx < 0)
     {
-        ledIdx = 0;
+        ledIdx = strip.numPixels() - 1;
     }
 
     if (ledColor % 3 == 0)
