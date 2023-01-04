@@ -12,15 +12,29 @@
     <h2> Web Interface</h2>
     <ul>
         <li>
+            <a href="/dir">Show files on ESP.</a>
+        </li>
+        <li>
             <a href="/upload">Upload Page e.g. adopt configuration</a>
         </li>
         <li>
-            <a href="/reboot">Reboot Arduino, e.g. to actite new configuration</a>
+            <a href="/reboot">Reboot Arduino, e.g. to activate new configuration</a>
         </li>
     </ul>
 
     <h2> RESTfull interface</h2>
-
+    <ul>
+        <li>
+            <a href="/json">GET test JSON</a>
+        </li>
+        <li>
+            <a href="/assembly">GET assembly state as JSON</a>
+        </li>
+    </ul>
+    <h3>JSON Test</h3>
+    <pre><embed type="text/html" src="json" width="400" height="80"> </pre>
+        <h3>Assembly Status</h3>
+        <pre><embed type="application/json" src="assembly" width="400" height="150"> </pre>  
     <h2> MQTT Interface</h2>
 
 </body>

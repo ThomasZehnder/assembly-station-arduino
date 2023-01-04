@@ -143,9 +143,9 @@ void assemblyJson()
 
   doc["processState"] = Assembly.getProcessState();
 
-  // Lastly, you can print the resulting JSON to a String
+  // Lastly, you can print the resulting JSON to a String, use the "pretty" variant for readable outputs in browser
   String output;
-  serializeJson(doc, output);
+  serializeJsonPretty(doc, output);
   server.send(200, "application/json", output);
 }
 
