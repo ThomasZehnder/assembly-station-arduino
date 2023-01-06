@@ -50,7 +50,7 @@ void drawStartScreen()
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0, "Assembly-001");
     display.setFont(ArialMT_Plain_16);
-    display.drawString(0, 0 + Y_OFFSET, "Search WLAN");
+    display.drawString(0, 0 + Y_OFFSET, "Search WiFi");
     display.setFont(ArialMT_Plain_24);
     display.drawString(0, 16 + Y_OFFSET, "avm.swiss");
 }
@@ -92,7 +92,7 @@ void drawProgressScreen()
     display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
 }
 
-void drawWlanOkScreen()
+void drawWifiOkScreen()
 {
     // Draw a line horizontally
     display.drawHorizontalLine(0, Y_OFFSET - 1, 128); // last yellow
@@ -106,9 +106,8 @@ void drawWlanOkScreen()
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.drawString(0, 0, Assembly.localIp); // top right
 
-
     display.setFont(ArialMT_Plain_16);
-    display.drawString(0, 0 + Y_OFFSET, "WLAN ok-wait job");
+    display.drawString(0, 0 + Y_OFFSET, "WiFi ok-wait job");
 
     int progress = (counter / 5) % 100;
     // draw the progress bar
@@ -119,24 +118,6 @@ void drawWlanOkScreen()
     display.drawString(0, Y_OFFSET + 36, "Assembly State: ");
     display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
 }
-
-/*
-void drawProgressBarDemo()
-{
-    display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 0, "OLED Demo running");
-
-    int progress = (counter / 5) % 100;
-    // draw the progress bar
-    display.drawProgressBar(0, Y_OFFSET + 24, 120, 10, progress);
-
-    // draw the percentage as String
-    display.setFont(ArialMT_Plain_10);
-    display.setTextAlignment(TEXT_ALIGN_CENTER);
-    display.drawString(64, Y_OFFSET, String(progress) + "%");
-}
-*/
 
 void drawAssemblyInfo()
 {
@@ -150,23 +131,31 @@ void drawAssemblyInfo()
 
     // Draw ip
     display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawString(0, 0, Assembly.localIp); // top right
+    display.drawString(0, 0, Assembly.localIp); // top left
 
     // Draw Connection Status
     display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawString(0, Y_OFFSET, "Wifi On: ");                                  // top right
-    display.drawString(X_OFFSET_1, Y_OFFSET, String(Assembly.wifiConnected));      // top right
-    display.drawString(0, Y_OFFSET + 12, "MQTT On: ");                             // top right
-    display.drawString(X_OFFSET_1, Y_OFFSET + 12, String(Assembly.mqttConnected)); // top right
+    display.drawString(0, Y_OFFSET, String("Wifi On: ") + String(Assembly.wifiConnected));
+    display.drawString(64, Y_OFFSET, String("MQTT On: ") + String(Assembly.mqttConnected));
+
+    // Job Name
+    display.drawString(0, Y_OFFSET + 12, "Job: XYZ");
+    // display.drawString(X_OFFSET_1, Y_OFFSET + 12, String(Assembly.job));
 
     // Draw Key Counter
-    display.drawString(0, Y_OFFSET + 24, "Key [1,2,3]: ");                                            // top right
-    display.drawString(X_OFFSET_1, Y_OFFSET + 24, String(Assembly.keys[0].pressedCounter));           // top right
-    display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 24, String(Assembly.keys[1].pressedCounter));      // top right
-    display.drawString(X_OFFSET_1 + 24 + 24, Y_OFFSET + 24, String(Assembly.keys[2].pressedCounter)); // top right
+    String s("Key [1,2,3]: ");
+    s +=  String(Assembly.keys[0].pressedCounter);
+    s += " ";
+    s +=  String(Assembly.keys[1].pressedCounter);
+    s += " ";
+    s +=  String(Assembly.keys[2].pressedCounter);
+
+    display.drawString(0, Y_OFFSET + 24,s);
+    
+
     // Draw Key Counter
-    display.drawString(0, Y_OFFSET + 36, "Assembly State: ");                       // top right
-    display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState()); // top right
+    display.drawString(0, Y_OFFSET + 36, "Assembly State: ");
+    display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
 }
 
 void oledLoop()
@@ -193,13 +182,13 @@ void oledLoop()
     }
     else if (Assembly.getProcessState() == "wlanOk")
     {
-        drawWlanOkScreen();
+        drawWifiOkScreen();
     }
     else
     {
         drawAssemblyInfo();
     }
-    // 
+    //
 
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
