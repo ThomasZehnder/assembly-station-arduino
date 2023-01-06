@@ -22,7 +22,7 @@ typedef void (*Demo)(void);
 
 int demoMode = 0;
 int counter = 1;
-void drawFontFaceDemo();
+void drawStartScreen();
 
 void oledSetup()
 {
@@ -37,23 +37,23 @@ void oledSetup()
 
     // clear the display
     display.clear();
-    drawFontFaceDemo();
+    drawStartScreen();
     display.display();
 
     Serial.println("OledSetup --> End");
 }
 
-void drawFontFaceDemo()
+void drawStartScreen()
 {
     // Font Demo1
     // create more fonts at http://oleddisplay.squix.ch/
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 0, "Hello world");
+    display.drawString(0, 0, "Assembly-001");
     display.setFont(ArialMT_Plain_16);
-    display.drawString(0, Y_OFFSET, "Hello world");
+    display.drawString(0, 0 + Y_OFFSET, "Search WLAN");
     display.setFont(ArialMT_Plain_24);
-    display.drawString(0, 10 + Y_OFFSET, "Hello world");
+    display.drawString(0, 16 + Y_OFFSET, "avm.swiss");
 }
 
 void drawTextAlignmentDemo()
@@ -116,7 +116,7 @@ void drawAssemblyInfo()
     display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState()); // top right
 }
 
-// Demo demos[] = {drawFontFaceDemo, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
+// Demo demos[] = {drawStartScreen, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
 Demo demos[] = {drawAssemblyInfo, drawAssemblyInfo, drawProgressBarDemo};
 int demoLength = (sizeof(demos) / sizeof(Demo));
 long timeSinceLastModeSwitch = 0;
