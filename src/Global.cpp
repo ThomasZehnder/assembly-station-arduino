@@ -25,6 +25,11 @@ void clAssembly::abortProcess()
     processState = 13;
     changedState = true;
 }
+void clAssembly::rebootProcess()
+{
+    processState = 21;
+    changedState = true;
+}
 // gettter will reset flag
 bool clAssembly::getChangeState()
 {
@@ -51,9 +56,13 @@ String clAssembly::getProcessState()
     {
         return String("aborted");
     }
+    else if (processState == 21)
+    {
+        return String("reboot");
+    }
     else
     {
-        return String("undef");
+        return String("boot");
     }
 }
 

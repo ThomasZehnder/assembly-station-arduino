@@ -39,7 +39,7 @@ void loop()
             mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
             mqttPublishLong("assembly-001/rssi", httpRssi());
         }
-        if (Assembly.getProcessState() == "undef")
+        if (Assembly.getProcessState() == "boot")
         {
             ws2812Demo();
         }

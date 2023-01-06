@@ -30,6 +30,8 @@ public:
     void finishProcess();
     void abortProcess();
 
+    void rebootProcess();
+
     String getProcessState();
     bool getChangeState();
 

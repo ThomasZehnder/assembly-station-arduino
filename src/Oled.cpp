@@ -1,4 +1,3 @@
-
 // Include the correct display library
 
 // For a connection via I2C using the Arduino Wire include:
@@ -56,6 +55,24 @@ void drawStartScreen()
     display.drawString(0, 16 + Y_OFFSET, "avm.swiss");
 }
 
+void drawRebootScreen()
+{
+    // Font Demo1
+    // create more fonts at http://oleddisplay.squix.ch/
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0, "Assembly-001");
+    display.setFont(ArialMT_Plain_16);
+    display.drawString(0, 0 + Y_OFFSET, "Reboot active");
+    // display.setFont(ArialMT_Plain_24);
+    // display.drawString(0, 16 + Y_OFFSET, "avm.swiss");
+
+    int progress = (counter / 5) % 100;
+    // draw the progress bar
+    display.drawProgressBar(0, 32 + Y_OFFSET, 120, 10, progress);
+}
+
+/*
 void drawTextAlignmentDemo()
 {
     // Text alignment demo
@@ -73,16 +90,18 @@ void drawTextAlignmentDemo()
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
     display.drawString(128, 33, "Right aligned (128,33)");
 }
+*/
 
 void drawProgressBarDemo()
 {
     int progress = (counter / 5) % 100;
     // draw the progress bar
-    display.drawProgressBar(0, 32, 120, 10, progress);
+    display.drawProgressBar(0, Y_OFFSET + 24, 120, 10, progress);
 
     // draw the percentage as String
+    display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_CENTER);
-    display.drawString(64, 15, String(progress) + "%");
+    display.drawString(64, Y_OFFSET, String(progress) + "%");
 }
 
 void drawAssemblyInfo()
@@ -125,12 +144,29 @@ void oledLoop()
 {
     // clear the display
     display.clear();
-    // draw the current demo method
-    demos[demoMode]();
 
-    // display.setFont(ArialMT_Plain_10);
-    // display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    // display.drawString(128, 54, String(millis())); //bottom right
+    // draw the current demo method
+    if (Assembly.getProcessState() == "boot")
+    {
+        drawStartScreen();
+    }
+    else if (Assembly.getProcessState() == "reboot")
+    {
+        drawRebootScreen();
+    }
+        else if (Assembly.getProcessState() == "new")
+    {
+        drawProgressBarDemo();
+    }
+    else
+    {
+        demos[demoMode]();
+    }
+    //
+
+    display.setFont(ArialMT_Plain_10);
+    display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    display.drawString(128, 54, String(millis()%1000)); //bottom right
     //  The coordinates define the right end of the text
     // display.setTextAlignment(TEXT_ALIGN_RIGHT);
     // display.drawString(128, 0, String(millis()));   //top right

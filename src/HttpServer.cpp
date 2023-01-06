@@ -25,7 +25,7 @@ void handleFileUpload();                // upload a new file to the SPIFFS
 #define ACTIVITY_LED_PIN LED_BUILTIN
 
 long triggerActivityTime = 0;
-bool rebootStart = false;
+long triggerRebootTime = 0;
 
 String lastDownloadFilename = "-";
 
@@ -180,8 +180,9 @@ void reboot(void)
 {
   handleFileRead("reboot.html");
   server.send(200, "text/plain", "reboot arduino in 1 second !!!");
-  rebootStart = true;
+  triggerRebootTime = millis();
   triggerActivity();
+  Assembly.rebootProcess();
 }
 
 void success(void)
@@ -314,17 +315,20 @@ void httpLoop(void)
 
   if (triggerActivityTime != 0)
   {
-    long actualMillis = millis();
-    if (actualMillis - triggerActivityTime - 200 > 0)
+    if ((long)millis() - triggerActivityTime - 200 > 0)
     {
       digitalWrite(ACTIVITY_LED_PIN, 1);
       triggerActivityTime = 0;
-      if (rebootStart)
-      {
-        Serial.println("httpLoop --> Reboot REST service");
-        delay(500);
-        rebootFunc(); // call reboot
-      }
+    }
+  }
+  // reboot after 2000ms
+  if (triggerRebootTime != 0)
+  {
+    if ((long)millis() - triggerRebootTime - 2000 > 0)
+    {
+      Serial.println("httpLoop --> Reboot REST service");
+      delay(50);    // alow serial output to finish
+      rebootFunc(); // call reboot
     }
   }
 }
