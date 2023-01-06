@@ -94,6 +94,10 @@ void drawTextAlignmentDemo()
 
 void drawProgressBarDemo()
 {
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0, "OLED Demo running");
+
     int progress = (counter / 5) % 100;
     // draw the progress bar
     display.drawProgressBar(0, Y_OFFSET + 24, 120, 10, progress);
@@ -136,7 +140,7 @@ void drawAssemblyInfo()
 }
 
 // Demo demos[] = {drawStartScreen, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
-Demo demos[] = {drawAssemblyInfo, drawAssemblyInfo, drawProgressBarDemo};
+Demo demos[] = {drawAssemblyInfo, drawProgressBarDemo};
 int demoLength = (sizeof(demos) / sizeof(Demo));
 long timeSinceLastModeSwitch = 0;
 
