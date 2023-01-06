@@ -92,25 +92,34 @@ void drawProgressScreen()
     display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
 }
 
-/*
-void drawTextAlignmentDemo()
+void drawWlanOkScreen()
 {
-    // Text alignment demo
+    // Draw a line horizontally
+    display.drawHorizontalLine(0, Y_OFFSET - 1, 128); // last yellow
+
+    // Draw actual millis top right
     display.setFont(ArialMT_Plain_10);
-
-    // The coordinates define the left starting point of the text
-    display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawString(0, Y_OFFSET, "Left aligned (0,Y_OFFSET)");
-
-    // The coordinates define the center of the text
-    display.setTextAlignment(TEXT_ALIGN_CENTER);
-    display.drawString(64, 12 + Y_OFFSET, "Center aligned (64,22)");
-
-    // The coordinates define the right end of the text
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 33, "Right aligned (128,33)");
+    display.drawString(128, 0, String(millis())); // top right
+
+    // Draw ip
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.drawString(0, 0, Assembly.localIp); // top right
+
+
+    display.setFont(ArialMT_Plain_16);
+    display.drawString(0, 0 + Y_OFFSET, "WLAN ok-wait job");
+
+    int progress = (counter / 5) % 100;
+    // draw the progress bar
+    display.drawProgressBar(0, 20 + Y_OFFSET, 120, 10, progress);
+
+    display.setFont(ArialMT_Plain_10);
+    // Draw Assembly State
+    display.drawString(0, Y_OFFSET + 36, "Assembly State: ");
+    display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
 }
-*/
+
 
 void drawProgressBarDemo()
 {
@@ -138,7 +147,7 @@ void drawAssemblyInfo()
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
     display.drawString(128, 0, String(millis())); // top right
 
-    // DraW ip
+    // Draw ip
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.drawString(0, 0, Assembly.localIp); // top right
 
@@ -186,15 +195,19 @@ void oledLoop()
     {
         drawProgressScreen();
     }
+    else if (Assembly.getProcessState() == "wlanOk")
+    {
+        drawWlanOkScreen();
+    }
     else
     {
         demos[demoMode]();
     }
-    //
+    // 
 
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 54, String(millis()/100 % 10)); // bottom right
+    display.drawString(128, 54, String(millis() / 100 % 10)); // bottom right
     //  The coordinates define the right end of the text
     // display.setTextAlignment(TEXT_ALIGN_RIGHT);
     // display.drawString(128, 0, String(millis()));   //top right

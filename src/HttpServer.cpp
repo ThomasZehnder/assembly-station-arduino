@@ -259,6 +259,7 @@ void httpSetup(void)
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
   Assembly.localIp = WiFi.localIP().toString();
+  Assembly.wlanConnectedProcess();
   Serial.print("signal strength (RSSI):");
   Serial.println(WiFi.RSSI());
 

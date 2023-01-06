@@ -25,11 +25,17 @@ void clAssembly::abortProcess()
     processState = 13;
     changedState = true;
 }
-void clAssembly::rebootProcess()
+void clAssembly::wlanConnectedProcess()
 {
     processState = 21;
     changedState = true;
 }
+void clAssembly::rebootProcess()
+{
+    processState = 31;
+    changedState = true;
+}
+
 // gettter will reset flag
 bool clAssembly::getChangeState()
 {
@@ -57,6 +63,10 @@ String clAssembly::getProcessState()
         return String("aborted");
     }
     else if (processState == 21)
+    {
+        return String("wlanOk");
+    }
+    else if (processState == 31)
     {
         return String("reboot");
     }

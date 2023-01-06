@@ -31,6 +31,7 @@ public:
     void abortProcess();
 
     void rebootProcess();
+    void wlanConnectedProcess();
 
     String getProcessState();
     bool getChangeState();
