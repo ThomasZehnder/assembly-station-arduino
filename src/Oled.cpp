@@ -120,7 +120,7 @@ void drawWlanOkScreen()
     display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
 }
 
-
+/*
 void drawProgressBarDemo()
 {
     display.setTextAlignment(TEXT_ALIGN_LEFT);
@@ -136,6 +136,7 @@ void drawProgressBarDemo()
     display.setTextAlignment(TEXT_ALIGN_CENTER);
     display.drawString(64, Y_OFFSET, String(progress) + "%");
 }
+*/
 
 void drawAssemblyInfo()
 {
@@ -168,11 +169,6 @@ void drawAssemblyInfo()
     display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState()); // top right
 }
 
-// Demo demos[] = {drawStartScreen, drawTextFlowDemo, drawTextAlignmentDemo, drawRectDemo, drawProgressBarDemo};
-Demo demos[] = {drawAssemblyInfo, drawProgressBarDemo};
-int demoLength = (sizeof(demos) / sizeof(Demo));
-long timeSinceLastModeSwitch = 0;
-
 void oledLoop()
 {
     // clear the display
@@ -201,7 +197,7 @@ void oledLoop()
     }
     else
     {
-        demos[demoMode]();
+        drawAssemblyInfo();
     }
     // 
 
@@ -214,10 +210,5 @@ void oledLoop()
     //  write the buffer to the display
     display.display();
 
-    if (millis() - timeSinceLastModeSwitch > DEMO_DURATION)
-    {
-        demoMode = (demoMode + 1) % demoLength;
-        timeSinceLastModeSwitch = millis();
-    }
     counter++;
 }
