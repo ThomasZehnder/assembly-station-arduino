@@ -72,6 +72,26 @@ void drawRebootScreen()
     display.drawProgressBar(0, 32 + Y_OFFSET, 120, 10, progress);
 }
 
+void drawProgressScreen()
+{
+    // Font Demo1
+    // create more fonts at http://oleddisplay.squix.ch/
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0, "Assembly-001");
+    display.setFont(ArialMT_Plain_16);
+    display.drawString(0, 0 + Y_OFFSET, "Job working");
+
+    int progress = (counter / 5) % 100;
+    // draw the progress bar
+    display.drawProgressBar(0, 20 + Y_OFFSET, 120, 10, progress);
+
+    display.setFont(ArialMT_Plain_10);
+    // Draw Assembly State
+    display.drawString(0, Y_OFFSET + 36, "Assembly State: ");
+    display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
+}
+
 /*
 void drawTextAlignmentDemo()
 {
@@ -158,9 +178,13 @@ void oledLoop()
     {
         drawRebootScreen();
     }
-        else if (Assembly.getProcessState() == "new")
+    else if (Assembly.getProcessState() == "new")
     {
-        drawProgressBarDemo();
+        drawAssemblyInfo();
+    }
+    else if (Assembly.getProcessState() == "started")
+    {
+        drawProgressScreen();
     }
     else
     {
@@ -170,7 +194,7 @@ void oledLoop()
 
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 54, String(millis()%1000)); //bottom right
+    display.drawString(128, 54, String(millis()/100 % 10)); // bottom right
     //  The coordinates define the right end of the text
     // display.setTextAlignment(TEXT_ALIGN_RIGHT);
     // display.drawString(128, 0, String(millis()));   //top right
