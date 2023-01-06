@@ -100,7 +100,7 @@ void drawWlanOkScreen()
     // Draw actual millis top right
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 0, String(millis())); // top right
+    display.drawString(128, 0, String("MQTT:") + String(Assembly.mqttConnected)); // top right
 
     // Draw ip
     display.setTextAlignment(TEXT_ALIGN_LEFT);
