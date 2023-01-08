@@ -21,9 +21,9 @@ see https://randomnerdtutorials.com/vs-code-platformio-ide-esp32-esp8266-arduino
 
     //D4 is reserved for build In led -> show http activity
     
-    #define KEY1_PIN D5
+    #define KEY1_PIN D7
     #define KEY2_PIN D6
-    #define KEY3_PIN D7
+    #define KEY3_PIN D5
 
 ## Use PlatformIO
 In VSCode see elements in the buttom left corner to transfer projekt to arduino board.
@@ -62,3 +62,9 @@ http://192.168.1.157/reboot
 
 ### File Directory Arduino by REST Call
 http://192.168.1.157/dir
+
+## MQTT Connection
+Try public internet accessible MQTT broker 
+
+    //public.mqtthq.com
+    #define MQTT_HOST_1 IPAddress(52,13,116,147)

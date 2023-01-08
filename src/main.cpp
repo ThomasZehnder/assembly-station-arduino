@@ -16,7 +16,8 @@ void setup()
     ws2812Setup();
     oledSetup();
 
-    scanNetworks(); // call before httpSetup
+    //scanNetworks(); // call before httpSetup, show result in serial out
+    oledShowNetworks(); // show result on OLED
 
     mqttSetup(); // call before httpSetup, to engage callback functions
 

@@ -10,6 +10,9 @@ SSD1306Wire display(0x3c, SDA, SCL); // ADDRESS, SDA, SCL  -  SDA and SCL usuall
 #include "Oled.h"
 
 #include "Global.h"
+#include "credentials.h"
+
+#include <ESP8266WiFi.h> //show Wifi connections
 
 // start pixel of blue area
 #define Y_OFFSET 16
@@ -34,10 +37,7 @@ void oledSetup()
     display.flipScreenVertically();
     display.setFont(ArialMT_Plain_10);
 
-    // clear the display
-    display.clear();
     drawStartScreen();
-    display.display();
 
     Serial.println("OledSetup --> End");
 }
@@ -46,13 +46,16 @@ void drawStartScreen()
 {
     // Font Demo1
     // create more fonts at http://oleddisplay.squix.ch/
+    display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0, "Assembly-001");
     display.setFont(ArialMT_Plain_16);
     display.drawString(0, 0 + Y_OFFSET, "Search WiFi");
-    display.setFont(ArialMT_Plain_24);
-    display.drawString(0, 16 + Y_OFFSET, "avm.swiss");
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 18 + Y_OFFSET, WIFI_SSID);
+    display.drawString(0, 12 + 18 + Y_OFFSET, WIFI_SSID_1);
+    display.display();
 }
 
 void drawRebootScreen()
@@ -118,6 +121,54 @@ void drawWifiOkScreen()
     display.drawString(0, Y_OFFSET + 36, "Assembly State: ");
     display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
 }
+void oledShowNetworks()
+{
+    display.clear();
+
+    // Draw a line horizontally
+    display.drawHorizontalLine(0, Y_OFFSET - 1, 128); // last yellow
+
+    // Draw actual millis top right
+    display.setFont(ArialMT_Plain_10);
+    display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    display.drawString(128, 0, String(millis())); // top right
+
+    // Show Assembly Name
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.drawString(0, 0, "Assembly-001"); // top left
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+
+    // WiFi.scanNetworks will return the number of networks found
+    int n = WiFi.scanNetworks();
+    Serial.println("oledShowNetworks() -->scan done");
+    if (n == 0)
+    {
+        display.drawString(0, Y_OFFSET, String("no networks found"));
+    }
+    else
+    {
+        for (int j = 0; j <= n / 4; j++)
+        {
+            Serial.println(String("oledShowNetworks() -->") + j);
+            for (int i = 0; i < 4; ++i)
+            {
+                // Print SSID and RSSI for each network found
+                String s("");
+                s += j * 4 + i + 1;
+                s += ": ";
+                s += WiFi.SSID(j * 4 + i);
+                s += " (";
+                s += WiFi.RSSI(j * 4 + i);
+                s += ")                                 ";
+
+                display.drawString(0, Y_OFFSET + i * 12, s);
+            }
+            display.display();
+            delay(1000);
+            display.clear();
+        }
+    }
+}
 
 void drawAssemblyInfo()
 {
@@ -144,14 +195,13 @@ void drawAssemblyInfo()
 
     // Draw Key Counter
     String s("Key [1,2,3]: ");
-    s +=  String(Assembly.keys[0].pressedCounter);
+    s += String(Assembly.keys[0].pressedCounter);
     s += " ";
-    s +=  String(Assembly.keys[1].pressedCounter);
+    s += String(Assembly.keys[1].pressedCounter);
     s += " ";
-    s +=  String(Assembly.keys[2].pressedCounter);
+    s += String(Assembly.keys[2].pressedCounter);
 
-    display.drawString(0, Y_OFFSET + 24,s);
-    
+    display.drawString(0, Y_OFFSET + 24, s);
 
     // Draw Key Counter
     display.drawString(0, Y_OFFSET + 36, "Assembly State: ");
