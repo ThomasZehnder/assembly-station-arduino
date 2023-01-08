@@ -233,12 +233,10 @@ void httpSetup(void)
   wifiMulti.addAP(WIFI_SSID_1, WIFI_PASSWORD_1);
   // wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
 
-  Serial.println("HttpSetup --> Connecting wifi Multi ...");
-  int i = 0;
-  while (wifiMulti.run() != WL_CONNECTED)
+  Serial.println("HttpSetup --> Connecting Wifi Multi ...");
+  //wifiMulti.run(5000) blocking for 5000ms timeout
+  while (wifiMulti.run(5000) != WL_CONNECTED)
   { // Wait for the Wi-Fi to connect
-    delay(500);
-    Serial.print(++i);
     Serial.print('+');
   }
 
@@ -254,25 +252,24 @@ void httpSetup(void)
   }
 
   Serial.println("");
-  Serial.print("Connected to ");
+  Serial.print("HttpSetup --> Connected to: ");
   Serial.println(WiFi.SSID());
-  Serial.print("IP address: ");
+  Serial.print("HttpSetup --> IP address: ");
   Serial.println(WiFi.localIP());
   Assembly.localIp = WiFi.localIP().toString();
   Assembly.wlanConnectedProcess();
-  Serial.print("signal strength (RSSI):");
+  Serial.print("HttpSetup --> Signal Strength (RSSI):");
   Serial.println(WiFi.RSSI());
 
-  Serial.println("Mound File System: LittleFS");
+  Serial.println("HttpSetup --> Mound File System: LittleFS");
   // Start the SPI Flash Files System
   if (!LittleFS.begin())
   {
-    Serial.println("An Error has occurred while mounting LittleFS");
+    Serial.println("HttpSetup --> An Error has occurred while mounting LittleFS");
     delay(1000);
   }
 
-  Serial.println("HttSetup");
-
+  //Setup Http Server
   server.on("/", handleRoot);
   server.on("/json", handleJson); // test only
   server.on("/assembly", assemblyJson);
@@ -305,7 +302,7 @@ void httpSetup(void)
   });
 
   server.begin();
-  Serial.println("HTTP server started");
+  Serial.println("HttpSetup --> HTTP server started...");
 
   Serial.println("HttpSetup --> End");
 }
