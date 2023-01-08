@@ -101,7 +101,7 @@ void ledSetState(String s)
     }
     else if (s == "started")
     {
-        strip.setPixelColor(3, strip.Color(0, 0, 128)); // blue
+        //strip.setPixelColor(3, strip.Color(0, 0, 128)); // blue
         strip.setPixelColor(2, strip.Color(16, 32, 128)); // white
     }
     else if (s == "finished")
