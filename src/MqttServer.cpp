@@ -27,13 +27,13 @@ String mqttHost;
 
 void connectToMqtt()
 {
-  Serial.println("MqttSetup --> Connecting to MQTT..." + mqttHost);
+  Serial.println("MqttSetup (CallBack) --> Connecting to MQTT..." + mqttHost);
   mqttClient.connect();
 }
 
 void onWifiConnect(const WiFiEventStationModeGotIP &event)
 {
-  Serial.println("MqttSetup --> Connected to Wi-Fi.");
+  Serial.println("MqttSetup (CallBack) --> Connected to WiFi.");
   Assembly.wifiConnected = true;
 
   // get config in dependecy of connected WLAN
@@ -57,7 +57,7 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
 
 void onWifiDisconnect(const WiFiEventStationModeDisconnected &event)
 {
-  Serial.println("MqttSetup --> Disconnected from Wi-Fi." + mqttHost);
+  Serial.println("MqttSetup (CallBack) --> Disconnected from WiFi." + mqttHost);
   Assembly.wifiConnected = false;
   mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
   // wifiReconnectTimer.once(2, connectToWifi);
@@ -65,7 +65,7 @@ void onWifiDisconnect(const WiFiEventStationModeDisconnected &event)
 
 void onMqttConnect(bool sessionPresent)
 {
-  Serial.println("Connected to MQTT.");
+  Serial.println("MqttSetup (CallBack) --> Connected to MQTT.");
   Assembly.mqttConnected = true;
   Serial.print("Session present: ");
   Serial.println(sessionPresent);
@@ -92,7 +92,7 @@ void onMqttConnect(bool sessionPresent)
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason)
 {
-  Serial.println("Disconnected from MQTT.");
+  Serial.println("MqttSetup (CallBack) --> Disconnected from MQTT.");
   Assembly.mqttConnected = false;
 
   if (WiFi.isConnected())
