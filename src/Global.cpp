@@ -14,18 +14,19 @@ clAssembly Assembly;
 // Use http://arduinojson.org/v6/assistant to compute the capacity.
 StaticJsonDocument<512> doc;
 
-void SerialFileOut(const char * filename){
+void SerialFileOut(const char *filename)
+{
 
-        File file = LittleFS.open(filename, "r"); // Open the file
-        // print out filecontent
-        Serial.println(String("Assembly.setup --> configfile: ") + filename + " found... size:" + file.size());
+    File file = LittleFS.open(filename, "r"); // Open the file
+    // print out filecontent
+    Serial.println(String("Assembly.setup --> configfile: ") + filename + " found... size:" + file.size());
 
-        while (file.available())
-        {
-            Serial.write(file.read());
-        }
-        Serial.println();
-        file.close(); // Close the file again
+    while (file.available())
+    {
+        Serial.write(file.read());
+    }
+    Serial.println();
+    file.close(); // Close the file again
 }
 
 // read configuration from file
@@ -61,21 +62,19 @@ void clAssembly::setup()
         // get array size
 
         // Serial.println(String("Assembly.setup --> configfile number of entries: ") + doc.size());
+        byte i = 0;
         for (JsonObject item : doc.as<JsonArray>())
         {
+            if (i < (sizeof(cfg.wlan) / sizeof(cfg.wlan[0])))
+            {
+                strncpy(cfg.wlan[i].ssid, item["SSID"] | WIFI_SSID, sizeof(cfg.wlan[i].ssid));
+                strncpy(cfg.wlan[i].pw, item["PASSWORD"] | WIFI_PASSWORD, sizeof(cfg.wlan[i].pw));
 
-            // const char *SSID = item["SSID"];
-            const char *PASSWORD = item["PASSWORD"];
+                Serial.println(String("Assembly.setup --> entry: ") + i + " / " + cfg.wlan[i].ssid + " / " + cfg.wlan[i].pw);
+            }
 
-            // does not work String ssid((const char *)item["SSID"]);
-            char ssid[32];
-            strncpy(ssid, item["SSID"] | "undefined", sizeof(ssid));
-            //int port = item["PORT"];
-
-            Serial.println(String("Assembly.setup --> entry: ") + ssid + "/"+ PASSWORD);
+            i++;
         }
-
-        // Serial.println(String("Assembly.setup --> configfile SSID: ") + array[0]["SSID"]);
 
         file.close(); // Close the file again
     }
