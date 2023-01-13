@@ -1,7 +1,45 @@
+
+#include <LittleFS.h>
+#include <ArduinoJson.h>
+
 #include "Global.h"
 
 // global object definition
 clAssembly Assembly;
+
+// read configuration from file
+
+void clAssembly::setup()
+{
+    Serial.println("Assembly.setup --> begin");
+
+    if (!LittleFS.begin())
+    {
+        Serial.println("Assembly.setup --> An Error has occurred while mounting LittleFS");
+        delay(1000);
+    }
+
+    char filename[] = "/config.json";
+
+    if (LittleFS.exists(filename))
+    {
+        File file = LittleFS.open(filename, "r"); // Open the file
+
+        Serial.println(String("configfile: ") + filename + " found... size:" + file.size());
+
+        while (file.available())
+        {
+            Serial.write(file.read());
+        }
+        file.close(); // Close the file again
+    }
+    else
+    {
+        Serial.println(String("Assembly.setup --> error: NO ") + filename + " found, works with default defines.");
+    }
+
+    Serial.println("Assembly.setup --> end");
+}
 
 void clAssembly::newProcess()
 {

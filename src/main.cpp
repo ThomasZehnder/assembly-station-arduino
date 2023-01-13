@@ -13,6 +13,8 @@ void setup()
     Serial.begin(115200);
     Serial.println();
 
+    Assembly.setup(); //read config file
+
     ws2812Setup();
     oledSetup();
 
