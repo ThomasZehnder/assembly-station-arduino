@@ -40,10 +40,12 @@ public:
 
     struct tstKey keys[3];
 
+    tstCfg cfg;
+
 private:
     int processState = 0;
     bool changedState = false;
-    tstCfg cfg;
+    
 
 public:
     void setup();

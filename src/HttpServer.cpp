@@ -128,20 +128,29 @@ void assemblyJson()
 
   // Allocate a temporary JsonDocument
   // Use https://arduinojson.org/v6/assistant to compute the capacity.
-  StaticJsonDocument<500> doc;
+  StaticJsonDocument<800> doc;
 
   doc["hostname"] = WiFi.hostname();
   doc["assembly"] = "001";
   doc["millis"] = millis();
   doc["rssi"] = httpRssi();
+  
   doc["wifiConnected"] = Assembly.wifiConnected;
   doc["mqttConnected"] = Assembly.mqttConnected;
 
-  doc["key-1"] = Assembly.keys[0].pressedCounter;
-  doc["key-2"] = Assembly.keys[1].pressedCounter;
-  doc["key-3"] = Assembly.keys[2].pressedCounter;
+  doc["key_1"] = Assembly.keys[0].pressedCounter;
+  doc["key_2"] = Assembly.keys[1].pressedCounter;
+  doc["key_3"] = Assembly.keys[2].pressedCounter;
 
   doc["processState"] = Assembly.getProcessState();
+
+  doc["wifi_0"] = Assembly.cfg.wlan[0].ssid;
+  doc["wifi_1"] = Assembly.cfg.wlan[1].ssid;
+  doc["wifi_2"] = Assembly.cfg.wlan[2].ssid;
+
+  doc["mqtt_host_0"] = Assembly.cfg.mqtt[0].host;
+  doc["mqtt_host_1"] = Assembly.cfg.mqtt[1].host;
+  doc["mqtt_host_2"] = Assembly.cfg.mqtt[2].host;
 
   // Lastly, you can print the resulting JSON to a String, use the "pretty" variant for readable outputs in browser
   String output;
@@ -234,7 +243,7 @@ void httpSetup(void)
   // wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
 
   Serial.println("HttpSetup --> Connecting Wifi Multi ...");
-  //wifiMulti.run(5000) blocking for 5000ms timeout
+  // wifiMulti.run(5000) blocking for 5000ms timeout
   while (wifiMulti.run(5000) != WL_CONNECTED)
   { // Wait for the Wi-Fi to connect
     Serial.print('+');
@@ -269,7 +278,7 @@ void httpSetup(void)
     delay(1000);
   }
 
-  //Setup Http Server
+  // Setup Http Server
   server.on("/", handleRoot);
   server.on("/json", handleJson); // test only
   server.on("/assembly", assemblyJson);
