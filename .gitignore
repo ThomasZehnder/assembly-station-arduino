@@ -1,3 +1,5 @@
 .pio
 src/credentials.h
 data/config.json
+data/config_wlan.json
+data/config_mqtt.json
