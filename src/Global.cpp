@@ -4,6 +4,7 @@
 #include <ArduinoJson.h>
 
 #include "Global.h"
+#include "credentials.h"
 
 // global object definition
 clAssembly Assembly;
@@ -81,6 +82,10 @@ void clAssembly::setup()
     else
     {
         Serial.println(String("Assembly.setup --> error: NO ") + filename + " found, works with default defines.");
+        strncpy(cfg.wlan[0].ssid, WIFI_SSID, sizeof(cfg.wlan[0].ssid));
+        strncpy(cfg.wlan[0].pw, WIFI_PASSWORD, sizeof(cfg.wlan[0].pw));
+        strncpy(cfg.wlan[1].ssid, WIFI_SSID_1, sizeof(cfg.wlan[1].ssid));
+        strncpy(cfg.wlan[1].pw, WIFI_PASSWORD_1, sizeof(cfg.wlan[1].pw));
     }
 
     Serial.println("Assembly.setup --> end");

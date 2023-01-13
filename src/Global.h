@@ -3,6 +3,26 @@
 // global object definition
 #include <Arduino.h>
 
+struct tstCfgWlan
+{
+    char ssid[32];
+    char pw[32];
+};
+
+struct tstCfgMqtt
+{
+    int port;
+    char host[32];
+    byte hostIp[4]; // 4 digits
+};
+
+struct tstCfg
+{
+    tstCfgWlan wlan[3];
+    tstCfgMqtt mqtt[3];
+};
+
+
 struct tstKey
 {
     int pin;
@@ -23,6 +43,7 @@ public:
 private:
     int processState = 0;
     bool changedState = false;
+    tstCfg cfg;
 
 public:
     void setup();
