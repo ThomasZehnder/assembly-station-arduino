@@ -134,7 +134,7 @@ void assemblyJson()
   doc["assembly"] = "001";
   doc["millis"] = millis();
   doc["rssi"] = httpRssi();
-  
+
   doc["wifiConnected"] = Assembly.wifiConnected;
   doc["mqttConnected"] = Assembly.mqttConnected;
 
@@ -238,9 +238,15 @@ void httpSetup(void)
   pinMode(ACTIVITY_LED_PIN, OUTPUT);
   digitalWrite(ACTIVITY_LED_PIN, 1);
 
-  wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD); // add Wi-Fi networks you want to connect to, see credentials.h
-  wifiMulti.addAP(WIFI_SSID_1, WIFI_PASSWORD_1);
-  // wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
+  for (byte i=0; i < (sizeof(Assembly.cfg.wlan) / sizeof(Assembly.cfg.wlan[0])); i++)
+  {
+
+    wifiMulti.addAP(Assembly.cfg.wlan[i].ssid, Assembly.cfg.wlan[i].pw); // add Wi-Fi networks you want to connect to, see credentials.h
+  }
+
+  // wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD); // add Wi-Fi networks you want to connect to, see credentials.h
+  // wifiMulti.addAP(WIFI_SSID_1, WIFI_PASSWORD_1);
+  //  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
 
   Serial.println("HttpSetup --> Connecting Wifi Multi ...");
   // wifiMulti.run(5000) blocking for 5000ms timeout
