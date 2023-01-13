@@ -1,4 +1,5 @@
 
+#include <Arduino.h>
 #include <LittleFS.h>
 #include <ArduinoJson.h>
 
@@ -7,8 +8,26 @@
 // global object definition
 clAssembly Assembly;
 
-// read configuration from file
+// Inside the brackets, 200 is the capacity of the memory pool in bytes.
+// Don't forget to change this value to match your JSON document.
+// Use http://arduinojson.org/v6/assistant to compute the capacity.
+StaticJsonDocument<512> doc;
 
+void SerialFileOut(const char * filename){
+
+        File file = LittleFS.open(filename, "r"); // Open the file
+        // print out filecontent
+        Serial.println(String("Assembly.setup --> configfile: ") + filename + " found... size:" + file.size());
+
+        while (file.available())
+        {
+            Serial.write(file.read());
+        }
+        Serial.println();
+        file.close(); // Close the file again
+}
+
+// read configuration from file
 void clAssembly::setup()
 {
     Serial.println("Assembly.setup --> begin");
@@ -19,18 +38,44 @@ void clAssembly::setup()
         delay(1000);
     }
 
-    char filename[] = "/config.json";
+    char filename[] = "/config_wlan.json";
 
     if (LittleFS.exists(filename))
     {
-        File file = LittleFS.open(filename, "r"); // Open the file
+        SerialFileOut(filename);
 
-        Serial.println(String("configfile: ") + filename + " found... size:" + file.size());
+        File file = LittleFS.open(filename, "r"); // Open the file again
 
-        while (file.available())
+        // parse JSON
+        DeserializationError error = deserializeJson(doc, file);
+
+        // Test if parsing succeeds.
+        if (error)
         {
-            Serial.write(file.read());
+            Serial.print(F("Assembly.setup --> deserializeJson() failed: "));
+            Serial.println(error.f_str());
         }
+
+        // assigne values
+        // get array size
+
+        // Serial.println(String("Assembly.setup --> configfile number of entries: ") + doc.size());
+        for (JsonObject item : doc.as<JsonArray>())
+        {
+
+            // const char *SSID = item["SSID"];
+            const char *PASSWORD = item["PASSWORD"];
+
+            // does not work String ssid((const char *)item["SSID"]);
+            char ssid[32];
+            strncpy(ssid, item["SSID"] | "undefined", sizeof(ssid));
+            //int port = item["PORT"];
+
+            Serial.println(String("Assembly.setup --> entry: ") + ssid + "/"+ PASSWORD);
+        }
+
+        // Serial.println(String("Assembly.setup --> configfile SSID: ") + array[0]["SSID"]);
+
         file.close(); // Close the file again
     }
     else
