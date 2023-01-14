@@ -49,7 +49,7 @@ After creating and saving the file or files you want to upload under the data fo
 
 https://tttapa.github.io/ESP8266/Chap12%20-%20Uploading%20to%20Server.html
 
-Configure two WLAN, in case noone is connected, ESP8266 will act as WLAN Hotspot. 
+Configure two WLAN, in case none is connected, ESP8266 will act as WLAN Hotspot. 
 
 ### Upload Files to ESP8266
 
