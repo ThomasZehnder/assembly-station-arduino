@@ -11,7 +11,7 @@
 // #define WIFI_PASSWORD "...."
 
 // 192.168.1.95
-// #define MQTT_HOST IPAddress(192, 168, 1, 95)
+// #define MQTT_HOST "192.168.1.95"
 // #define MQTT_PORT 1883
 
 AsyncMqttClient mqttClient;
@@ -33,30 +33,55 @@ void connectToMqtt()
 
 void onWifiConnect(const WiFiEventStationModeGotIP &event)
 {
-  Serial.println("MqttSetup (CallBack) --> Connected to WiFi.");
+  Serial.println("MqttSetup (CallBack) --> Connected to WiFi... " + WiFi.SSID());
   Assembly.wifiConnected = true;
 
   // get config in dependecy of connected WLAN 1-2 connect to MQTT1, else MQTT0
   if (WiFi.SSID() == Assembly.cfg.wlan[2].ssid)
   {
-    Serial.println(Assembly.cfg.wlan[2].ssid);
     mqttHost = Assembly.cfg.wlan[2].ssid;
-    mqttHost += "-" + MQTT_HOST_1.toString();
-    mqttClient.setServer(MQTT_HOST_1, MQTT_PORT_1); // see  credentials.h
+    mqttHost += "-";
+    mqttHost += MQTT_HOST_1;
+    // IPAddress ip(192, 168, 1, 95); works
+    
+    IPAddress ip;
+    if (ip.fromString(MQTT_HOST_1))
+    {
+      Serial.print("MqttSetup (CallBack) --> host: ");
+      Serial.println(ip.toString());
+    }
+    else
+    {
+      Serial.print("MqttSetup (CallBack) --> error unsusable IP: ");
+      Serial.println(MQTT_HOST_1);
+    }
+
+    mqttClient.setServer(ip, MQTT_PORT_1); // see  credentials.h
   }
   else if (WiFi.SSID() == Assembly.cfg.wlan[1].ssid)
   {
-    Serial.println(Assembly.cfg.wlan[1].ssid);
     mqttHost = Assembly.cfg.wlan[1].ssid;
-    mqttHost += "-" + MQTT_HOST_1.toString();
-    mqttClient.setServer(MQTT_HOST_1, MQTT_PORT_1); // see  credentials.h
+    mqttHost += "-";
+    mqttHost += MQTT_HOST_1;
+    mqttClient.setServer(IPAddress().fromString(MQTT_HOST_1), MQTT_PORT_1); // see  credentials.h
   }
   else
   {
-    Serial.println(Assembly.cfg.wlan[0].ssid);
     mqttHost = Assembly.cfg.wlan[1].ssid;
-    mqttHost += "-" + MQTT_HOST.toString();
-    mqttClient.setServer(MQTT_HOST, MQTT_PORT); // see  credentials.h
+    mqttHost += "-";
+    mqttHost += MQTT_HOST;
+    mqttClient.setServer(IPAddress().fromString(MQTT_HOST), MQTT_PORT); // see  credentials.h
+  }
+
+  Serial.print("MqttSetup (CallBack) --> mqtt client id: ");
+  Serial.println(mqttClient.getClientId());
+
+  // Set credential PoC for public:public@public.cloud.shiftr.io --> 34.77.13.55
+
+  if (mqttHost.endsWith("13.55"))
+  {
+    Serial.println("MqttSetup (CallBack) --> use credentials!!!!");
+    mqttClient.setCredentials("public", "public");
   }
 
   connectToMqtt();
