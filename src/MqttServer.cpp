@@ -78,7 +78,7 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
 
   // Set credential PoC for public:public@public.cloud.shiftr.io --> 34.77.13.55
 
-  if (mqttHost.endsWith("13.55"))
+  if (mqttHost.endsWith("34.77.13.55"))
   {
     Serial.println("MqttSetup (CallBack) --> use credentials!!!!");
     mqttClient.setCredentials("public", "public");
