@@ -36,18 +36,25 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
   Serial.println("MqttSetup (CallBack) --> Connected to WiFi.");
   Assembly.wifiConnected = true;
 
-  // get config in dependecy of connected WLAN
-  if (WiFi.SSID() == WIFI_SSID_1)
+  // get config in dependecy of connected WLAN 1-2 connect to MQTT1, else MQTT0
+  if (WiFi.SSID() == Assembly.cfg.wlan[2].ssid)
   {
-    Serial.println(WIFI_SSID_1);
-    mqttHost = WIFI_SSID_1;
+    Serial.println(Assembly.cfg.wlan[2].ssid);
+    mqttHost = Assembly.cfg.wlan[2].ssid;
+    mqttHost += "-" + MQTT_HOST_1.toString();
+    mqttClient.setServer(MQTT_HOST_1, MQTT_PORT_1); // see  credentials.h
+  }
+  else if (WiFi.SSID() == Assembly.cfg.wlan[1].ssid)
+  {
+    Serial.println(Assembly.cfg.wlan[1].ssid);
+    mqttHost = Assembly.cfg.wlan[1].ssid;
     mqttHost += "-" + MQTT_HOST_1.toString();
     mqttClient.setServer(MQTT_HOST_1, MQTT_PORT_1); // see  credentials.h
   }
   else
   {
-    Serial.println(WIFI_SSID);
-    mqttHost = WIFI_SSID;
+    Serial.println(Assembly.cfg.wlan[0].ssid);
+    mqttHost = Assembly.cfg.wlan[1].ssid;
     mqttHost += "-" + MQTT_HOST.toString();
     mqttClient.setServer(MQTT_HOST, MQTT_PORT); // see  credentials.h
   }

@@ -53,8 +53,8 @@ void drawStartScreen()
     display.setFont(ArialMT_Plain_16);
     display.drawString(0, 0 + Y_OFFSET, "Search WiFi");
     display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 18 + Y_OFFSET, WIFI_SSID);
-    display.drawString(0, 12 + 18 + Y_OFFSET, WIFI_SSID_1);
+    display.drawString(0, 18 + Y_OFFSET, Assembly.cfg.wlan[0].ssid);
+    display.drawString(0, 12 + 18 + Y_OFFSET, Assembly.cfg.wlan[1].ssid);
     display.display();
 }
 
