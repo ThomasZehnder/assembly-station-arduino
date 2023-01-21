@@ -66,5 +66,15 @@ http://192.168.1.157/dir
 ## MQTT Connection
 Try public internet accessible MQTT broker 
 
-    //public.mqtthq.com
-    #define MQTT_HOST_1 IPAddress(52,13,116,147)
+
+        "NAME": "public.mqtthq.com",
+        "HOST": "52.13.116.147",
+        "PORT": 1883,
+        "LOGIN": "",
+        "PASSWORD": ""
+
+        "NAME": "public:public@public.cloud.shiftr.io 34.77.13.55",
+        "HOST": "34.77.13.55",
+        "PORT": 1883,
+        "LOGIN": "public",
+        "PASSWORD": "public"
