@@ -144,9 +144,9 @@ void assemblyJson()
 
   doc["processState"] = Assembly.getProcessState();
 
-  doc["wifi_0"] = Assembly.cfg.wlan[0].ssid;
-  doc["wifi_1"] = Assembly.cfg.wlan[1].ssid;
-  doc["wifi_2"] = Assembly.cfg.wlan[2].ssid;
+  doc["wifi_0"] = Assembly.cfg.wifi[0].ssid;
+  doc["wifi_1"] = Assembly.cfg.wifi[1].ssid;
+  doc["wifi_2"] = Assembly.cfg.wifi[2].ssid;
 
   doc["mqtt_host_0"] = Assembly.cfg.mqtt[0].host;
   doc["mqtt_host_1"] = Assembly.cfg.mqtt[1].host;
@@ -238,10 +238,10 @@ void httpSetup(void)
   pinMode(ACTIVITY_LED_PIN, OUTPUT);
   digitalWrite(ACTIVITY_LED_PIN, 1);
 
-  for (byte i=0; i < (sizeof(Assembly.cfg.wlan) / sizeof(Assembly.cfg.wlan[0])); i++)
+  for (byte i=0; i < (sizeof(Assembly.cfg.wifi) / sizeof(Assembly.cfg.wifi[0])); i++)
   {
 
-    wifiMulti.addAP(Assembly.cfg.wlan[i].ssid, Assembly.cfg.wlan[i].pw); // add Wi-Fi networks you want to connect to, see credentials.h
+    wifiMulti.addAP(Assembly.cfg.wifi[i].ssid, Assembly.cfg.wifi[i].pw); // add Wi-Fi networks you want to connect to, see credentials.h
   }
 
   // wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD); // add Wi-Fi networks you want to connect to, see credentials.h

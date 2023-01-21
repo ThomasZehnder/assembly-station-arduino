@@ -56,12 +56,12 @@ void clAssembly::setupWifi()
         byte i = 0;
         for (JsonObject item : doc.as<JsonArray>())
         {
-            if (i < (sizeof(cfg.wlan) / sizeof(cfg.wlan[0])))
+            if (i < (sizeof(cfg.wifi) / sizeof(cfg.wifi[0])))
             {
-                strncpy(cfg.wlan[i].ssid, item["SSID"] | WIFI_SSID, sizeof(cfg.wlan[i].ssid));
-                strncpy(cfg.wlan[i].pw, item["PASSWORD"] | WIFI_PASSWORD, sizeof(cfg.wlan[i].pw));
+                strncpy(cfg.wifi[i].ssid, item["SSID"] | WIFI_SSID, sizeof(cfg.wifi[i].ssid));
+                strncpy(cfg.wifi[i].pw, item["PASSWORD"] | WIFI_PASSWORD, sizeof(cfg.wifi[i].pw));
 
-                Serial.println(String("Assembly.setup --> entry: ") + i + " / " + cfg.wlan[i].ssid + " / " + cfg.wlan[i].pw);
+                Serial.println(String("Assembly.setup --> entry: ") + i + " / " + cfg.wifi[i].ssid + " / " + cfg.wifi[i].pw);
             }
 
             i++;
@@ -72,12 +72,12 @@ void clAssembly::setupWifi()
     else
     {
         Serial.println(String("Assembly.setup --> error: NO ") + filename + " found, works with default defines.");
-        strncpy(cfg.wlan[0].ssid, WIFI_SSID, sizeof(cfg.wlan[0].ssid));
-        strncpy(cfg.wlan[0].pw, WIFI_PASSWORD, sizeof(cfg.wlan[0].pw));
-        strncpy(cfg.wlan[1].ssid, WIFI_SSID_1, sizeof(cfg.wlan[1].ssid));
-        strncpy(cfg.wlan[1].pw, WIFI_PASSWORD_1, sizeof(cfg.wlan[1].pw));
-        strcpy(cfg.wlan[2].ssid, "" );
-        strcpy(cfg.wlan[3].pw, "" );
+        strncpy(cfg.wifi[0].ssid, WIFI_SSID, sizeof(cfg.wifi[0].ssid));
+        strncpy(cfg.wifi[0].pw, WIFI_PASSWORD, sizeof(cfg.wifi[0].pw));
+        strncpy(cfg.wifi[1].ssid, WIFI_SSID_1, sizeof(cfg.wifi[1].ssid));
+        strncpy(cfg.wifi[1].pw, WIFI_PASSWORD_1, sizeof(cfg.wifi[1].pw));
+        strcpy(cfg.wifi[2].ssid, "" );
+        strcpy(cfg.wifi[3].pw, "" );
     }
 }
 

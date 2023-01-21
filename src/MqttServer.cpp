@@ -37,9 +37,9 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
   Assembly.wifiConnected = true;
 
   // get config in dependecy of connected WLAN 1-2 connect to MQTT1, else MQTT0
-  if (WiFi.SSID() == Assembly.cfg.wlan[2].ssid)
+  if (WiFi.SSID() == Assembly.cfg.wifi[2].ssid)
   {
-    mqttHost = Assembly.cfg.wlan[2].ssid;
+    mqttHost = Assembly.cfg.wifi[2].ssid;
     mqttHost += "-";
     mqttHost += MQTT_HOST_1;
     // IPAddress ip(192, 168, 1, 95); works
@@ -58,16 +58,16 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
 
     mqttClient.setServer(ip, MQTT_PORT_1); // see  credentials.h
   }
-  else if (WiFi.SSID() == Assembly.cfg.wlan[1].ssid)
+  else if (WiFi.SSID() == Assembly.cfg.wifi[1].ssid)
   {
-    mqttHost = Assembly.cfg.wlan[1].ssid;
+    mqttHost = Assembly.cfg.wifi[1].ssid;
     mqttHost += "-";
     mqttHost += MQTT_HOST_1;
     mqttClient.setServer(IPAddress().fromString(MQTT_HOST_1), MQTT_PORT_1); // see  credentials.h
   }
   else
   {
-    mqttHost = Assembly.cfg.wlan[1].ssid;
+    mqttHost = Assembly.cfg.wifi[1].ssid;
     mqttHost += "-";
     mqttHost += MQTT_HOST;
     mqttClient.setServer(IPAddress().fromString(MQTT_HOST), MQTT_PORT); // see  credentials.h

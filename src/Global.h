@@ -3,7 +3,7 @@
 // global object definition
 #include <Arduino.h>
 
-struct tstCfgWlan
+struct tstCfgWifi
 {
     char ssid[32];
     char pw[32];
@@ -16,10 +16,11 @@ struct tstCfgMqtt
     byte hostIp[4]; // 4 digits
 };
 
+#define NBRCONNECTIONS 3 
 struct tstCfg
 {
-    tstCfgWlan wlan[3];
-    tstCfgMqtt mqtt[3];
+    tstCfgWifi wifi[NBRCONNECTIONS];
+    tstCfgMqtt mqtt[NBRCONNECTIONS];
 };
 
 
