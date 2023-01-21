@@ -128,7 +128,7 @@ void assemblyJson()
 
   // Allocate a temporary JsonDocument
   // Use https://arduinojson.org/v6/assistant to compute the capacity.
-  StaticJsonDocument<800> doc;
+  StaticJsonDocument<1024> doc;
 
   doc["hostname"] = WiFi.hostname();
   doc["assembly"] = "001";
@@ -151,6 +151,10 @@ void assemblyJson()
   doc["mqtt_host_0"] = Assembly.cfg.mqtt[0].host;
   doc["mqtt_host_1"] = Assembly.cfg.mqtt[1].host;
   doc["mqtt_host_2"] = Assembly.cfg.mqtt[2].host;
+
+  doc["mqtt_port_0"] = Assembly.cfg.mqtt[0].port;
+  doc["mqtt_port_1"] = Assembly.cfg.mqtt[1].port;
+  doc["mqtt_port_2"] = Assembly.cfg.mqtt[2].port;
 
   // Lastly, you can print the resulting JSON to a String, use the "pretty" variant for readable outputs in browser
   String output;
@@ -238,7 +242,7 @@ void httpSetup(void)
   pinMode(ACTIVITY_LED_PIN, OUTPUT);
   digitalWrite(ACTIVITY_LED_PIN, 1);
 
-  for (byte i=0; i < (sizeof(Assembly.cfg.wifi) / sizeof(Assembly.cfg.wifi[0])); i++)
+  for (byte i = 0; i < (sizeof(Assembly.cfg.wifi) / sizeof(Assembly.cfg.wifi[0])); i++)
   {
 
     wifiMulti.addAP(Assembly.cfg.wifi[i].ssid, Assembly.cfg.wifi[i].pw); // add Wi-Fi networks you want to connect to, see credentials.h
