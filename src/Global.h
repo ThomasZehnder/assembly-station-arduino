@@ -14,15 +14,17 @@ struct tstCfgMqtt
     int port;
     char host[32];
     byte hostIp[4]; // 4 digits
+    
+    char login[32];
+    char pw[32];
 };
 
-#define NBRCONNECTIONS 3 
+#define NBRCONNECTIONS 3
 struct tstCfg
 {
     tstCfgWifi wifi[NBRCONNECTIONS];
     tstCfgMqtt mqtt[NBRCONNECTIONS];
 };
-
 
 struct tstKey
 {
@@ -46,7 +48,6 @@ public:
 private:
     int processState = 0;
     bool changedState = false;
-    
 
 public:
     void setup();
@@ -63,8 +64,9 @@ public:
 
     void processKeys();
 
-    private:
-    void  setupWifi();
+private:
+    void setupWifi();
+    void setupMqtt();
 };
 
 extern clAssembly Assembly;

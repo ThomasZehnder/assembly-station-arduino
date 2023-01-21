@@ -45,7 +45,7 @@ void clAssembly::setupWifi()
         // Test if parsing succeeds.
         if (error)
         {
-            Serial.print(F("Assembly.setup --> deserializeJson() failed: "));
+            Serial.print(F("Assembly.setupWifi --> deserializeJson() failed: "));
             Serial.println(error.f_str());
         }
 
@@ -61,7 +61,7 @@ void clAssembly::setupWifi()
                 strncpy(cfg.wifi[i].ssid, item["SSID"] | WIFI_SSID, sizeof(cfg.wifi[i].ssid));
                 strncpy(cfg.wifi[i].pw, item["PASSWORD"] | WIFI_PASSWORD, sizeof(cfg.wifi[i].pw));
 
-                Serial.println(String("Assembly.setup --> entry: ") + i + " / " + cfg.wifi[i].ssid + " / " + cfg.wifi[i].pw);
+                Serial.println(String("Assembly.setupWifi --> entry: ") + i + " / " + cfg.wifi[i].ssid + " / " + cfg.wifi[i].pw);
             }
 
             i++;
@@ -71,13 +71,74 @@ void clAssembly::setupWifi()
     }
     else
     {
-        Serial.println(String("Assembly.setup --> error: NO ") + filename + " found, works with default defines.");
+        Serial.println(String("Assembly.setupWifi --> error: NO ") + filename + " found, works with default defines.");
         strncpy(cfg.wifi[0].ssid, WIFI_SSID, sizeof(cfg.wifi[0].ssid));
         strncpy(cfg.wifi[0].pw, WIFI_PASSWORD, sizeof(cfg.wifi[0].pw));
         strncpy(cfg.wifi[1].ssid, WIFI_SSID_1, sizeof(cfg.wifi[1].ssid));
         strncpy(cfg.wifi[1].pw, WIFI_PASSWORD_1, sizeof(cfg.wifi[1].pw));
-        strcpy(cfg.wifi[2].ssid, "" );
-        strcpy(cfg.wifi[3].pw, "" );
+        strcpy(cfg.wifi[2].ssid, "");
+        strcpy(cfg.wifi[2].pw, "");
+    }
+}
+
+void clAssembly::setupMqtt()
+{
+    char filename[] = "/config_mqtt.json";
+
+    if (LittleFS.exists(filename))
+    {
+        SerialFileOut(filename);
+
+        File file = LittleFS.open(filename, "r"); // Open the file again
+
+        // parse JSON
+        DeserializationError error = deserializeJson(doc, file);
+
+        // Test if parsing succeeds.
+        if (error)
+        {
+            Serial.print(F("Assembly.setupMqtt --> deserializeJson() failed: "));
+            Serial.println(error.f_str());
+        }
+
+        // assigne values
+        // get array size
+
+        // Serial.println(String("Assembly.setup --> configfile number of entries: ") + doc.size());
+        byte i = 0;
+        for (JsonObject item : doc.as<JsonArray>())
+        {
+            if (i < (sizeof(cfg.mqtt) / sizeof(cfg.mqtt[0])))
+            {
+                strncpy(cfg.mqtt[i].host, item["HOST"] | MQTT_HOST, sizeof(cfg.mqtt[i].host));
+                strncpy(cfg.mqtt[i].login, item["LOGIN"] | MQTT_LOGIN, sizeof(cfg.mqtt[i].login));
+                strncpy(cfg.mqtt[i].pw, item["PASSWORD"] | MQTT_PASSWORD, sizeof(cfg.mqtt[i].pw));
+
+                cfg.mqtt[i].port = item["PORT"] | MQTT_PORT;
+
+                Serial.println(String("Assembly.setupMqtt --> entry: ") + i + " / " + cfg.mqtt[i].host + " / " + cfg.mqtt[i].port + " / " + cfg.mqtt[i].login + " / " + cfg.mqtt[i].pw);
+            }
+
+            i++;
+        }
+
+        file.close(); // Close the file again
+    }
+    else
+    {
+        Serial.println(String("Assembly.setupMqtt --> error: NO ") + filename + " found, works with default defines.");
+        strcpy(cfg.mqtt[0].host, MQTT_HOST);
+        cfg.mqtt[0].port = MQTT_PORT;
+        strcpy(cfg.mqtt[0].login, MQTT_LOGIN);
+        strcpy(cfg.mqtt[0].pw, MQTT_PASSWORD);
+        strcpy(cfg.mqtt[1].host, MQTT_HOST_1);
+        cfg.mqtt[1].port = MQTT_PORT_1;
+        strcpy(cfg.mqtt[1].login, MQTT_LOGIN_1);
+        strcpy(cfg.mqtt[1].pw, MQTT_PASSWORD_1);
+        strcpy(cfg.mqtt[2].host, "");
+        cfg.mqtt[2].port = 0;
+        strcpy(cfg.mqtt[2].login, "");
+        strcpy(cfg.mqtt[2].pw, "");
     }
 }
 
@@ -93,6 +154,7 @@ void clAssembly::setup()
     }
 
     setupWifi();
+    setupMqtt();
 
     Serial.println("Assembly.setup --> end");
 }
