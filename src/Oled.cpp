@@ -109,14 +109,18 @@ void drawWifiOkScreen()
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.drawString(0, 0, Assembly.localIp); // top right
 
-    display.setFont(ArialMT_Plain_16);
-    display.drawString(0, 0 + Y_OFFSET, "WiFi ok-wait job");
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0 + Y_OFFSET, "wait job, mqtt: ");    
+    
+    display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    display.drawString(128, 0 + Y_OFFSET, Assembly.mqttBroker);
 
     int progress = (counter / 5) % 100;
     // draw the progress bar
-    display.drawProgressBar(0, 20 + Y_OFFSET, 120, 10, progress);
+    display.drawProgressBar(0, 16 + Y_OFFSET, 120, 10, progress);
 
     display.setFont(ArialMT_Plain_10);
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
     // Draw Assembly State
     display.drawString(0, Y_OFFSET + 36, "Assembly State: ");
     display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
