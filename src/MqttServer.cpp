@@ -53,6 +53,8 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
         Serial.println(Assembly.cfg.mqtt[cfgIndex].host);
       }
 
+      Assembly.mqttBroker = ip.toString();
+
       mqttClient.setServer(ip, Assembly.cfg.mqtt[cfgIndex].port);
 
       // check credentials

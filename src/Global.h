@@ -42,6 +42,7 @@ public:
     bool wifiConnected = false;
     bool mqttConnected = false;
     String localIp;
+    String mqttBroker;
 
     struct tstKey keys[3];
 
