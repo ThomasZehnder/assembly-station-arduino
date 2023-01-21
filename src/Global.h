@@ -14,7 +14,7 @@ struct tstCfgMqtt
     int port;
     char host[32];
     byte hostIp[4]; // 4 digits
-    
+
     char login[32];
     char pw[32];
 };
@@ -37,6 +37,8 @@ struct tstKey
 class clAssembly
 {
 public:
+    String compileDate;
+
     bool wifiConnected = false;
     bool mqttConnected = false;
     String localIp;

@@ -132,6 +132,8 @@ void assemblyJson()
 
   doc["hostname"] = WiFi.hostname();
   doc["assembly"] = "001";
+  doc["compiledate"] = Assembly.compileDate;
+
   doc["millis"] = millis();
   doc["rssi"] = httpRssi();
 

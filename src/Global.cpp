@@ -147,6 +147,11 @@ void clAssembly::setup()
 {
     Serial.println("Assembly.setup --> begin");
 
+    //compile date
+    compileDate = __TIMESTAMP__;
+    Serial.print("Assembly.setup --> compile date: ");
+    Serial.println(compileDate);
+
     if (!LittleFS.begin())
     {
         Serial.println("Assembly.setup --> An Error has occurred while mounting LittleFS");

@@ -102,6 +102,7 @@ void onMqttConnect(bool sessionPresent)
     Serial.println(packetIdPub2); */
 
   mqttPublishString("assembly-001/myIpAddr", Assembly.localIp);
+  mqttPublishString("assembly-001/compileDate", Assembly.compileDate);
   mqttPublishString("assembly-001/processState", Assembly.getProcessState());
 
   // subscribe assembly job
