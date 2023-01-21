@@ -61,6 +61,9 @@ public:
     bool getChangeState();
 
     void processKeys();
+
+    private:
+    void  setupWifi();
 };
 
 extern clAssembly Assembly;

@@ -29,17 +29,8 @@ void SerialFileOut(const char *filename)
     file.close(); // Close the file again
 }
 
-// read configuration from file
-void clAssembly::setup()
+void clAssembly::setupWifi()
 {
-    Serial.println("Assembly.setup --> begin");
-
-    if (!LittleFS.begin())
-    {
-        Serial.println("Assembly.setup --> An Error has occurred while mounting LittleFS");
-        delay(1000);
-    }
-
     char filename[] = "/config_wlan.json";
 
     if (LittleFS.exists(filename))
@@ -85,7 +76,23 @@ void clAssembly::setup()
         strncpy(cfg.wlan[0].pw, WIFI_PASSWORD, sizeof(cfg.wlan[0].pw));
         strncpy(cfg.wlan[1].ssid, WIFI_SSID_1, sizeof(cfg.wlan[1].ssid));
         strncpy(cfg.wlan[1].pw, WIFI_PASSWORD_1, sizeof(cfg.wlan[1].pw));
+        strcpy(cfg.wlan[2].ssid, "" );
+        strcpy(cfg.wlan[3].pw, "" );
     }
+}
+
+// read configuration from file
+void clAssembly::setup()
+{
+    Serial.println("Assembly.setup --> begin");
+
+    if (!LittleFS.begin())
+    {
+        Serial.println("Assembly.setup --> An Error has occurred while mounting LittleFS");
+        delay(1000);
+    }
+
+    setupWifi();
 
     Serial.println("Assembly.setup --> end");
 }
