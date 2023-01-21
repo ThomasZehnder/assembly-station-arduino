@@ -44,7 +44,7 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
       IPAddress ip;
       if (ip.fromString(Assembly.cfg.mqtt[cfgIndex].host))
       {
-        Serial.print("MqttSetup (CallBack) --> host: ");
+        Serial.print("MqttSetup (CallBack) --> MQTT host: ");
         Serial.println(ip.toString());
       }
       else
