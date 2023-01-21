@@ -7,12 +7,6 @@
 #include "Global.h"
 
 #include "MqttServer.h"
-// #define WIFI_SSID "..."
-// #define WIFI_PASSWORD "...."
-
-// 192.168.1.95
-// #define MQTT_HOST "192.168.1.95"
-// #define MQTT_PORT 1883
 
 AsyncMqttClient mqttClient;
 Ticker mqttReconnectTimer;
@@ -46,7 +40,7 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
       mqttHost = Assembly.cfg.wifi[cfgIndex].ssid;
       mqttHost += "-";
       mqttHost += Assembly.cfg.mqtt[cfgIndex].host;
-      
+
       IPAddress ip;
       if (ip.fromString(Assembly.cfg.mqtt[cfgIndex].host))
       {
@@ -55,27 +49,28 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
       }
       else
       {
-        Serial.print("MqttSetup (CallBack) --> error unsusable IP: ");
-        Serial.println(MQTT_HOST_1);
+        Serial.print("MqttSetup (CallBack) --> error unusable IP: ");
+        Serial.println(Assembly.cfg.mqtt[cfgIndex].host);
       }
 
-      mqttClient.setServer(ip, Assembly.cfg.mqtt[cfgIndex].port); 
+      mqttClient.setServer(ip, Assembly.cfg.mqtt[cfgIndex].port);
+
+      // check credentials
+      if (strlen(Assembly.cfg.mqtt[cfgIndex].login) > 0)
+      {
+        Serial.print("MqttSetup (CallBack) --> use credentials!!!! : ");
+        Serial.print(Assembly.cfg.mqtt[cfgIndex].login);
+        Serial.print(" / ");
+        Serial.println(Assembly.cfg.mqtt[cfgIndex].pw);
+        mqttClient.setCredentials(Assembly.cfg.mqtt[cfgIndex].login, Assembly.cfg.mqtt[cfgIndex].pw);
+      }
 
       break;
     }
   }
 
-
   Serial.print("MqttSetup (CallBack) --> mqtt client id: ");
   Serial.println(mqttClient.getClientId());
-
-  // Set credential PoC for public:public@public.cloud.shiftr.io --> 34.77.13.55
-
-  if (mqttHost.endsWith("34.77.13.55"))
-  {
-    Serial.println("MqttSetup (CallBack) --> use credentials!!!!");
-    mqttClient.setCredentials("public", "public");
-  }
 
   connectToMqtt();
 }
