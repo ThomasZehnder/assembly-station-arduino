@@ -35,7 +35,7 @@ void clAssembly::setupWifi()
 
     if (LittleFS.exists(filename))
     {
-        SerialFileOut(filename);
+        //SerialFileOut(filename);
 
         File file = LittleFS.open(filename, "r"); // Open the file again
 
@@ -87,7 +87,7 @@ void clAssembly::setupMqtt()
 
     if (LittleFS.exists(filename))
     {
-        SerialFileOut(filename);
+        //SerialFileOut(filename);
 
         File file = LittleFS.open(filename, "r"); // Open the file again
 
