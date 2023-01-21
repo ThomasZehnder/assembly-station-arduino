@@ -77,22 +77,28 @@ void drawRebootScreen()
 
 void drawProgressScreen()
 {
-    // Font Demo1
-    // create more fonts at http://oleddisplay.squix.ch/
+
+    // Draw a line horizontally
+    display.drawHorizontalLine(0, Y_OFFSET - 1, 128); // last yellow
+
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0, "Assembly-001");
-    display.setFont(ArialMT_Plain_16);
+
+
+
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0 + Y_OFFSET, "Job working");
 
     int progress = (counter / 5) % 100;
     // draw the progress bar
-    display.drawProgressBar(0, 20 + Y_OFFSET, 120, 10, progress);
+    display.drawProgressBar(0, 14 + Y_OFFSET, 120, 10, progress);
 
-    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 24 + Y_OFFSET, "mqtt:" + Assembly.mqttBroker);
+
     // Draw Assembly State
-    display.drawString(0, Y_OFFSET + 36, "Assembly State: ");
-    display.drawString(X_OFFSET_1 + 24, Y_OFFSET + 36, Assembly.getProcessState());
+    display.drawString(0, Y_OFFSET + 36, "Assembly State: "+ Assembly.getProcessState());
 }
 
 void drawWifiOkScreen()
@@ -110,8 +116,8 @@ void drawWifiOkScreen()
     display.drawString(0, 0, Assembly.localIp); // top right
 
     display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 0 + Y_OFFSET, "wait job, mqtt: ");    
-    
+    display.drawString(0, 0 + Y_OFFSET, "wait job, mqtt: ");
+
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
     display.drawString(128, 0 + Y_OFFSET, Assembly.mqttBroker);
 
