@@ -72,10 +72,10 @@ void clAssembly::setupWifi()
     else
     {
         Serial.println(String("Assembly.setupWifi --> error: NO ") + filename + " found, works with default defines.");
-        strncpy(cfg.wifi[0].ssid, WIFI_SSID, sizeof(cfg.wifi[0].ssid));
-        strncpy(cfg.wifi[0].pw, WIFI_PASSWORD, sizeof(cfg.wifi[0].pw));
-        strncpy(cfg.wifi[1].ssid, WIFI_SSID_1, sizeof(cfg.wifi[1].ssid));
-        strncpy(cfg.wifi[1].pw, WIFI_PASSWORD_1, sizeof(cfg.wifi[1].pw));
+        strcpy(cfg.wifi[0].ssid, WIFI_SSID);
+        strcpy(cfg.wifi[0].pw, WIFI_PASSWORD);
+        strcpy(cfg.wifi[1].ssid, WIFI_SSID_1);
+        strcpy(cfg.wifi[1].pw, WIFI_PASSWORD_1);
         strcpy(cfg.wifi[2].ssid, "");
         strcpy(cfg.wifi[2].pw, "");
     }
