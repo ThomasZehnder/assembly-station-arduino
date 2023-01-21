@@ -36,42 +36,35 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
   Serial.println("MqttSetup (CallBack) --> Connected to WiFi... " + WiFi.SSID());
   Assembly.wifiConnected = true;
 
-  // get config in dependecy of connected WLAN 1-2 connect to MQTT1, else MQTT0
-  if (WiFi.SSID() == Assembly.cfg.wifi[2].ssid)
+  // select mqtt server dependend to found Wifi
+  byte cfgIndex = 0;
+  for (cfgIndex = 0; cfgIndex < (sizeof(Assembly.cfg.wifi) / sizeof(Assembly.cfg.wifi[0])); cfgIndex++)
   {
-    mqttHost = Assembly.cfg.wifi[2].ssid;
-    mqttHost += "-";
-    mqttHost += MQTT_HOST_1;
-    // IPAddress ip(192, 168, 1, 95); works
-    
-    IPAddress ip;
-    if (ip.fromString(MQTT_HOST_1))
+    if (WiFi.SSID() == Assembly.cfg.wifi[cfgIndex].ssid)
     {
-      Serial.print("MqttSetup (CallBack) --> host: ");
-      Serial.println(ip.toString());
-    }
-    else
-    {
-      Serial.print("MqttSetup (CallBack) --> error unsusable IP: ");
-      Serial.println(MQTT_HOST_1);
-    }
 
-    mqttClient.setServer(ip, MQTT_PORT_1); // see  credentials.h
+      mqttHost = Assembly.cfg.wifi[cfgIndex].ssid;
+      mqttHost += "-";
+      mqttHost += Assembly.cfg.mqtt[cfgIndex].host;
+      
+      IPAddress ip;
+      if (ip.fromString(Assembly.cfg.mqtt[cfgIndex].host))
+      {
+        Serial.print("MqttSetup (CallBack) --> host: ");
+        Serial.println(ip.toString());
+      }
+      else
+      {
+        Serial.print("MqttSetup (CallBack) --> error unsusable IP: ");
+        Serial.println(MQTT_HOST_1);
+      }
+
+      mqttClient.setServer(ip, Assembly.cfg.mqtt[cfgIndex].port); 
+
+      break;
+    }
   }
-  else if (WiFi.SSID() == Assembly.cfg.wifi[1].ssid)
-  {
-    mqttHost = Assembly.cfg.wifi[1].ssid;
-    mqttHost += "-";
-    mqttHost += MQTT_HOST_1;
-    mqttClient.setServer(IPAddress().fromString(MQTT_HOST_1), MQTT_PORT_1); // see  credentials.h
-  }
-  else
-  {
-    mqttHost = Assembly.cfg.wifi[1].ssid;
-    mqttHost += "-";
-    mqttHost += MQTT_HOST;
-    mqttClient.setServer(IPAddress().fromString(MQTT_HOST), MQTT_PORT); // see  credentials.h
-  }
+
 
   Serial.print("MqttSetup (CallBack) --> mqtt client id: ");
   Serial.println(mqttClient.getClientId());
