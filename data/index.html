@@ -5,38 +5,88 @@
     <title>IIoT Demonstrator</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
+
+    <script>
+        function loadArticle(url) {
+            fetch(url)
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (html) {
+                    console.log(html);
+                    const myArticle = document.getElementById("articleId");
+                    myArticle.innerHTML = html   
+                });
+        }
+
+    </script>
 </head>
 
-<body>
+<body onload="loadArticle('home.html');"">
+    <header>
+        <h1>IIoT Demonstrator with ESP8266</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Our team</a></li>
+            <li><a href="#">Projects</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <img src="logo.png" width="20%">
 
-    <h1>IIoT Demonstrator with ESP8266</h1>
-    <h2> Web Interface</h2>
-    <ul>
-        <li>
-            <a href="/dir">Show files on ESP.</a>
-        </li>
-        <li>
-            <a href="/upload">Upload Page e.g. adopt configuration</a>
-        </li>
-        <li>
-            <a href="/reboot">Reboot Arduino, e.g. to activate new configuration</a>
-        </li>
-    </ul>
+    </nav>
 
-    <h2> RESTfull interface</h2>
-    <ul>
-        <li>
-            <a href="/json">GET test JSON</a>
-        </li>
-        <li>
-            <a href="/assembly">GET assembly state as JSON</a>
-        </li>
-    </ul>
-    <h3>JSON Test</h3>
-    <pre><embed type="text/html" src="json" width="400" height="80"> </pre>
-        <h3>Assembly Status</h3>
-        <pre><embed type="application/json" src="assembly" width="400" height="150"> </pre>  
-    <h2> MQTT Interface</h2>
+
+    <main>
+        <article id="articleId">
+            <h2> Web Interface</h2>
+            <ul>
+                <li>
+                    <a href="/dir">Show files on ESP.</a>
+                </li>
+                <li>
+                    <a href="/upload">Upload Page e.g. adopt configuration</a>
+                </li>
+                <li>
+                    <a href="/reboot">Reboot Arduino, e.g. to activate new configuration</a>
+                </li>
+            </ul>
+
+            <h2> RESTfull interface</h2>
+            <ul>
+                <li>
+                    <a href="/json">GET test JSON</a>
+                </li>
+                <li>
+                    <a href="/assembly">GET assembly state as JSON</a>
+                </li>
+            </ul>
+            <h3>JSON Test</h3>
+            <pre><embed type="text/html" src="json" width="400" height="80"> </pre>
+            <h3>Assembly Status</h3>
+            <pre><embed type="application/json" src="assembly" width="400" height="150"> </pre>
+
+            <h2> MQTT Interface</h2>
+        </article>
+        <aside>
+            <h2>Related</h2>
+
+            <ul>
+                <li><a onclick="loadArticle('home.html');">Home</a></li>
+                <li><a onclick="loadArticle('dir');">Show files on ESP.</a></li>
+                <li><a href="#">Oh I do like to be beside the sea</a></li>
+                <li><a href="#">Although in the North of England</a></li>
+                <li><a href="#">It never stops raining</a></li>
+                <li><a href="#">Oh well...</a></li>
+            </ul>
+        </aside>
+
+    </main>
+
+    <footer>
+        <p>&copy;Copyright 2023 by avm. All rights reversed.</p>
+    </footer>
 
 </body>
 

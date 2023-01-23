@@ -29,14 +29,14 @@ html, body {
   
   h1 {
     font-size: 4rem;
-    text-align: center;
+    text-align: left;
     color: white;
     text-shadow: 2px 2px 10px black;
   }
   
   h2 {
     font-size: 3rem;
-    text-align: center;
+    text-align: left;
   }
   
   h3 {
@@ -57,7 +57,7 @@ html, body {
   
   nav {
     height: 50px;
-    background-color: #ff80ff;
+    background-color: #ffa3ff;
     display: flex;
     margin-bottom: 10px;
   }
