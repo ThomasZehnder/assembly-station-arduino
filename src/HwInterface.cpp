@@ -55,7 +55,16 @@ void hwLoop(void)
     // secound tick
     if ((long)(currentMillis - preSecoundMillis) > 0)
     {
-        preSecoundMillis += SECOUND_INTERVAL;
+        // Blink fast if not connected
+        if (!Assembly.mqttConnected)
+        {
+            preSecoundMillis += SECOUND_INTERVAL / 5;
+        }
+        else
+        {
+            preSecoundMillis += SECOUND_INTERVAL;
+        }
+
         secoundTick = true;
 
         // set the LED with the ledState of the variable:
