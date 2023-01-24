@@ -7,12 +7,7 @@
     <link rel="stylesheet" href="lib/codemirror.css">
     <script src="lib/codemirror.js"></script>
     <script src="mode/javascript/javascript.js"></script>
-    <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
-            mode: "javascript",
-            lineNumbers: true,
-        });
-    </script>
+
 </head>
 
 <body>
@@ -20,10 +15,18 @@
     <h2> Editor</h2>
 
     <textarea id='editor'>
-    lklas
-    öaklsdö
-    äölsaä
+        {
+            a:"",
+              b:7
+          }
 </textarea>
+
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+        mode: "javascript",
+        lineNumbers: true,
+    });
+</script>
 
 </body>
 
