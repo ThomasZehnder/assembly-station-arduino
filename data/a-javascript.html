@@ -1,4 +1,30 @@
-<h2> JavaScript</h2>
+<!DOCTYPE html>
+<html>
 
+<head>
+    <title>IIoT Code Mirror</title>
+    <!-- Create a simple CodeMirror instance -->
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <script src="lib/codemirror.js"></script>
+    <script src="mode/javascript/javascript.js"></script>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: "javascript",
+            lineNumbers: true,
+        });
+    </script>
+</head>
 
-<h2> Editor</h2>
+<body>
+    <h2> JavaScript</h2>
+    <h2> Editor</h2>
+
+    <textarea id='editor'>
+    lklas
+    öaklsdö
+    äölsaä
+</textarea>
+
+</body>
+
+</html>
