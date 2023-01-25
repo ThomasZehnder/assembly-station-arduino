@@ -9,6 +9,7 @@
     <script src="addon/mode/javascript/javascript.js"></script>
     <link rel="stylesheet" href="theme/eclipse.css">
     <link rel="stylesheet" href="theme/material-darker.css">
+
     <link rel="stylesheet" href="addon/hint/show-hint.css">
     <script src="addon/hint/javascript-hint.js"></script>
     <script src="addon/hint/show-hint.js"></script>
@@ -35,6 +36,9 @@
           }
 </textarea>
 
+<h3>Hint</h3>
+https://jsfiddle.net/eliranmal/85UZJ/
+
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
             mode: {
@@ -43,12 +47,17 @@
             },
             theme: "material-darker",
             lineNumbers: true,
-            
+
             autoCloseBrackets: true,
             autoCloseTags: true,
             matchBrackets: true,
-            showTrailingSpace: true
+            showTrailingSpace: true,
 
+            hint: CodeMirror.hint.javascript,
+
+            extraKeys: {
+                "Ctrl-Space": "autocomplete"
+            }
 
         });
         editor.save();
