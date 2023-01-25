@@ -6,13 +6,27 @@
     <!-- Create a simple CodeMirror instance -->
     <link rel="stylesheet" href="lib/codemirror.css">
     <script src="lib/codemirror.js"></script>
-    <script src="mode/javascript/javascript.js"></script>
+    <script src="addon/mode/javascript/javascript.js"></script>
+    <link rel="stylesheet" href="theme/eclipse.css">
+    <link rel="stylesheet" href="theme/material-darker.css">
+    <link rel="stylesheet" href="addon/hint/show-hint.css">
+    <script src="addon/hint/javascript-hint.js"></script>
+    <script src="addon/hint/show-hint.js"></script>
+
+    <script src="addon/edit/closebrackets.js"></script>
+    <script src="addon/edit/closetag.js"></script>
+    <script src="addon/edit/matchbrackets.js"></script>
+    <script src="addon/edit/trailingspace.js"></script>
+
+
 
 </head>
 
 <body>
     <h2> JavaScript</h2>
     <h2> Editor</h2>
+    <button onclick="loadCodeMirror()">Load</button>
+    <button onclick="saveCodeMirror()">Save</button>
 
     <textarea id='editor'>
         {
@@ -21,12 +35,37 @@
           }
 </textarea>
 
-<script>
-    var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
-        mode: "javascript",
-        lineNumbers: true,
-    });
-</script>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+            mode: {
+                name: "javascript",
+                globalVars: true
+            },
+            theme: "material-darker",
+            lineNumbers: true,
+            
+            autoCloseBrackets: true,
+            autoCloseTags: true,
+            matchBrackets: true,
+            showTrailingSpace: true
+
+
+        });
+        editor.save();
+
+        function loadCodeMirror() {
+            var c = '{\n  a: "",\n  b: 7\n}\n';
+            editor.setValue(c);
+            console.log("load click");
+            console.log(c);
+        }
+
+        function saveCodeMirror() {
+            var c = editor.getValue();
+            console.log("save click");
+            console.log(c);
+        }
+    </script>
 
 </body>
 
