@@ -7,7 +7,20 @@
     <link rel="stylesheet" href="style.css">
 
 
+    <!--CodeMirror instance -->
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <script src="lib/codemirror.js"></script>
+    <script src="addon/mode/javascript/javascript.js"></script>
+    <link rel="stylesheet" href="theme/cobalt.css">
 
+    <link rel="stylesheet" href="addon/hint/show-hint.css">
+    <script src="addon/hint/javascript-hint.js"></script>
+    <script src="addon/hint/show-hint.js"></script>
+
+    <script src="addon/edit/closebrackets.js"></script>
+    <script src="addon/edit/closetag.js"></script>
+    <script src="addon/edit/matchbrackets.js"></script>
+    <script src="addon/edit/trailingspace.js"></script>
 
     <script>
 
@@ -36,6 +49,11 @@
                         console.log("Load files: ", param)
                         loadElement(param, "preId");
                     }
+                    else if (url.startsWith('a-javascript')) {
+                        console.log("JavaSriptfile files: ", param)
+                        loadEditor(param);
+                    }
+
                 });
         }
 
@@ -62,7 +80,52 @@
                     const myArticle = document.getElementById(id);
                     myArticle.innerHTML = html;
                 });
-        }        
+        }
+
+        <!-- Code Mirror functions-->
+        var editorUrl = "";
+        var editor;
+        function loadEditor(url) {
+            editorUrl = url;
+            editor = CodeMirror.fromTextArea(document.getElementById("editorId"), {
+                mode: {
+                    name: "javascript",
+                    globalVars: true
+                },
+                theme: "cobalt",
+                lineNumbers: true,
+
+                autoCloseBrackets: true,
+                autoCloseTags: true,
+                matchBrackets: true,
+                showTrailingSpace: true,
+
+                hint: CodeMirror.hint.javascript,
+
+                extraKeys: {
+                    "Ctrl-Space": "autocomplete"
+                }
+
+            });
+            editor.save();
+        }
+        function loadCodeMirror() {
+            fetch(editorUrl)
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (c) {
+                    editor.setValue(c);
+                    console.log("load click: ", editorUrl);
+                    console.log(c);
+                });
+        }
+
+        function saveCodeMirror() {
+            var c = editor.getValue();
+            console.log("save click: ", editorUrl);
+            console.log(c);
+        }
     </script>
 </head>
 
@@ -74,7 +137,7 @@
         <ul>
             <li><a onclick="loadMain('a-home.html', 'aa-home.html',0);">Home</a></li>
             <li><a onclick="loadArticle('a-files.html', 'dir');">Files</a></li>
-            <li><a onclick="loadArticle('a-javascript.html');">Javascript</a></li>
+            <li><a onclick="loadArticle('a-javascript.html', 'test.txt');">Javascript</a></li>
             <li><a onclick="loadMain('a-config.html', 'aa-config.html','config_main.json');">Config</a></li>
             <li><a onclick="loadArticle('a-contact.html');">Contact</a></li>
         </ul>

@@ -132,7 +132,7 @@ html, body {
     margin-top: 10px;
   }
 
-  button {
+  aside button {
     background-color: #4e2456; 
     border: none;
     color: white;
@@ -143,4 +143,16 @@ html, body {
     font-size: 14px;
     margin: 5px;
     width: 90%;
+  }
+
+  article button {
+    background-color: #4e2456; 
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 5px;
   }
