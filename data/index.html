@@ -6,10 +6,17 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
 
+
+
+
     <script>
-        var param1 = "";
+
+        function loadMain(articleUrl, asideUrl, param) {
+            loadArticle(articleUrl, param);
+            loadAside(asideUrl);
+        }
+
         function loadArticle(url, param) {
-            param1 = param;
             fetch(url)
                 .then(function (response) {
                     return response.text();
@@ -17,22 +24,54 @@
                 .then(function (html) {
                     //console.log(html);
                     const myArticle = document.getElementById("articleId");
-                    myArticle.innerHTML = html
+                    myArticle.innerHTML = html;
+
+                    //execude page initializizer
+                    //console.log("loaded url: ", url);
+                    if (url.startsWith('a-config')) {
+                        //console.log("Load Configpage: ", param)
+                        loadElement(param, "preId");
+                    }
                 });
         }
+
+        function loadAside(url, param) {
+
+            fetch(url)
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (html) {
+                    //console.log(html);
+                    const myArticle = document.getElementById("asideId");
+                    myArticle.innerHTML = html;
+                });
+        }
+
+        function loadElement(url, id) {
+            fetch(url)
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (html) {
+                    //console.log(html);
+                    const myArticle = document.getElementById(id);
+                    myArticle.innerHTML = html;
+                });
+        }        
     </script>
 </head>
 
-<body onload="loadArticle('a-home.html');">
+<body onload="loadMain('a-home.html', 'aa-home.html',0);">
     <header>
         <h1>IIoT Demonstrator with ESP8266</h1>
     </header>
     <nav>
         <ul>
-            <li><a onclick="loadArticle('a-home.html');">Home</a></li>
+            <li><a onclick="loadMain('a-home.html', 'aa-home.html',0);">Home</a></li>
             <li><a onclick="loadArticle('a-files.html');">Files</a></li>
             <li><a onclick="loadArticle('a-javascript.html');">Javascript</a></li>
-            <li><a onclick="loadArticle('a-config.html', 'config_main.json');">Config</a></li>
+            <li><a onclick="loadMain('a-config.html', 'aa-config.html','config_main.json');">Config</a></li>
             <li><a onclick="loadArticle('a-contact.html');">Contact</a></li>
         </ul>
         <img src="logo.png" width="20%">
@@ -45,8 +84,8 @@
             <h2> ... loading dynamicaly...</h2>
 
         </article>
-        <aside>
-            <h2>Related</h2>
+        <aside id="asideId">
+            <h2>... loading dynamicaly...</h2>
 
             <button onclick="loadArticle('a-home.html');">Home</button>
             <button onclick="loadArticle('dir');">Show files on ESP</button>
