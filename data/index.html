@@ -32,6 +32,10 @@
                         //console.log("Load Configpage: ", param)
                         loadElement(param, "preId");
                     }
+                    else if (url.startsWith('a-files')) {
+                        console.log("Load files: ", param)
+                        loadElement(param, "preId");
+                    }
                 });
         }
 
@@ -69,7 +73,7 @@
     <nav>
         <ul>
             <li><a onclick="loadMain('a-home.html', 'aa-home.html',0);">Home</a></li>
-            <li><a onclick="loadArticle('a-files.html');">Files</a></li>
+            <li><a onclick="loadArticle('a-files.html', 'dir');">Files</a></li>
             <li><a onclick="loadArticle('a-javascript.html');">Javascript</a></li>
             <li><a onclick="loadMain('a-config.html', 'aa-config.html','config_main.json');">Config</a></li>
             <li><a onclick="loadArticle('a-contact.html');">Contact</a></li>
