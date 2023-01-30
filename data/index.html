@@ -126,6 +126,18 @@
             var c = editor.getValue();
             console.log("save click: ", editorUrl);
             console.log(c);
+
+            fetch('/store?name=' + editorUrl, {
+                method: 'POST',
+                body: c
+            })
+                .then(res => res.text())
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
     </script>
 </head>

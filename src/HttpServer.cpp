@@ -21,6 +21,7 @@ File fsUploadFile; // a File object to temporarily store the received file
 String getContentType(String filename); // convert the file extension to the MIME type
 bool handleFileRead(String path);       // send the right file to the client (if it exists)
 void handleFileUpload();                // upload a new file to the SPIFFS
+void handleFileStore();                 // store content to file
 
 #define ACTIVITY_LED_PIN LED_BUILTIN
 
@@ -179,7 +180,11 @@ void handleNotFound()
   message += "URI: ";
   message += server.uri();
   message += "\nMethod: ";
-  message += (server.method() == HTTP_GET) ? "GET" : "POST";
+  message += server.method();
+  message += " : ";
+  message += (server.method() == HTTP_GET) ? "GET" : (server.method() == HTTP_POST) ? "POST"
+                                                 : (server.method() == HTTP_PATCH)  ? "PATCH"
+                                                                                    : "seeNbr";
   message += "\nArguments: ";
   message += server.args();
   message += "\n";
@@ -190,8 +195,8 @@ void handleNotFound()
   server.send(404, "text/plain", message);
   Serial.println(message);
 }
-void (*rebootFunc)(void) = 0; // declare reset function @ address 0
 
+void (*rebootFunc)(void) = 0; // declare reset function @ address 0
 void reboot(void)
 {
   handleFileRead("reboot.html");
@@ -317,6 +322,8 @@ void httpSetup(void)
       handleFileUpload       // Receive and save the file
   );
 
+  server.on("/store", HTTP_POST, handleFileStore);
+
   // server.onNotFound(handleNotFound);
   server.onNotFound([]() {             // If the client requests any URI
     if (!handleFileRead(server.uri())) // send it if it exists
@@ -399,8 +406,12 @@ bool handleFileRead(String path)
   return false;
 }
 
+int cnt = 0;
+// multipart from Form
 void handleFileUpload()
 { // upload a new file to the LittleFS
+  cnt++;
+  Serial.println("handleFileUpload-->" + String(cnt));
   HTTPUpload &upload = server.upload();
   if (upload.status == UPLOAD_FILE_START)
   {
@@ -432,5 +443,43 @@ void handleFileUpload()
     {
       server.send(500, "text/plain", "500: couldn't create file");
     }
+  }
+}
+
+// content in body
+void handleFileStore()
+{ // upload a new file to the LittleFS
+  Serial.println("handleFileStore(): ");
+
+  String message = "";
+  message += "Args Count: ";
+  message += server.args();
+  message += "\n";
+  for (uint8_t i = 0; i < server.args(); i++)
+  {
+    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
+  }
+  Serial.println(message);
+
+  // arg - get request argument value, use arg("plain") to get POST body
+  String c = server.arg("plain");
+  Serial.println("body: " + c);
+
+  String filename = server.arg("name");
+  if (!filename.startsWith("/"))
+    filename = "/" + filename;
+  Serial.print("handleFileUpload Name: ");
+  Serial.println(filename);
+  fsUploadFile = LittleFS.open(filename, "w"); // Open the file for writing in SPIFFS (create if it doesn't exist)
+  filename = String();
+  if (fsUploadFile)
+  {
+    fsUploadFile.print(c); // Write the received body to the file
+    fsUploadFile.close();  // Close the file again
+    server.send(200, "text/plain", "handleFileStore() " + filename + " successful");
+  }
+  else
+  {
+    server.send(500, "text/plain", "500: couldn't create file " + filename);
   }
 }
