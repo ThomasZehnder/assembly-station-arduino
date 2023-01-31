@@ -2,13 +2,7 @@
 <html>
 
 <head>
-    <h2>Configuration</h2>
 
-    <script>
-        //var param1 =""; from main script
-
-        console.log("param1: ", param1);
-    </script>
 </head>
 
 <body>
@@ -19,10 +13,19 @@
         console.log("param1: ", param1);
     </script>
 
-    <h3>Actual WLAN Configurartion</h3>
+    <h3 id="h3Id">Actual ... Configurartion</h3>
     <pre id="preId" style="background-color: lightsteelblue; padding:10px;">
         ... load dynamicaly...
     </pre>
+
+    <button onclick="loadCodeMirror()">Load</button>
+    <button onclick="saveCodeMirror()">Save</button>
+
+    <textarea id="editorId">
+    {
+        a:"dynamic loading",
+    }
+    </textarea>
 
 
 </body>
