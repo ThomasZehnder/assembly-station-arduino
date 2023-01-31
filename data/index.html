@@ -44,6 +44,8 @@
                     if (url.startsWith('a-config')) {
                         //console.log("Load Configpage: ", param)
                         loadElement(param, "preId");
+                        loadEditor(param);
+                        setH3Title(String("Edit ") + param);
                     }
                     else if (url.startsWith('a-files')) {
                         console.log("Load files: ", param)
@@ -52,6 +54,7 @@
                     else if (url.startsWith('a-javascript')) {
                         console.log("JavaSriptfile files: ", param)
                         loadEditor(param);
+                        setH3Title(String("Edit ") + param);
                     }
 
                 });
@@ -80,6 +83,11 @@
                     const myArticle = document.getElementById(id);
                     myArticle.innerHTML = html;
                 });
+        }
+
+        function setH3Title(text) {
+            const myH3 = document.getElementById("h3Id");
+            myH3.innerHTML = text;
         }
 
         <!-- Code Mirror functions-->
