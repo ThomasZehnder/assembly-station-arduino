@@ -43,7 +43,7 @@
                     //console.log("loaded url: ", url);
                     if (url.startsWith('a-config')) {
                         //console.log("Load Configpage: ", param)
-                        loadElement(param, "preId");
+                        //loadElement(param, "preId");
                         loadEditor(param);
                         setH3Title(String("Edit ") + param);
                     }
@@ -90,6 +90,11 @@
             myH3.innerHTML = text;
         }
 
+        function setFooter(text) {
+            const myfooter = document.getElementById("pFooter");
+            myfooter.innerHTML = text;
+        }
+
         <!-- Code Mirror functions-->
         var editorUrl = "";
         var editor;
@@ -127,6 +132,7 @@
                     editor.setValue(c);
                     console.log("load click: ", editorUrl);
                     console.log(c);
+                    setFooter("Load codemirror "+ editorUrl + " done.")
                 });
         }
 
@@ -134,6 +140,7 @@
             var c = editor.getValue();
             console.log("save click: ", editorUrl);
             console.log(c);
+            setFooter("saveCodeMirror... ");
 
             //validate JSON
             if (editorUrl.endsWith('.json')){
@@ -142,6 +149,7 @@
 
                 } catch (e) {
                     alert('JSON not valid: '+ e);
+                    setFooter("JSON error "+ e );
                     console.log(e);
                     return;
                 }
@@ -154,9 +162,11 @@
                 .then(res => res.text())
                 .then(res => {
                     console.log(res);
+                    setFooter("saveCodeMirror ok "+ res);
                 })
                 .catch(err => {
                     console.log(err);
+                    setFooter("saveCodeMirror error "+ err );
                 })
         }
     </script>
@@ -197,7 +207,7 @@
     </main>
 
     <footer>
-        <p>&copy;Copyright 2023 by avm. All rights reversed.</p>
+        <p id="pFooter">&copy;Copyright 2023 by avm. All rights reversed.</p>
     </footer>
 
 </body>
