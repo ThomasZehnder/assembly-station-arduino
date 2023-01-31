@@ -406,12 +406,9 @@ bool handleFileRead(String path)
   return false;
 }
 
-int cnt = 0;
 // multipart from Form
 void handleFileUpload()
 { // upload a new file to the LittleFS
-  cnt++;
-  Serial.println("handleFileUpload-->" + String(cnt));
   HTTPUpload &upload = server.upload();
   if (upload.status == UPLOAD_FILE_START)
   {
@@ -450,20 +447,30 @@ void handleFileUpload()
 void handleFileStore()
 { // upload a new file to the LittleFS
   Serial.println("handleFileStore(): ");
-
-  String message = "";
-  message += "Args Count: ";
-  message += server.args();
-  message += "\n";
-  for (uint8_t i = 0; i < server.args(); i++)
-  {
-    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-  }
-  Serial.println(message);
+  /*
+    String message = "";
+    message += "Args Count: ";
+    message += server.args();
+    message += "\n";
+    for (uint8_t i = 0; i < server.args(); i++)
+    {
+      message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
+    }
+    Serial.println(message);
+  */
 
   // arg - get request argument value, use arg("plain") to get POST body
+  /*
   String c = server.arg("plain");
   Serial.println("body: " + c);
+  */
+
+  if (!server.hasArg("name"))
+  {
+    Serial.println("handleFileUpload argument 'name' not found!!");
+    server.send(500, "text/plain", "500: filename not defined ");
+    return;
+  }
 
   String filename = server.arg("name");
   if (!filename.startsWith("/"))
@@ -474,8 +481,8 @@ void handleFileStore()
   filename = String();
   if (fsUploadFile)
   {
-    fsUploadFile.print(c); // Write the received body to the file
-    fsUploadFile.close();  // Close the file again
+    fsUploadFile.print(server.arg("plain")); // Write the received body to the file
+    fsUploadFile.close();                    // Close the file again
     server.send(200, "text/plain", "handleFileStore() " + filename + " successful");
   }
   else
