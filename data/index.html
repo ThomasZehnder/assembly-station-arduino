@@ -135,6 +135,18 @@
             console.log("save click: ", editorUrl);
             console.log(c);
 
+            //validate JSON
+            if (editorUrl.endsWith('.json')){
+                try {
+                    var x=JSON.parse(c);
+
+                } catch (e) {
+                    alert('JSON not valid: '+ e);
+                    console.log(e);
+                    return;
+                }
+            }
+
             fetch('/store?name=' + editorUrl, {
                 method: 'POST',
                 body: c
