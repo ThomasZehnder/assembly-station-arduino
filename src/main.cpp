@@ -6,6 +6,8 @@
 #include "Oled.h"
 #include "Ws2812.h"
 
+// #include "duktape/hello/duktapeHello.h" not able to run :-()
+
 #include "Global.h"
 
 void setup()
@@ -46,6 +48,10 @@ void loop()
         {
             ws2812Demo();
         }
+
+        //js interpreter test 1
+        duktapeHello();
+
     }
     // 10ms tick
     if (hwCentiSecoundTick())
