@@ -10,6 +10,13 @@ see https://randomnerdtutorials.com/vs-code-platformio-ide-esp32-esp8266-arduino
 
 ![ESP8266 Pinout](/images/ESP-12E-Development-Board-ESP8266-NodeMCU-Pinout.png)
 
+## Use Exceptions
+see [https://docs.platformio.org/en/stable/platforms/espressif8266.html]
+Add to platformio.ini
+
+; Enable exceptions
+build_flags = -D PIO_FRAMEWORK_ARDUINO_ENABLE_EXCEPTIONS
+
 ### Wirering
     // Secound Timer
     #define TOGGLE_LED_PIN D0 

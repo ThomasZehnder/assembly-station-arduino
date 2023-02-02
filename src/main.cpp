@@ -6,9 +6,11 @@
 #include "Oled.h"
 #include "Ws2812.h"
 
-// #include "duktape/hello/duktapeHello.h" not able to run :-()
+#include "duktape/hello/duktapeHello.h" 
 
 #include "Global.h"
+
+#include "tiny-js/ArduinoTinyJs.h"
 
 void setup()
 {
@@ -28,7 +30,11 @@ void setup()
     httpSetup(); // will block until WLAN connected
 
     hwSetup();
+    
+    tinyJsSetup();
 }
+
+
 
 void loop()
 {
@@ -50,7 +56,8 @@ void loop()
         }
 
         //js interpreter test 1
-        duktapeHello();
+
+        tinyJsLoop();
 
     }
     // 10ms tick
