@@ -3,9 +3,8 @@ src/credentials.h
 data/config.json
 data/config_wlan.json
 data/config_mqtt.json
-src/duktape/*
-src/tiny-js/*
-src/jerryscript/*
+
+
 
 
 

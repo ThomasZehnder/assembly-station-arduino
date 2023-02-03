@@ -1,0 +1,2 @@
+void tinyJsSetup();
+void tinyJsLoop();

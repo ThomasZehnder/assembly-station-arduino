@@ -6,8 +6,6 @@
 #include "Oled.h"
 #include "Ws2812.h"
 
-#include "duktape/hello/duktapeHello.h" 
-
 #include "Global.h"
 
 #include "tiny-js/ArduinoTinyJs.h"
