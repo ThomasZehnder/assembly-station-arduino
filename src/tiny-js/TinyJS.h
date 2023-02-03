@@ -46,8 +46,12 @@
 #define TRACE printf
 #endif // TRACE
 
+_BEGIN_STD_C
+//TZE path to avoid linter error, function is implemented
+char 	*strdup (const char *) __malloc_like __result_use_check;
+_END_STD_C
 
-const int TINYJS_LOOP_MAX_ITERATIONS = 8192;
+const int TINYJS_LOOP_MAX_ITERATIONS = 1024;
 
 enum LEX_TYPES {
     LEX_EOF = 0,

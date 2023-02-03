@@ -58,7 +58,7 @@ void hwLoop(void)
         // Blink fast if not connected
         if (!Assembly.mqttConnected)
         {
-            preSecoundMillis += SECOUND_INTERVAL / 5;
+            preSecoundMillis = currentMillis + SECOUND_INTERVAL / 5;
         }
         else
         {
