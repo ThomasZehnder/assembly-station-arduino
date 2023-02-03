@@ -34,6 +34,7 @@ void ArduinoTinyJs::setup()
   Serial.println("TinyJsSetup...Start");
 
   errorStr = "setup started...";
+  errorActive = false;
 
   if (js)
   {
@@ -54,7 +55,7 @@ void ArduinoTinyJs::setup()
   loadLoop();
   loadTearDown();
 
-  //execute INIT
+  // execute INIT
   execute(&initStr, "INIT");
 
   Serial.println("TinyJsSetup...End");
@@ -62,10 +63,19 @@ void ArduinoTinyJs::setup()
 
 void ArduinoTinyJs::loop()
 {
-  loopCounter++;
-  Serial.print("tinyJsLoop Start: ");
-  Serial.println(loopCounter);
-  execute(&cyclicStr, "CYCLIC");
+
+  if (!errorActive)
+  {
+    loopCounter++;
+    Serial.print("tinyJsLoop Start: ");
+    Serial.println(loopCounter);
+    execute(&cyclicStr, "CYCLIC");
+  }
+  else
+  {
+    Serial.print("tinyJsLoop Error: ");
+    Serial.println(errorStr);
+  }
 }
 
 void ArduinoTinyJs::tearDown()
@@ -86,15 +96,17 @@ void ArduinoTinyJs::execute(const String *code, const char *context)
   catch (CScriptException *e)
   {
     Serial.print(context);
-    Serial.print("ERROR: ");
+    Serial.print(" ERROR: ");
     Serial.println(e->text.c_str());
     errorStr = (String)e->text.c_str();
+    errorActive = true;
   }
   catch (...)
   {
     Serial.print(context);
-    Serial.println("ERROR: Catch all...");
+    Serial.println(" ERROR: Catch all...");
     errorStr = "unknown exeption";
+    errorActive = true;
   }
 }
 
@@ -109,4 +121,6 @@ ArduinoTinyJs::ArduinoTinyJs()
 
   initStr = "print('init default'); dump();";
   cyclicStr = "print('cyclic default');";
+
+  errorActive = false;
 }

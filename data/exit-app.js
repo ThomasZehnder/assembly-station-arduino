@@ -1,2 +1,2 @@
-// java script init
+// java script exit
 print('EXIT from File');

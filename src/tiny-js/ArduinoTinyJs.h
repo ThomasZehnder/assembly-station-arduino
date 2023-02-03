@@ -15,6 +15,7 @@ public:
 
     //error string
     String errorStr;
+    bool errorActive;
 
     //Array used for "print"
     String printStr[10];
