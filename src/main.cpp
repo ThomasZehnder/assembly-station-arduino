@@ -29,7 +29,7 @@ void setup()
 
     hwSetup();
     
-    tinyJsSetup();
+    tinyJs.setup();
 }
 
 
@@ -52,11 +52,8 @@ void loop()
         {
             ws2812Demo();
         }
-
-        //js interpreter test 1
-
-        tinyJsLoop();
-
+        
+        tinyJs.loop();
     }
     // 10ms tick
     if (hwCentiSecoundTick())
