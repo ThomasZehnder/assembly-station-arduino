@@ -54,13 +54,41 @@ void js_dump(CScriptVar *v, void *userdata) {
 }
 */
 
-
 int loopCounter = 0;
+
+// create instance dynamic
+CTinyJS *js;
 
 void tinyJsSetup()
 {
+  Serial.println("TinyJsSetup --> Start");
   // create instance dynamic
-  //js = new CTinyJS();
+  js = new CTinyJS();
+
+  /* add the functions from TinyJS_Functions.cpp */
+  registerFunctions(js);
+  /* Add a native function */
+  js->addNative("function print(text)", &js_print, 0);
+  // js->addNative("function dump()", &js_dump, js);
+
+  // like _INIT
+  try
+  {
+    js->execute("var x = 0; x++; print(x);");
+    js->execute("var y = 0; function inc(i) { i++; return i;}");
+    
+  }
+  catch (CScriptException *e)
+  {
+    Serial.print("INIT ERROR CScriptException: ");
+    Serial.println(e->text.c_str());
+  }
+  catch (...)
+  {
+    Serial.println("INIT ERROR: Catch all...");
+  }
+
+  Serial.println("TinyJsSetup --> End");
 }
 
 void tinyJsLoop()
@@ -69,38 +97,38 @@ void tinyJsLoop()
   Serial.print("tinyJsLoop Start: ");
   Serial.println(loopCounter);
 
-  // create instance dynamic
-  CTinyJS *js;
-  js = new CTinyJS();
-
-  /* add the functions from TinyJS_Functions.cpp */
-  registerFunctions(js);
-  /* Add a native function */
-  js->addNative("function print(text)", &js_print, 0);
-  // js->addNative("function dump()", &js_dump, js);
-  /* Execute out bit of code - we could call 'evaluate' here if
-     we wanted something returned */
+  // like _CYCLIC
   try
   {
     //
-    //js->execute(code);
-    //js->execute("var y = 0; function set_y() { y = 1; }");
-    //js->execute("var y = 0; ");
-    //js->execute("print('y='+y); set_y();print('y='+y);");
-    js->execute("var x = 0; x++; print(x);");
+    // js->execute(code);
+    // js->execute("var y = 0; function set_y() { y = 1; }");
+    // js->execute("var y = 0; ");
+    // js->execute("print('y='+y); set_y();print('y='+y);");
+
+    //js->execute("var x = 0; x++; print(x);");
     js->execute("x++; print('x='+x);");
-    js->execute("unknown_function();");
+    js->execute("y = inc(y); print('y='+y);");
+
+    //
+    //js->execute("unknown_function();");
   }
   catch (CScriptException *e)
   {
-    Serial.print("ERROR CScriptException: ");
+    Serial.print("CYCLIC ERROR CScriptException: ");
     Serial.println(e->text.c_str());
   }
   catch (...)
   {
-    Serial.println("ERROR: Catch all...");
+    Serial.println("CYCLIC ERROR: Catch all...");
   }
 
   // use static at the moment. later for reinit use -->
+  //delete js;
+}
+
+void tinyJsTeardown()
+{
+  //like _EXIT
   delete js;
 }
