@@ -1,158 +1,192 @@
 /* || General setup */
 
-html, body {
-    margin: 0;
-    padding: 0;
-  }
-  
-  html {
-    font-size: 10px;
-    background-color: #a9a9a9;
-  }
-  
-  body {
-    width: 90%;
-    margin: 0 auto;
-  }
-  
-  /* || typography */
-  
-  h1, h2, h3 {
-    font-family: math;
-    color: #2a2a2a;
-  }
-  
-  p, input, li {
-    font-family: math;
-    color: #2a2a2a;
-  }
-  
-  h1 {
-    font-size: 4rem;
-    text-align: left;
-    color: white;
-    text-shadow: 2px 2px 10px black;
-  }
-  
-  h2 {
-    font-size: 3rem;
-    text-align: left;
-  }
-  
-  h3 {
-    font-size: 2.2rem;
-  }
-  
-  p, li {
-    font-size: 1.6rem;
-    line-height: 1.5;
-  }
-  
-  /* || header layout */
-  
-  nav, article, aside, footer {
-    background-color: white;
-    padding: 1%;
-  }
-  
-  nav {
-    height: 50px;
-    background-color: #ffa3ff;
-    display: flex;
-    margin-bottom: 10px;
-  }
-  
-  nav ul {
-    padding: 0;
-    list-style-type: none;
-    flex: 2;
-    display: flex;
-  }
-  
-  nav li {
-    display: inline;
-    text-align: center;
-    flex: 1;
-  }
-  
-  nav a {
-    display: inline-block;
-    font-size: 2rem;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: black;
-  }
-  
-  nav form {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 0 2em;
-  }
-  
-  input {
-    font-size: 1.6rem;
-    height: 32px;
-  }
-  
-  input[type="search"] {
-    flex: 3;
-  }
-  
-  input[type="submit"] {
-    flex: 1;
-    margin-left: 1rem;
-    background: #333;
-    border: 0;
-    color: white;
-  }
-  
-  /* || main layout */
-  
-  main {
-    display: flex;
-  }
-  
-  article {
-    flex: 4;
-  }
-  
-  aside {
-    flex: 1;
-    margin-left: 10px;
-    background-color: #ff80ff;
-  }
-  
-  aside li {
-    padding-bottom: 5px;
-  }
-  
-  footer {
-    margin-top: 10px;
-  }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Garamond, serif;
+}
 
-  aside button {
-    background-color: #4e2456; 
-    border: none;
-    color: white;
-    padding: 10px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 5px;
-    width: 90%;
-  }
+html {
+  font-size: 10px;
+  background-color: #a9a9a9;
+}
 
-  article button {
-    background-color: #4e2456; 
-    border: none;
-    color: white;
-    padding: 10px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 5px;
-  }
+body {
+  width: 95%;
+  margin: 0 auto;
+}
+
+/* || typography */
+
+h1,
+h2,
+h3 {
+  color: #2a2a2a;
+}
+
+p,
+input,
+li {
+  color: #2a2a2a;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-align: left;
+  color: white;
+  text-shadow: 2px 2px 10px black;
+}
+
+h2 {
+  font-size: 2rem;
+  text-align: left;
+}
+
+h3 {
+  font-size: 2.2rem;
+}
+
+li {
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+
+pre {
+  font-family: 'Courier New', monospace;
+}
+/* || header layout */
+
+nav,
+article,
+aside,
+footer {
+  background-color: white;
+  padding: 1%;
+  border-radius: 4px;
+}
+
+nav {
+  height: 30px;
+  background-color: #ff80ff;
+  display: flex;
+  margin-bottom: 5px;
+}
+
+nav ul {
+  padding: 0;
+  list-style-type: none;
+  flex: 2;
+  display: flex;
+}
+
+nav li {
+  display: inline;
+  text-align: center;
+  flex: 1;
+  margin-top: -5px;
+  width: 20%;
+}
+
+nav a {
+  display: inline-block;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: black;
+}
+
+nav form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 2em;
+}
+
+input {
+  font-size: 1.6rem;
+  height: 32px;
+}
+
+input[type="search"] {
+  flex: 3;
+}
+
+input[type="submit"] {
+  flex: 1;
+  margin-left: 1rem;
+  background: #333;
+  border: 0;
+  color: white;
+}
+
+/* || main layout */
+header {
+  border-radius: 4px;
+}
+
+main {
+  display: flex;
+}
+
+article {
+  flex: 4;
+  border-radius: 4px;
+}
+
+aside {
+  flex: 1;
+  margin-left: 5px;
+  background-color: #ff80ff;
+  border-radius: 4px;
+}
+
+aside li {
+  padding-bottom: 5px;
+}
+
+aside h3 {
+  text-align: center;
+  margin: 10px;
+}
+
+footer {
+  margin-top: 5px;
+  font-family: 'Courier New', monospace;
+  border-radius: 4px;
+}
+
+aside button {
+  background-color: #4e2456;
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 5px;
+  width: 90%;
+  border-radius: 4px;
+}
+
+article button {
+  background-color: #4e2456;
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 5px;
+  border-radius: 4px;
+}
+
+img.logo  {
+  margin-left: 20px;
+  padding: 5px;
+  width: 80px;
+  height: 20px;
+}
