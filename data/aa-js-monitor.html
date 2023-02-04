@@ -11,16 +11,16 @@
         <legend>Select refresh rate:</legend>
     
         <div>
-          <input type="radio" id="off" name="refresh" value="0" onClick="changeRefreshRate(0);">
+          <input type="radio" id="off" name="refresh"onClick="changeRefreshRate(0);">
           <label for="off">Off</label>
         </div>
     
         <div>
-          <input type="radio" id="fast" name="refresh" value="500" checked onClick="changeRefreshRate(500);">
+          <input type="radio" id="fast" name="refresh" checked onClick="changeRefreshRate(500);">
           <label for="fast">Fast 0.5ms</label>
 
-          <input type="radio" id="slow" name="refresh" value="5000" onClick="changeRefreshRate(5000);">
-          <label for="slow">Slow 5s</label>
+          <input type="radio" id="slow" name="refresh" onClick="changeRefreshRate(2000);">
+          <label for="slow">Slow 2s</label>
         </div>
     </fieldset>
 </div>
