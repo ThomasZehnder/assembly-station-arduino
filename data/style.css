@@ -189,6 +189,11 @@ article button {
   border-radius: 4px;
 }
 
+button.warning{
+  background-color: #ffc107;
+  color: #000000;
+}
+
 img.logo {
   margin-left: 20px;
   padding: 5px;
