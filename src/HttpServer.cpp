@@ -376,6 +376,8 @@ String getContentType(String filename)
     return "image/png";
   else if (filename.endsWith(".gif"))
     return "image/gif";
+  else if (filename.endsWith(".svg"))
+    return "image/svg";
   else if (filename.endsWith(".jpg"))
     return "image/jpeg";
   else if (filename.endsWith(".gz"))
