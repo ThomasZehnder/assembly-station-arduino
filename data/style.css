@@ -55,6 +55,7 @@ li {
 pre {
   font-family: 'Courier New', monospace;
 }
+
 /* || header layout */
 
 nav,
@@ -184,9 +185,13 @@ article button {
   border-radius: 4px;
 }
 
-img.logo  {
+img.logo {
   margin-left: 20px;
   padding: 5px;
   width: 80px;
   height: 20px;
+}
+
+img.icon {
+  padding-right: 5px;
 }

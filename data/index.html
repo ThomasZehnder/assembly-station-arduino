@@ -51,12 +51,16 @@
                         console.log("Load files: ", param)
                         loadElement(param, "preId");
                     }
-                    else if (url.startsWith('a-javascript')) {
-                        console.log("JavaSriptfile files: ", param)
+                    else if (url.startsWith('a-js-editor')) {
+                        console.log("JavaSript file: ", param)
                         loadEditor(param);
-                        setH3Title(String("Edit ") + param);
+                        setH3Title(String("Editor for ") + param);
                     }
-
+                    else if (url.startsWith('a-js-monitor')) {
+                        console.log("JavaSript file: ", param)
+                        loadEditor(param);
+                        setH3Title(String("Monitor ") + param);
+                    }
                 });
         }
 
@@ -132,7 +136,7 @@
                     editor.setValue(c);
                     console.log("load click: ", editorUrl);
                     console.log(c);
-                    setFooter("Load codemirror "+ editorUrl + " done.")
+                    setFooter("Load codemirror " + editorUrl + " done.")
                 });
         }
 
@@ -143,13 +147,13 @@
             setFooter("saveCodeMirror... ");
 
             //validate JSON
-            if (editorUrl.endsWith('.json')){
+            if (editorUrl.endsWith('.json')) {
                 try {
-                    var x=JSON.parse(c);
+                    var x = JSON.parse(c);
 
                 } catch (e) {
-                    alert('JSON not valid: '+ e);
-                    setFooter("JSON error "+ e );
+                    alert('JSON not valid: ' + e);
+                    setFooter("JSON error " + e);
                     console.log(e);
                     return;
                 }
@@ -162,11 +166,11 @@
                 .then(res => res.text())
                 .then(res => {
                     console.log(res);
-                    setFooter("saveCodeMirror ok "+ res);
+                    setFooter("saveCodeMirror ok " + res);
                 })
                 .catch(err => {
                     console.log(err);
-                    setFooter("saveCodeMirror error "+ err );
+                    setFooter("saveCodeMirror error " + err);
                 })
         }
     </script>
@@ -180,12 +184,12 @@
         <ul>
             <li><a onclick="loadMain('a-home.html', 'aa-home.html',0);">Home</a></li>
             <li><a onclick="loadArticle('a-files.html', 'dir');">Files</a></li>
-            <li><a onclick="loadMain('a-javascript.html', 'aa-javascript.html','test.txt');">Javascript</a></li>
+            <li><a onclick="loadMain('a-js-editor.html', 'aa-js-editor.html','test.txt');">Javascript</a></li>
             <li><a onclick="loadMain('a-config.html', 'aa-config.html','config_main.json');">Config</a></li>
             <li><a onclick="loadArticle('a-contact.html');">Contact</a></li>
         </ul>
 
-        <img class="logo" src="logo.png" >
+        <img class="logo" src="logo.png">
 
     </nav>
 
