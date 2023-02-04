@@ -10,6 +10,8 @@
 
 #include "credentials.h"
 
+#include "tiny-js/ArduinoTinyJs.h"
+
 #include "Global.h"
 
 ESP8266WiFiMulti wifiMulti; // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
@@ -245,15 +247,18 @@ void dir(void)
 void jsConsole(void)
 {
   triggerActivity();
-  String msg = "jsConsole";
+  String msg = "";
+  for (byte i = 0; i < tinyJs.printStr->length(); i++)
+  {
+    msg += tinyJs.printStr[i] + "\n";
+  }
   server.send(200, "text/html", msg);
 }
 
 void jsError(void)
 {
   triggerActivity();
-  String msg = "jsError";
-  server.send(200, "text/html", msg);
+  server.send(200, "text/html", tinyJs.errorStr);
 }
 
 void httpSetup(void)
