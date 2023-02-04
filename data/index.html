@@ -30,6 +30,7 @@
         }
 
         function loadArticle(url, param) {
+            stopTimer();
             fetch(url)
                 .then(function (response) {
                     return response.text();
@@ -41,11 +42,14 @@
 
                     //execude page initializizer
                     //console.log("loaded url: ", url);
-                    if (url.startsWith('a-config')) {
+                    if (url.startsWith('a-home')) {
+                        startTimer(['/assembly', '/json'], ['jsonId', 'assemblyId']);
+                    }
+                    else if (url.startsWith('a-config')) {
                         //console.log("Load Configpage: ", param)
                         //loadElement(param, "preId");
                         loadEditor(param);
-                        setH3Title(String("Edit ") + param);
+                        setTitle(String("Edit ") + param);
                     }
                     else if (url.startsWith('a-files')) {
                         console.log("Load files: ", param)
@@ -54,12 +58,13 @@
                     else if (url.startsWith('a-js-editor')) {
                         console.log("JavaSript file: ", param)
                         loadEditor(param);
-                        setH3Title(String("Editor for ") + param);
+                        setTitle(String("Javascript Editor for ") + param);
                     }
                     else if (url.startsWith('a-js-monitor')) {
                         console.log("JavaSript file: ", param)
                         loadEditor(param);
-                        setH3Title(String("Monitor ") + param);
+                        setTitle(String("Javascript Monitor ") + param);
+                        startTimer(['/assembly', '/json'], ['consoleId', 'errorId']);
                     }
                 });
         }
@@ -84,14 +89,14 @@
                 })
                 .then(function (html) {
                     //console.log(html);
-                    const myArticle = document.getElementById(id);
-                    myArticle.innerHTML = html;
+                    const myElement = document.getElementById(id);
+                    myElement.innerHTML = html;
                 });
         }
 
-        function setH3Title(text) {
-            const myH3 = document.getElementById("h3Id");
-            myH3.innerHTML = text;
+        function setTitle(text) {
+            const myTitle = document.getElementById("titleId");
+            myTitle.innerHTML = text;
         }
 
         function setFooter(text) {
@@ -99,7 +104,25 @@
             myfooter.innerHTML = text;
         }
 
-        <!-- Code Mirror functions-->
+        //Fetch cyclic
+        var timerId = null;
+        function startTimer(url, id) {
+            var fetchUrl = url;
+            var elementId = id;
+            var i=0;
+            timerId = setInterval(() => {
+                i = (i+1)%fetchUrl.length;
+                //console.log(typeof(fetchUrl[i]), fetchUrl.length);
+                loadElement(fetchUrl[i], elementId[i]);
+            }, 500);
+        }
+
+        function stopTimer() {
+            clearInterval(timerId);
+            timerId = null;
+        }
+
+        // Code Mirror functions
         var editorUrl = "";
         var editor;
         function loadEditor(url) {

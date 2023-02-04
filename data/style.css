@@ -8,7 +8,7 @@ body {
 }
 
 html {
-  font-size: 10px;
+  font-size: 12px;
   background-color: #a9a9a9;
 }
 
@@ -194,4 +194,9 @@ img.logo {
 
 img.icon {
   padding-right: 5px;
+}
+
+pre {
+  background-color: lightsteelblue;
+  padding:10px;
 }
