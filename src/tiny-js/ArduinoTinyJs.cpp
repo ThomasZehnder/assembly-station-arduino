@@ -17,10 +17,22 @@ ArduinoTinyJs tinyJs;
 // const char *code = "{ var b = 1; for (var i=0;i<4;i=i+1) b = b * 2; }";
 // const char *code = "function myfunc(x, y) { return x + y; } var a = myfunc(1,2); print(a);";
 
+int consoleCtr = 0;
 void js_print(CScriptVar *v, void *userdata)
 {
-  Serial.print(">> ");
-  Serial.println(v->getParameter("text")->getString().c_str());
+
+  // shift Console Out
+  for (byte i = tinyJs.consoleStrLength - 1; i > 0; i--)
+  {
+    tinyJs.consoleStr[i] = tinyJs.consoleStr[i-1];
+  }
+
+  // write to Console
+  tinyJs.consoleStr[0] = String(consoleCtr) + ": " + String(v->getParameter("text")->getString().c_str());
+
+  Serial.println(tinyJs.consoleStr[0]);
+
+  consoleCtr++;
 }
 
 void js_dump(CScriptVar *v, void *userdata)
@@ -33,7 +45,7 @@ void ArduinoTinyJs::setup()
 {
   Serial.println("TinyJsSetup...Start");
 
-  errorStr = "setup started...";
+  errorStr = "no error, setup started...";
   errorActive = false;
 
   if (js)
@@ -116,8 +128,9 @@ ArduinoTinyJs::ArduinoTinyJs()
   setupCmd = false;
   loopCmd = false;
 
-  printStr[0] = "constructor";
+  consoleStr[0] = "constructor";
   loopCounter = 0;
+  consoleStrLength = sizeof(consoleStr) / sizeof(consoleStr[0]);
 
   initStr = "print('init default'); dump();";
   cyclicStr = "print('cyclic default');";

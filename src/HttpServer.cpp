@@ -247,10 +247,11 @@ void dir(void)
 void jsConsole(void)
 {
   triggerActivity();
+
   String msg = "";
-  for (byte i = 0; i < tinyJs.printStr->length(); i++)
+  for (byte i = 0; i < tinyJs.consoleStrLength; i++)
   {
-    msg += tinyJs.printStr[i] + "\n";
+    msg += tinyJs.consoleStr[i] + "\n";
   }
   server.send(200, "text/html", msg);
 }

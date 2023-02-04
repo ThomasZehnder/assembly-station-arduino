@@ -18,7 +18,8 @@ public:
     bool errorActive;
 
     //Array used for "print"
-    String printStr[10];
+    String consoleStr[10];
+    byte consoleStrLength;
 
     ArduinoTinyJs(); // constructor
 
