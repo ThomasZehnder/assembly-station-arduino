@@ -43,7 +43,7 @@
                     //execude page initializizer
                     //console.log("loaded url: ", url);
                     if (url.startsWith('a-home')) {
-                        startTimer(['/assembly', '/json'], ['jsonId', 'assemblyId']);
+                        startTimer(['/assembly', '/json'], ['jsonId', 'assemblyId'], 500);
                     }
                     else if (url.startsWith('a-config')) {
                         //console.log("Load Configpage: ", param)
@@ -106,20 +106,31 @@
 
         //Fetch cyclic
         var timerId = null;
-        function startTimer(url, id) {
-            var fetchUrl = url;
-            var elementId = id;
-            var i=0;
+        var fetchUrl;
+        var elementId;
+        function startTimer(url, id, time) {
+            fetchUrl = url;
+            elementId = id;
+            var i = 0;
             timerId = setInterval(() => {
-                i = (i+1)%fetchUrl.length;
+                i = (i + 1) % fetchUrl.length;
                 //console.log(typeof(fetchUrl[i]), fetchUrl.length);
                 loadElement(fetchUrl[i], elementId[i]);
-            }, 500);
+            }, time);
         }
 
         function stopTimer() {
             clearInterval(timerId);
             timerId = null;
+        }
+
+        //change refreshRate
+        function changeRefreshRate(time) {
+            console.log(time);
+            clearInterval(timerId);
+            if (time > 0) {
+                startTimer(fetchUrl, elementId, time);
+            }
         }
 
         // Code Mirror functions
