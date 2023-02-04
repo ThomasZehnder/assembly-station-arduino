@@ -64,7 +64,7 @@
                         console.log("JavaSript file: ", param)
                         loadEditor(param);
                         setTitle(String("Javascript Monitor ") + param);
-                        startTimer(['/assembly', '/json'], ['consoleId', 'errorId']);
+                        startTimer(['/assembly', '/json'], ['consoleId', 'errorId'], 500);
                     }
                 });
         }
