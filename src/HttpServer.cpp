@@ -242,6 +242,20 @@ void dir(void)
   server.send(200, "text/html", msg);
 }
 
+void jsConsole(void)
+{
+  triggerActivity();
+  String msg = "jsConsole";
+  server.send(200, "text/html", msg);
+}
+
+void jsError(void)
+{
+  triggerActivity();
+  String msg = "jsError";
+  server.send(200, "text/html", msg);
+}
+
 void httpSetup(void)
 {
 
@@ -308,6 +322,9 @@ void httpSetup(void)
 
   server.on("/success", success);
   server.on("/dir", dir);
+
+  server.on("/jsconsole", jsConsole);
+  server.on("/jserror", jsError);
 
   server.on("/upload", HTTP_GET, []() { // if the client requests the upload page
     triggerActivity();
