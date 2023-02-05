@@ -199,13 +199,39 @@ void handleNotFound()
 }
 
 void (*rebootFunc)(void) = 0; // declare reset function @ address 0
+
 void reboot(void)
 {
-  handleFileRead("reboot.html");
-  server.send(200, "text/plain", "reboot arduino in 1 second !!!");
-  triggerRebootTime = millis();
-  triggerActivity();
-  Assembly.rebootProcess();
+  if (!server.hasArg("bootmode"))
+  {
+    Serial.println("reboot argument 'bootmode' not found!!");
+    server.send(500, "text/plain", "500: reboot ignored ");
+    return;
+  }
+  String arg = server.arg("bootmode");
+  if (arg == "reboot")
+  {
+    handleFileRead("reboot.html");
+    server.send(200, "text/plain", "reboot arduino in 1 second !!!");
+    triggerRebootTime = millis();
+    triggerActivity();
+    Assembly.rebootProcess();
+  }
+  else
+  {
+    if (tinyJs.setCmd(arg))
+    {
+      Serial.print("tiny-js cmd done : ");
+      Serial.println(arg);
+      server.send(200, "text/plain", "tiny-js cmd done: " + arg);   
+    }
+    else
+    {
+      Serial.print("unknown reboot : ");
+      Serial.println(arg);
+      server.send(500, "text/plain", "500: unknown argument: " + arg);
+    }
+  }
 }
 
 void success(void)
@@ -371,13 +397,13 @@ void httpLoop(void)
       triggerActivityTime = 0;
     }
   }
-  // reboot after 2000ms
+  // reboot after 1000ms
   if (triggerRebootTime != 0)
   {
-    if ((long)millis() - triggerRebootTime - 2000 > 0)
+    if ((long)millis() - triggerRebootTime - 1000 > 0)
     {
       Serial.println("httpLoop --> Reboot REST service");
-      delay(50);    // alow serial output to finish
+      delay(50);    // allow serial output to finish
       rebootFunc(); // call reboot
     }
   }

@@ -17,22 +17,21 @@ ArduinoTinyJs tinyJs;
 // const char *code = "{ var b = 1; for (var i=0;i<4;i=i+1) b = b * 2; }";
 // const char *code = "function myfunc(x, y) { return x + y; } var a = myfunc(1,2); print(a);";
 
-int consoleCtr = 0;
 void js_print(CScriptVar *v, void *userdata)
 {
 
   // shift Console Out
   for (byte i = tinyJs.consoleStrLength - 1; i > 0; i--)
   {
-    tinyJs.consoleStr[i] = tinyJs.consoleStr[i-1];
+    tinyJs.consoleStr[i] = tinyJs.consoleStr[i - 1];
   }
 
   // write to Console
-  tinyJs.consoleStr[0] = String(consoleCtr) + ": " + String(v->getParameter("text")->getString().c_str());
+  tinyJs.consoleStr[0] = String(tinyJs.consoleCounter) + ": " + String(v->getParameter("text")->getString().c_str());
 
   Serial.println(tinyJs.consoleStr[0]);
 
-  consoleCtr++;
+  tinyJs.consoleCounter++;
 }
 
 void js_dump(CScriptVar *v, void *userdata)
@@ -67,6 +66,10 @@ void ArduinoTinyJs::setup()
   loadLoop();
   loadTearDown();
 
+  // init counter
+  loopCounter = 0;
+  consoleCounter = 0;
+
   // execute INIT
   execute(&initStr, "INIT");
 
@@ -76,17 +79,21 @@ void ArduinoTinyJs::setup()
 void ArduinoTinyJs::loop()
 {
 
-  if (!errorActive)
+
+  if (!errorActive && (singleRun||cyclicRun))
   {
     loopCounter++;
+    singleRun = false;
     Serial.print("tinyJsLoop Start: ");
     Serial.println(loopCounter);
     execute(&cyclicStr, "CYCLIC");
   }
-  else
+  else if (errorActive)
   {
     Serial.print("tinyJsLoop Error: ");
     Serial.println(errorStr);
+  } else {
+    Serial.println("tinyJsLoop Stoppt");
   }
 }
 
@@ -122,6 +129,48 @@ void ArduinoTinyJs::execute(const String *code, const char *context)
   }
 }
 
+/*
+<button class="warning" onclick="sendReboot('initboot')">RESTART INIT</button>
+<button class="warning" onclick="sendReboot('cyclicboot')">RESTART CYCLIC</button>
+<button onclick="sendReboot('singlerun')">Single Run</button>
+<button onclick="sendReboot('cyclicrun')">Cyclic Run</button>
+*/
+bool ArduinoTinyJs::setCmd(String arg)
+{
+  if (arg == "initboot")
+  {
+    tearDown();
+    setup();
+    return true;
+  }
+  else if (arg == "cyclicboot")
+  {
+    loadLoop(); // only load cyclic code new
+    errorStr = "restart cyclic js";
+    errorActive = false;
+    return true;
+  }
+    else if (arg == "singlerun")
+  {
+    loadLoop(); // only load cyclic code new
+    errorStr = "single run active";
+    singleRun = true;
+    cyclicRun = false;
+    errorActive = false;
+    return true;
+  }
+    else if (arg == "cyclicrun")
+  {
+    loadLoop(); // only load cyclic code new
+    errorStr = "cyclic run active";
+    singleRun = false;
+    cyclicRun = true;
+    errorActive = false;
+    return true;
+  }
+  return false;
+}
+
 // constructor
 ArduinoTinyJs::ArduinoTinyJs()
 {
@@ -131,6 +180,7 @@ ArduinoTinyJs::ArduinoTinyJs()
   consoleStr[0] = "constructor";
   loopCounter = 0;
   consoleStrLength = sizeof(consoleStr) / sizeof(consoleStr[0]);
+  consoleCounter = 0;
 
   initStr = "print('init default'); dump();";
   cyclicStr = "print('cyclic default');";

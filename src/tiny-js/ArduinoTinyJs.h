@@ -4,8 +4,7 @@
 class ArduinoTinyJs
 {
 public:
-    bool setupCmd; //reload INIT and start CYCLIC
-    bool loopCmd; //restart only cyclic
+    bool setCmd(String cmd);
 
     int loopCounter;
 
@@ -17,9 +16,14 @@ public:
     String errorStr;
     bool errorActive;
 
+    //cyclic run flags
+    bool singleRun;
+    bool cyclicRun;
+
     //Array used for "print"
     String consoleStr[10];
     byte consoleStrLength;
+    int consoleCounter;
 
     ArduinoTinyJs(); // constructor
 
@@ -34,6 +38,9 @@ public:
 private:
     // create instance dynamic
     CTinyJS *js;
+
+    bool setupCmd; //reload INIT and start CYCLIC
+    bool loopCmd; //restart only cyclic
 
     void execute(const String * code, const char * context);
 
