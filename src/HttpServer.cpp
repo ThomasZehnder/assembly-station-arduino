@@ -240,6 +240,7 @@ void success(void)
   String msg = "<h1>Upload Result</h1>";
   msg += "Last uploaded file: " + lastDownloadFilename;
   msg += "<br><a href=\"/a-upload.html\">Upload next file.</a>";
+  msg += "<br><a href=\"/dir\">Pure directory</a>";
   msg += "<br><a href=\"/\">Back to main page.</a>";
   server.send(200, "text/html", msg);
 }
