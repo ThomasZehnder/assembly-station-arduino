@@ -238,7 +238,8 @@ void registerFunctions(CTinyJS *tinyJS) {
     tinyJS->addNative("function String.split(separator)", scStringSplit, 0);
     tinyJS->addNative("function Integer.parseInt(str)", scIntegerParseInt, 0); // string to int
     tinyJS->addNative("function Integer.valueOf(str)", scIntegerValueOf, 0); // value of a single character
-    tinyJS->addNative("function JSON.stringify(obj, replacer)", scJSONStringify, 0); // convert to JSON. replacer is ignored at the moment
+    //TZE 20230205 unsafe, crashes
+    //tinyJS->addNative("function JSON.stringify(obj, replacer)", scJSONStringify, 0); // convert to JSON. replacer is ignored at the moment
     // JSON.parse is left out as you can (unsafely!) use eval instead
     tinyJS->addNative("function Array.contains(obj)", scArrayContains, 0);
     tinyJS->addNative("function Array.remove(obj)", scArrayRemove, 0);
