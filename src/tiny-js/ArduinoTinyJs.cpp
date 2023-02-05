@@ -58,8 +58,8 @@ void ArduinoTinyJs::setup()
 
   /* add the functions from TinyJS_Functions.cpp */
   registerFunctions(js);
-  registerMathFunctions(js);
-  //registerEspFunctions(js);
+  //registerMathFunctions(js);
+  registerEspFunctions(js);
 
   /* Add a native function */
   js->addNative("function print(text)", &js_print, 0);
