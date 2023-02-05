@@ -83,18 +83,20 @@ void ArduinoTinyJs::loop()
   if (!errorActive && (singleRun||cyclicRun))
   {
     loopCounter++;
-    singleRun = false;
+    
     Serial.print("tinyJsLoop Start: ");
     Serial.println(loopCounter);
     execute(&cyclicStr, "CYCLIC");
+    if (singleRun){
+      singleRun = false;
+      Serial.println("tinyJsLoop Stopped");
+    }
   }
   else if (errorActive)
   {
     Serial.print("tinyJsLoop Error: ");
     Serial.println(errorStr);
-  } else {
-    Serial.println("tinyJsLoop Stoppt");
-  }
+  } 
 }
 
 void ArduinoTinyJs::tearDown()
@@ -174,16 +176,14 @@ bool ArduinoTinyJs::setCmd(String arg)
 // constructor
 ArduinoTinyJs::ArduinoTinyJs()
 {
-  setupCmd = false;
-  loopCmd = false;
-
   consoleStr[0] = "constructor";
   loopCounter = 0;
-  consoleStrLength = sizeof(consoleStr) / sizeof(consoleStr[0]);
   consoleCounter = 0;
 
-  initStr = "print('init default'); dump();";
+  initStr = "print('init default');";
   cyclicStr = "print('cyclic default');";
+  exitStr = "print('exit default');";
 
   errorActive = false;
+  cyclicRun = true; 
 }
