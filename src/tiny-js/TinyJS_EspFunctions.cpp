@@ -35,7 +35,7 @@ void scEspSetLed(CScriptVar *c, void *)
 
         if (color.startsWith("#"))
         {
-            #warning "not yet implemented"
+            #warn "not yet implemented"
             strip.setPixelColor(i, strip.Color(16, 32, 255)); // white
         }
         else if (color == "red")
@@ -48,7 +48,7 @@ void scEspSetLed(CScriptVar *c, void *)
         }
         else if (color == "yellow")
         {
-            strip.setPixelColor(i, strip.Color(16, 32, 0)); // yellow
+            strip.setPixelColor(i, strip.Color(16, 16, 0)); // yellow
         }
         else if (color == "blue")
         {
@@ -61,6 +61,8 @@ void scEspSetLed(CScriptVar *c, void *)
         else if ((color == "black") || (color == "off"))
         {
             strip.setPixelColor(i, strip.Color(0, 0, 0)); // off
+        } else {
+            strip.setPixelColor(i, strip.Color(8, 16, 127)); // white 50% brigtness
         }
 
         strip.show();
