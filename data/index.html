@@ -181,7 +181,7 @@
                 .then(function (c) {
                     editor.setValue(c);
                     console.log("load click: ", editorUrl);
-                    console.log(c);
+                    //console.log(c);
                     setFooter("Load codemirror " + editorUrl + " done.")
                 });
         }
@@ -189,7 +189,7 @@
         function saveCodeMirror() {
             var c = editor.getValue();
             console.log("save click: ", editorUrl);
-            console.log(c);
+            //console.log(c);
             setFooter("saveCodeMirror... ");
 
             //validate JSON
