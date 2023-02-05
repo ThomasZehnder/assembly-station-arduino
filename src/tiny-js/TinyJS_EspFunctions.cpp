@@ -35,8 +35,12 @@ void scEspSetLed(CScriptVar *c, void *)
 
         if (color.startsWith("#"))
         {
-            #warn "not yet implemented"
-            strip.setPixelColor(i, strip.Color(16, 32, 255)); // white
+            long int rgb = strtoul(color.substring(1, color.length()).c_str(), nullptr, 16); //=>rgb=0x001234FE;
+            byte r = (byte)(rgb >> 16);
+            byte g = (byte)(rgb >> 8);
+            byte b = (byte)(rgb);
+
+            strip.setPixelColor(i, strip.Color(r, g, b)); // white
         }
         else if (color == "red")
         {
@@ -61,7 +65,9 @@ void scEspSetLed(CScriptVar *c, void *)
         else if ((color == "black") || (color == "off"))
         {
             strip.setPixelColor(i, strip.Color(0, 0, 0)); // off
-        } else {
+        }
+        else
+        {
             strip.setPixelColor(i, strip.Color(8, 16, 127)); // white 50% brigtness
         }
 
@@ -82,6 +88,6 @@ void registerEspFunctions(CTinyJS *tinyJS)
 {
 
     // --- ESP and Arduino functions ---
-    tinyJS->addNative("function EspSetLed(pixel, color)", scEspSetLed, 0); //Set WS2812 Strip LED, i index of pixel, color 
-    tinyJS->addNative("function EspClearLed()", scEspClearLed, 0); // turn of all WS2812 Strip Leds
+    tinyJS->addNative("function EspSetLed(pixel, color)", scEspSetLed, 0); // Set WS2812 Strip LED, i index of pixel, color
+    tinyJS->addNative("function EspClearLed()", scEspClearLed, 0);         // turn of all WS2812 Strip Leds
 }
