@@ -63,7 +63,7 @@ Configure three WLAN, in case none is connected, ESP8266 will act as WLAN Hotspo
 ### Upload Files to ESP8266
 
 e.g. for Updating configuration or other files.
-http://192.168.1.157/upload
+http://192.168.1.157/a-upload.html
 
 
 ### Reboot Arduino by REST Call
