@@ -224,3 +224,22 @@ input {
   margin-left: 15px;
   vertical-align: middle;
 }
+
+input[type="radio"] {
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #555555;
+	border-radius: 20%;
+	background-clip: content-box;
+	padding: 3px;
+}
+
+input[type="radio"]:checked {
+  background-color:#4e2456;
+}
+
+fieldset {
+  border-radius: 5px;
+  border: 2px solid #555555;
+}
