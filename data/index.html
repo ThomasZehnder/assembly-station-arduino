@@ -43,7 +43,7 @@
                     //execude page initializizer
                     //console.log("loaded url: ", url);
                     if (url.startsWith('a-home')) {
-                        startTimer(['/assembly', '/json'], ['jsonId', 'assemblyId'], 500);
+                        startTimer(['/assembly', '/json'], ['assemblyId', 'jsonId'], 500);
                     }
                     else if (url.startsWith('a-config')) {
                         //console.log("Load Configpage: ", param)
@@ -102,6 +102,18 @@
         function setFooter(text) {
             const myfooter = document.getElementById("pFooter");
             myfooter.innerHTML = text;
+        }
+
+        //sendReboot
+        function sendReboot(bootMode) {
+            fetch('reboot?bootmode=' + bootMode)
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (html) {
+                    //console.log(html);
+                    setFooter(html);
+                });
         }
 
         //Fetch cyclic
@@ -218,7 +230,7 @@
         <ul>
             <li><a onclick="loadMain('a-home.html', 'aa-home.html',0);">Home</a></li>
             <li><a onclick="loadArticle('a-files.html', 'dir');">Files</a></li>
-            <li><a onclick="loadMain('a-js-editor.html', 'aa-js-editor.html','test.txt');">Javascript</a></li>
+            <li><a onclick="loadMain('a-js-monitor.html', 'aa-js-monitor.html','test.txtcyclic-app.js');">Javascript</a></li>
             <li><a onclick="loadMain('a-config.html', 'aa-config.html','config_main.json');">Config</a></li>
             <li><a onclick="loadArticle('a-contact.html');">Contact</a></li>
         </ul>
@@ -227,22 +239,13 @@
 
     </nav>
 
-
     <main>
         <article id="articleId">
             <h2> ... loading dynamicaly...</h2>
-
         </article>
         <aside id="asideId">
             <h2>... loading dynamicaly...</h2>
-
-            <button onclick="loadArticle('a-home.html');">Home</button>
-            <button onclick="loadArticle('dir');">Show files on ESP</button>
-            <button onclick="loadArticle('upload');">Upload Page e.g. adopt configuration</button>
-            <button onclick="loadArticle('reboot');">Reboot Arduino, e.g. to activate new configuration</button>
-
         </aside>
-
     </main>
 
     <footer>
