@@ -42,12 +42,73 @@ quite fast for code that is executed infrequently, and slow for loops.
 Variables, Arrays and Objects are stored in a simple linked list tree structure (42tiny-js uses a C++ Map).
 This is simple, but relatively slow for large structures or arrays.
 
-JavaScript for Microcontrollers
+## JavaScript function
 --------------------------------
+### ESP Interface functions
 
-If you're after JavaScript for Microcontrollers, take a look at the
-[Espruino JavaScript Interpreter](http://www.espruino.com ) - it is a complete re-write of TinyJS
-targeted at processors with extremely low RAM (8kb or more). It is currently available for a range
-of STM32 ARM Microcontrollers, including [two boards that have it pre-installed](http://www.espruino.com/Order).
+    Esp.setLed(i, color); //set led i[0..3] with color [#rrggbb]
+    Esp.getKey(i); //get key status i[0..2]
+    Esp.getKeyCounter(i); //get key couter of clicks i[0..2]
 
+    tbd
+    OLED
+
+### Math function
+
+    // --- Math and Trigonometry functions ---
+    Math.abs(a)", scMathAbs, 0);
+    Math.round(a)", scMathRound, 0);
+    Math.min(a,b)", scMathMin, 0);
+    Math.max(a,b)", scMathMax, 0);
+    Math.range(x,a,b)", scMathRange, 0);
+    Math.sign(a)", scMathSign, 0);
+    
+    Math.PI()", scMathPI, 0);
+    Math.toDegrees(a)", scMathToDegrees, 0);
+    Math.toRadians(a)", scMathToRadians, 0);
+    Math.sin(a)", scMathSin, 0);
+    Math.asin(a)", scMathASin, 0);
+    Math.cos(a)", scMathCos, 0);
+    Math.acos(a)", scMathACos, 0);
+    Math.tan(a)", scMathTan, 0);
+    Math.atan(a)", scMathATan, 0);
+    Math.sinh(a)", scMathSinh, 0);
+    Math.asinh(a)", scMathASinh, 0);
+    Math.cosh(a)", scMathCosh, 0);
+    Math.acosh(a)", scMathACosh, 0);
+    Math.tanh(a)", scMathTanh, 0);
+    Math.atanh(a)", scMathATanh, 0);
+       
+    Math.E()", scMathE, 0);
+    Math.log(a)", scMathLog, 0);
+    Math.log10(a)", scMathLog10, 0);
+    Math.exp(a)", scMathExp, 0);
+    Math.pow(a,b)", scMathPow, 0);
+    
+    Math.sqr(a)", scMathSqr, 0);
+    Math.sqrt(a)", scMathSqrt, 0);    
+  
+### JS Functions
+    exec(jsCode)", scExec, tinyJS); // execute the given code
+    eval(jsCode)", scEval, tinyJS); // execute the given string (an expression) and return the result
+    trace()", scTrace, tinyJS);  // 
+    Object.dump()", scObjectDump, 0);
+    Object.clone()", scObjectClone, 0);
+    Math.rand()", scMathRand, 0);
+    Math.randInt(min, max)", scMathRandInt, 0);
+    charToInt(ch)", scCharToInt, 0); //  convert a character to an int - get its value
+    String.indexOf(search)", scStringIndexOf, 0); // find the position of a string in a string, -1 if not
+    String.substring(lo,hi)", scStringSubstring, 0);
+    String.charAt(pos)", scStringCharAt, 0);
+    String.charCodeAt(pos)", scStringCharCodeAt, 0);
+    String.fromCharCode(char)", scStringFromCharCode, 0);
+    String.split(separator)", scStringSplit, 0);
+    Integer.parseInt(str)", scIntegerParseInt, 0); // string to int
+    Integer.valueOf(str)", scIntegerValueOf, 0); // value of a single character
+    //TZE 20230205 unsafe, crashes
+    //JSON.stringify(obj, replacer)", scJSONStringify, 0); // convert to JSON. replacer is ignored at the moment
+    // JSON.parse is left out as you can (unsafely!) use eval instead
+    Array.contains(obj)", scArrayContains, 0);
+    Array.remove(obj)", scArrayRemove, 0);
+    Array.join(separator)", scArrayJoin, 0);
 

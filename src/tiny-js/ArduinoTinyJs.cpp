@@ -4,8 +4,9 @@
 
 #include "TinyJS.h"
 #include "TinyJS_Functions.h"
-// #include <assert.h>
-// #include <stdio.h>
+#include "TinyJS_MathFunctions.h"
+#include "TinyJS_EspFunctions.h"
+
 #include <Arduino.h>
 
 #include "ArduinoTinyJs.h"
@@ -57,6 +58,9 @@ void ArduinoTinyJs::setup()
 
   /* add the functions from TinyJS_Functions.cpp */
   registerFunctions(js);
+  registerMathFunctions(js);
+  //registerEspFunctions(js);
+
   /* Add a native function */
   js->addNative("function print(text)", &js_print, 0);
   js->addNative("function dump()", &js_dump, js);
