@@ -223,7 +223,7 @@ void reboot(void)
     {
       Serial.print("tiny-js cmd done : ");
       Serial.println(arg);
-      server.send(200, "text/plain", "tiny-js cmd done: " + arg);   
+      server.send(200, "text/plain", "tiny-js cmd done: " + arg);
     }
     else
     {
@@ -239,6 +239,7 @@ void success(void)
   triggerActivity();
   String msg = "<h1>Upload Result</h1>";
   msg += "Last uploaded file: " + lastDownloadFilename;
+  msg += "<br><a href=\"/a-upload.html\">Upload next file.</a>";
   msg += "<br><a href=\"/\">Back to main page.</a>";
   server.send(200, "text/html", msg);
 }
@@ -360,7 +361,7 @@ void httpSetup(void)
 
   server.on("/upload", HTTP_GET, []() { // if the client requests the upload page
     triggerActivity();
-    if (!handleFileRead("/upload.html"))                // send it if it exists
+    if (!handleFileRead("/a-upload.html"))                // send it if it exists
       server.send(404, "text/plain", "404: Not Found"); // otherwise, respond with a 404 (Not Found) error
   });
 
@@ -460,6 +461,7 @@ bool handleFileRead(String path)
 // multipart from Form
 void handleFileUpload()
 { // upload a new file to the LittleFS
+  triggerActivity();
   HTTPUpload &upload = server.upload();
   if (upload.status == UPLOAD_FILE_START)
   {
