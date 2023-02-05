@@ -41,6 +41,26 @@ void oledSetup()
 
     Serial.println("OledSetup --> End");
 }
+//helper
+void drawMillisAsTime()
+{
+    String t;
+    unsigned long ms = millis();
+    unsigned long s = ms/1000;
+    unsigned long m = s/60;
+    unsigned long h = m/60;
+
+    ms = ms%1000/100; //only 100ms resolution
+    s= s%60;
+    m = m%60;
+
+    t =String(h,DEC) +":"+String(m,DEC) +":"+String(s,DEC) +":"+String(ms,DEC);
+    // Draw actual millis in h,m,s,ms top right
+    display.setFont(ArialMT_Plain_10);
+    display.setTextAlignment(TEXT_ALIGN_RIGHT);
+    display.drawString(128, 0, t); // top right
+}
+
 
 void drawStartScreen()
 {
@@ -85,8 +105,6 @@ void drawProgressScreen()
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0, "Assembly-001");
 
-
-
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0 + Y_OFFSET, "Job working");
@@ -98,7 +116,7 @@ void drawProgressScreen()
     display.drawString(0, 24 + Y_OFFSET, "mqtt:" + Assembly.mqttBroker);
 
     // Draw Assembly State
-    display.drawString(0, Y_OFFSET + 36, "Assembly State: "+ Assembly.getProcessState());
+    display.drawString(0, Y_OFFSET + 36, "Assembly State: " + Assembly.getProcessState());
 }
 
 void drawWifiOkScreen()
@@ -106,7 +124,7 @@ void drawWifiOkScreen()
     // Draw a line horizontally
     display.drawHorizontalLine(0, Y_OFFSET - 1, 128); // last yellow
 
-    // Draw actual millis top right
+    // Draw actual MQTT status top right
     display.setFont(ArialMT_Plain_10);
     display.setTextAlignment(TEXT_ALIGN_RIGHT);
     display.drawString(128, 0, String("MQTT:") + String(Assembly.mqttConnected)); // top right
@@ -139,9 +157,7 @@ void oledShowNetworks()
     display.drawHorizontalLine(0, Y_OFFSET - 1, 128); // last yellow
 
     // Draw actual millis top right
-    display.setFont(ArialMT_Plain_10);
-    display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 0, String(millis())); // top right
+    drawMillisAsTime();
 
     // Show Assembly Name
     display.setTextAlignment(TEXT_ALIGN_LEFT);
@@ -186,9 +202,7 @@ void drawAssemblyInfo()
     display.drawHorizontalLine(0, Y_OFFSET - 1, 128); // last yellow
 
     // Draw actual millis top right
-    display.setFont(ArialMT_Plain_10);
-    display.setTextAlignment(TEXT_ALIGN_RIGHT);
-    display.drawString(128, 0, String(millis())); // top right
+    drawMillisAsTime();
 
     // Draw ip
     display.setTextAlignment(TEXT_ALIGN_LEFT);
