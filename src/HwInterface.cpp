@@ -88,48 +88,46 @@ void hwLoop(void)
 }
 
 // getter
-bool keyPressed(int keyNumber)
+bool keyEdge(int keyNumber)
 {
-    return Assembly.keys[keyNumber].pressed;
+    return Assembly.keys[keyNumber].edge;
 }
 int keyPressedCounter(int keyNumber)
 {
     return Assembly.keys[keyNumber].pressedCounter;
 }
 
-// key pressed detection
 void pollKeyPressed(void)
 {
     int i = 0;
     for (i = 0; i < 3; i++)
     {
-        bool state = digitalRead(Assembly.keys[i].pin);
-        // false = pressed
-        if ((state == false) && (state != Assembly.keys[i].oldState))
+        bool pressed = digitalRead(Assembly.keys[i].pin);
+        if ((pressed == false) && (pressed != Assembly.keys[i].pressed))
         {
-            Assembly.keys[i].pressed = true;
+            Assembly.keys[i].edge = true;
             Assembly.keys[i].pressedCounter++;
         }
         else
         {
-            Assembly.keys[i].pressed = false;
+            Assembly.keys[i].edge = false;
         }
-        Assembly.keys[i].oldState = state;
+        Assembly.keys[i].pressed = pressed;
     }
 }
 
 // Key pressed counter publisher
 void hwKeyMqttPublish(void)
 {
-    if (keyPressed(0))
+    if (keyEdge(0))
     {
         mqttPublishLong("assembly-001/key-1", keyPressedCounter(0));
     }
-    if (keyPressed(1))
+    if (keyEdge(1))
     {
         mqttPublishLong("assembly-001/key-2", keyPressedCounter(1));
     }
-    if (keyPressed(2))
+    if (keyEdge(2))
     {
         mqttPublishLong("assembly-001/key-3", keyPressedCounter(2));
     }

@@ -6,12 +6,13 @@
 
 #include <Arduino.h>
 
+#include "Global.h"
 #include "Ws2812.h"
 
 #include "TinyJS_EspFunctions.h"
 
 // CScriptVar shortcut macro
-#define scIsBool(a) (c->getParameter(a)->isBool())
+// #define scIsBool(a) (c->getParameter(a)->isBool())
 #define scIsInt(a) (c->getParameter(a)->isInt())
 #define scIsDouble(a) (c->getParameter(a)->isDouble())
 #define scIsString(a) (c->getParameter(a)->isString())
@@ -19,7 +20,7 @@
 #define scGetInt(a) (c->getParameter(a)->getInt())
 #define scGetDouble(a) (c->getParameter(a)->getDouble())
 #define scGetString(a) (c->getParameter(a)->getString())
-#define scReturnBool(a) (c->getReturnVar()->setBool(a))
+// #define scReturnBool(a) (c->getReturnVar()->setBool(a))
 #define scReturnInt(a) (c->getReturnVar()->setInt(a))
 #define scReturnDouble(a) (c->getReturnVar()->setDouble(a))
 #define scReturnString(a) (c->getReturnVar()->setString(a))
@@ -83,11 +84,46 @@ void scEspClearLed(CScriptVar *c, void *)
     scReturnUndefined();
 }
 
+// key getter
+void scEspKeyPressed(CScriptVar *c, void *)
+{
+    if (scIsInt("key"))
+    {
+        int key = scGetInt("key");
+        if (key < (int)(sizeof(Assembly.keys) / sizeof(Assembly.keys[0])))
+        {
+            if (Assembly.keys[key].pressed)
+                scReturnInt(1);
+            else
+                scReturnInt(0);
+
+            return;
+        }
+    }
+    scReturnUndefined();
+}
+
+void scEspKeyPressedCounter(CScriptVar *c, void *)
+{
+    if (scIsInt("key"))
+    {
+        int key = scGetInt("key");
+        if (key < (int)(sizeof(Assembly.keys) / sizeof(Assembly.keys[0])))
+        {
+            scReturnInt(Assembly.keys[key].pressedCounter);
+            return;
+        }
+    }
+    scReturnUndefined();
+}
+
 // ----------------------------------------------- Register Functions
 void registerEspFunctions(CTinyJS *tinyJS)
 {
 
     // --- ESP and Arduino functions ---
-    tinyJS->addNative("function Esp.SetLed(pixel, color)", scEspSetLed, 0); // Set WS2812 Strip LED, i index of pixel, color
-    tinyJS->addNative("function Esp.ClearLed()", scEspClearLed, 0);         // turn of all WS2812 Strip Leds
+    tinyJS->addNative("function Esp.setLed(pixel, color)", scEspSetLed, 0);          // Set WS2812 Strip LED, i index of pixel, color
+    tinyJS->addNative("function Esp.clearLed()", scEspClearLed, 0);                  // turn of all WS2812 Strip Leds
+    tinyJS->addNative("function Esp.getKey(key)", scEspKeyPressed, 0);               // get key pressed stat
+    tinyJS->addNative("function Esp.getKeyCounter(key)", scEspKeyPressedCounter, 0); // get key pressed counter stat
 }

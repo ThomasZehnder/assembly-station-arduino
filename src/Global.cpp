@@ -239,15 +239,15 @@ String clAssembly::getProcessState()
 
 void clAssembly::processKeys()
 {
-    if (keys[0].pressed)
+    if (keys[0].edge)
     {
         startProcess();
     }
-    else if (keys[1].pressed)
+    else if (keys[1].edge)
     {
         finishProcess();
     }
-    else if (keys[2].pressed)
+    else if (keys[2].edge)
     {
         abortProcess();
     }

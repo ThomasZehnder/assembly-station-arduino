@@ -29,8 +29,8 @@ struct tstCfg
 struct tstKey
 {
     int pin;
+    bool edge; 
     bool pressed;
-    bool oldState;
     int pressedCounter;
 };
 

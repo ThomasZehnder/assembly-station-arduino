@@ -144,9 +144,13 @@ void assemblyJson()
   doc["wifiConnected"] = Assembly.wifiConnected;
   doc["mqttConnected"] = Assembly.mqttConnected;
 
-  doc["key_1"] = Assembly.keys[0].pressedCounter;
-  doc["key_2"] = Assembly.keys[1].pressedCounter;
-  doc["key_3"] = Assembly.keys[2].pressedCounter;
+  doc["key_1"] = Assembly.keys[0].pressed;
+  doc["key_2"] = Assembly.keys[1].pressed;
+  doc["key_3"] = Assembly.keys[2].pressed;
+
+  doc["key_cnt_1"] = Assembly.keys[0].pressedCounter;
+  doc["key_cnt_2"] = Assembly.keys[1].pressedCounter;
+  doc["key_cnt_3"] = Assembly.keys[2].pressedCounter;
 
   doc["processState"] = Assembly.getProcessState();
 
