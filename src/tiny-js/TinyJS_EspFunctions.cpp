@@ -25,7 +25,7 @@
 #define scReturnString(a) (c->getReturnVar()->setString(a))
 #define scReturnUndefined() (c->getReturnVar()->setUndefined())
 
-// EspSetLed(pixel, color); //set led pixel[0..3] with color [#rrggbb, off/black, red, green, blue, white]
+// Esp.SetLed(pixel, color); //set led pixel[0..3] with color [#rrggbb, off/black, red, green, blue, white]
 void scEspSetLed(CScriptVar *c, void *)
 {
     if (scIsInt("pixel") && scIsString("color"))
@@ -88,6 +88,6 @@ void registerEspFunctions(CTinyJS *tinyJS)
 {
 
     // --- ESP and Arduino functions ---
-    tinyJS->addNative("function EspSetLed(pixel, color)", scEspSetLed, 0); // Set WS2812 Strip LED, i index of pixel, color
-    tinyJS->addNative("function EspClearLed()", scEspClearLed, 0);         // turn of all WS2812 Strip Leds
+    tinyJS->addNative("function Esp.SetLed(pixel, color)", scEspSetLed, 0); // Set WS2812 Strip LED, i index of pixel, color
+    tinyJS->addNative("function Esp.ClearLed()", scEspClearLed, 0);         // turn of all WS2812 Strip Leds
 }
