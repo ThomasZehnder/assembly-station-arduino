@@ -53,6 +53,9 @@ This is simple, but relatively slow for large structures or arrays.
 
     Esp.millis(); // return millis of ESP 
 
+    Wifi.connected(); //return if Wifi is connected
+    Mqtt.connected(); //return if Mqtt is connected
+
 ### Math function
 
     // --- Math and Trigonometry functions ---

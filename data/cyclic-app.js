@@ -1,6 +1,8 @@
 // java script cyclic
-if (1 = 0) {
+if (1 === 0) {
     print('CYCLIC from File');
+
+    print(Esp.millis());
 
     function dec(x) {
         x--;

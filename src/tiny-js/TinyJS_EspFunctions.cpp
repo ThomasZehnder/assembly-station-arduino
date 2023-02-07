@@ -92,11 +92,7 @@ void scEspKeyPressed(CScriptVar *c, void *)
         int key = scGetInt("key");
         if (key < (int)(sizeof(Assembly.keys) / sizeof(Assembly.keys[0])))
         {
-            if (Assembly.keys[key].pressed)
-                scReturnInt(1);
-            else
-                scReturnInt(0);
-
+            scReturnInt(Assembly.keys[key].pressed);
             return;
         }
     }
@@ -123,6 +119,16 @@ void scEspMillis(CScriptVar *c, void *)
     scReturnInt(millis());
 }
 
+//connection state
+void scWifiConnected(CScriptVar *c, void *)
+{
+    scReturnInt(Assembly.wifiConnected);
+}
+void scMqttConnected(CScriptVar *c, void *)
+{
+    scReturnInt(Assembly.mqttConnected);
+}
+
 // ----------------------------------------------- Register Functions
 void registerEspFunctions(CTinyJS *tinyJS)
 {
@@ -132,5 +138,10 @@ void registerEspFunctions(CTinyJS *tinyJS)
     tinyJS->addNative("function Esp.clearLed()", scEspClearLed, 0);                  // turn of all WS2812 Strip Leds
     tinyJS->addNative("function Esp.getKey(key)", scEspKeyPressed, 0);               // get key pressed stat
     tinyJS->addNative("function Esp.getKeyCounter(key)", scEspKeyPressedCounter, 0); // get key pressed counter stat
+
     tinyJS->addNative("function Esp.millis()", scEspMillis, 0); // return millisecouns of ESP
+
+    tinyJS->addNative("function Wifi.connected()", scWifiConnected, 0); // //return if Wifi is connected
+    tinyJS->addNative("function Mqtt.connected()", scMqttConnected, 0); // return if Mqtt is connected
+
 }
