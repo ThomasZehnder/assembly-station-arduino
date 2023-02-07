@@ -333,6 +333,23 @@ void httpSetup(void)
   //  Serial.print(".");
   //}
 
+  Serial.println("HttpSetup --> Setting the AP Mode with SSID, Password...");
+    //Setting the AP Mode with SSID, Password, and Max Connection Limit
+  if(WiFi.softAP("IIOTBox","",1,false,1)==true)
+  {
+    Serial.print("Access Point is Creadted with MAC ADDDR: ");
+    Serial.println(WiFi.softAPmacAddress());
+    Serial.print("Access Point IP: ");
+    Serial.println(WiFi.softAPIP());
+    Serial.print("getFlashChipId: ");
+    Serial.println(ESP.getFlashChipId());
+
+  }
+  else
+  {
+    Serial.println("Unable to Create Access Point");
+  }
+
   Serial.println("HttpSetup --> Mound File System: LittleFS");
   // Start the SPI Flash Files System
   if (!LittleFS.begin())
@@ -406,7 +423,7 @@ void httpLoop(void)
     {
       Serial.println("httpLoop --> Reboot REST service");
       delay(50);    // allow serial output to finish
-      rebootFunc(); // call reboot
+      rebootFunc(); // call reboot ESP.restart()
     }
   }
 }
