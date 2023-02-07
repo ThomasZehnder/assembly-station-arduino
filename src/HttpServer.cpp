@@ -291,7 +291,11 @@ void jsConsole(void)
 void jsError(void)
 {
   triggerActivity();
-  server.send(200, "text/html", tinyJs.errorStr);
+  String msg = "";
+  msg += "cycle time: " + String(tinyJs.cycleTime)+"ms";
+  msg += "; execute time: " + String(tinyJs.executeTime)+"ms";
+  msg += "\n-->" + tinyJs.errorStr;
+  server.send(200, "text/html", msg);
 }
 
 void httpSetup(void)

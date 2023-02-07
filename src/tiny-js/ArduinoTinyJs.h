@@ -37,6 +37,11 @@ public:
     void loadLoop();
     void loadTearDown();
 
+    //time meassurment
+    unsigned long startTime;
+    unsigned long executeTime;
+    unsigned long cycleTime;
+
 private:
     // create instance dynamic
     CTinyJS *js;

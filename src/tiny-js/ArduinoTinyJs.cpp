@@ -90,7 +90,10 @@ void ArduinoTinyJs::loop()
     
     Serial.print("tinyJsLoop Start: ");
     Serial.println(loopCounter);
+    cycleTime = millis() - startTime;
+    startTime = millis();
     execute(&cyclicStr, "CYCLIC");
+    executeTime = millis()-startTime;
     if (singleRun){
       singleRun = false;
       Serial.println("tinyJsLoop Stopped");
