@@ -53,34 +53,6 @@ using namespace std;
 #define scReturnInt(a)      ( c->getReturnVar()->setInt(a) )
 #define scReturnDouble(a)   ( c->getReturnVar()->setDouble(a) )  
 
-#ifdef _MSC_VER
-namespace
-{
-    double asinh( const double &value )
-    {
-        double returned;
-
-        if(value>0)
-        returned = log(value + sqrt(value * value + 1));
-        else
-        returned = -log(-value + sqrt(value * value + 1));
-
-        return(returned);
-    }
-
-    double acosh( const double &value )
-    {
-        double returned;
-
-        if(value>0)
-        returned = log(value + sqrt(value * value - 1));
-        else
-        returned = -log(-value + sqrt(value * value - 1));
-
-        return(returned);
-    }
-}
-#endif
 
 //Math.abs(x) - returns absolute of given value
 void scMathAbs(CScriptVar *c, void *userdata) {
@@ -181,35 +153,6 @@ void scMathATan(CScriptVar *c, void *userdata) {
     scReturnDouble( atan( scGetDouble("a") ) );
 }
 
-//Math.sinh(a) - returns trig. hyperbolic sine of given angle in radians
-void scMathSinh(CScriptVar *c, void *userdata) {
-    scReturnDouble( sinh( scGetDouble("a") ) );
-}
-
-//Math.asinh(a) - returns trig. hyperbolic arcsine of given angle in radians
-void scMathASinh(CScriptVar *c, void *userdata) {
-    scReturnDouble( asinh( (long double)scGetDouble("a") ) );
-}
-
-//Math.cosh(a) - returns trig. hyperbolic cosine of given angle in radians
-void scMathCosh(CScriptVar *c, void *userdata) {
-    scReturnDouble( cosh( scGetDouble("a") ) );
-}
-
-//Math.acosh(a) - returns trig. hyperbolic arccosine of given angle in radians
-void scMathACosh(CScriptVar *c, void *userdata) {
-    scReturnDouble( acosh( (long double)scGetDouble("a") ) );
-}
-
-//Math.tanh(a) - returns trig. hyperbolic tangent of given angle in radians
-void scMathTanh(CScriptVar *c, void *userdata) {
-    scReturnDouble( tanh( scGetDouble("a") ) );
-}
-
-//Math.atan(a) - returns trig. hyperbolic arctangent of given angle in radians
-void scMathATanh(CScriptVar *c, void *userdata) {
-    scReturnDouble( atan( scGetDouble("a") ) );
-}
 
 //Math.E() - returns E Neplero value
 void scMathE(CScriptVar *c, void *userdata) {
@@ -266,12 +209,6 @@ void registerMathFunctions(CTinyJS *tinyJS) {
     tinyJS->addNative("function Math.acos(a)", scMathACos, 0);
     tinyJS->addNative("function Math.tan(a)", scMathTan, 0);
     tinyJS->addNative("function Math.atan(a)", scMathATan, 0);
-    tinyJS->addNative("function Math.sinh(a)", scMathSinh, 0);
-    tinyJS->addNative("function Math.asinh(a)", scMathASinh, 0);
-    tinyJS->addNative("function Math.cosh(a)", scMathCosh, 0);
-    tinyJS->addNative("function Math.acosh(a)", scMathACosh, 0);
-    tinyJS->addNative("function Math.tanh(a)", scMathTanh, 0);
-    tinyJS->addNative("function Math.atanh(a)", scMathATanh, 0);
        
     tinyJS->addNative("function Math.E()", scMathE, 0);
     tinyJS->addNative("function Math.log(a)", scMathLog, 0);

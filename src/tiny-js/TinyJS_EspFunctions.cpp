@@ -26,7 +26,7 @@
 #define scReturnString(a) (c->getReturnVar()->setString(a))
 #define scReturnUndefined() (c->getReturnVar()->setUndefined())
 
-// Esp.SetLed(pixel, color); //set led pixel[0..3] with color [#rrggbb, off/black, red, green, blue, white]
+// Esp.SetLed(pixel, color); //set led pixel[0..3] with color [#rrggbb, off/black, red, green, yellow, blue, white/on]
 void scEspSetLed(CScriptVar *c, void *)
 {
     if (scIsInt("pixel") && scIsString("color"))
@@ -117,6 +117,12 @@ void scEspKeyPressedCounter(CScriptVar *c, void *)
     scReturnUndefined();
 }
 
+//millis()
+void scEspMillis(CScriptVar *c, void *)
+{
+    scReturnInt(millis());
+}
+
 // ----------------------------------------------- Register Functions
 void registerEspFunctions(CTinyJS *tinyJS)
 {
@@ -126,4 +132,5 @@ void registerEspFunctions(CTinyJS *tinyJS)
     tinyJS->addNative("function Esp.clearLed()", scEspClearLed, 0);                  // turn of all WS2812 Strip Leds
     tinyJS->addNative("function Esp.getKey(key)", scEspKeyPressed, 0);               // get key pressed stat
     tinyJS->addNative("function Esp.getKeyCounter(key)", scEspKeyPressedCounter, 0); // get key pressed counter stat
+    tinyJS->addNative("function Esp.millis()", scEspMillis, 0); // return millisecouns of ESP
 }

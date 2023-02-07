@@ -46,12 +46,12 @@ This is simple, but relatively slow for large structures or arrays.
 --------------------------------
 ### ESP Interface functions
 
-    Esp.setLed(i, color); //set led i[0..3] with color [#rrggbb]
-    Esp.getKey(i); //get key status i[0..2]
-    Esp.getKeyCounter(i); //get key couter of clicks i[0..2]
+    Esp.setLed(pixel, color); //set led i[0..3] with color [#rrggbb, off/black, red, green, yellow, blue, white/on]
+    Esp.clearLed(); //clear al leds of strip
+    Esp.getKey(i); //get key status i[0..2] [0,1]
+    Esp.getKeyCounter(i); //get key couter of clicks i[0..2] [int]
 
-    tbd
-    OLED
+    Esp.millis(); // return millis of ESP 
 
 ### Math function
 
@@ -66,18 +66,13 @@ This is simple, but relatively slow for large structures or arrays.
     Math.PI()", scMathPI, 0);
     Math.toDegrees(a)", scMathToDegrees, 0);
     Math.toRadians(a)", scMathToRadians, 0);
+
     Math.sin(a)", scMathSin, 0);
     Math.asin(a)", scMathASin, 0);
     Math.cos(a)", scMathCos, 0);
     Math.acos(a)", scMathACos, 0);
     Math.tan(a)", scMathTan, 0);
     Math.atan(a)", scMathATan, 0);
-    Math.sinh(a)", scMathSinh, 0);
-    Math.asinh(a)", scMathASinh, 0);
-    Math.cosh(a)", scMathCosh, 0);
-    Math.acosh(a)", scMathACosh, 0);
-    Math.tanh(a)", scMathTanh, 0);
-    Math.atanh(a)", scMathATanh, 0);
        
     Math.E()", scMathE, 0);
     Math.log(a)", scMathLog, 0);
@@ -94,8 +89,10 @@ This is simple, but relatively slow for large structures or arrays.
     trace()", scTrace, tinyJS);  // 
     Object.dump()", scObjectDump, 0);
     Object.clone()", scObjectClone, 0);
+
     Math.rand()", scMathRand, 0);
     Math.randInt(min, max)", scMathRandInt, 0);
+
     charToInt(ch)", scCharToInt, 0); //  convert a character to an int - get its value
     String.indexOf(search)", scStringIndexOf, 0); // find the position of a string in a string, -1 if not
     String.substring(lo,hi)", scStringSubstring, 0);
