@@ -28,7 +28,14 @@ void connectToMqtt()
 void onWifiConnect(const WiFiEventStationModeGotIP &event)
 {
   Serial.println("MqttSetup (CallBack) --> Connected to WiFi... " + WiFi.SSID());
+  Serial.print("MqttSetup (CallBack)  --> IP address: ");
+  Serial.println(WiFi.localIP());
   Assembly.wifiConnected = true;
+  Assembly.localIp = WiFi.localIP().toString();
+  Assembly.ssid = WiFi.SSID();
+  Assembly.wlanConnectedProcess();
+
+
 
   // select mqtt server dependend to found Wifi
   byte cfgIndex = 0;

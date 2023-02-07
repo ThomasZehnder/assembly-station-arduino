@@ -308,7 +308,6 @@ void httpSetup(void)
 
   for (byte i = 0; i < (sizeof(Assembly.cfg.wifi) / sizeof(Assembly.cfg.wifi[0])); i++)
   {
-
     wifiMulti.addAP(Assembly.cfg.wifi[i].ssid, Assembly.cfg.wifi[i].pw); // add Wi-Fi networks you want to connect to, see credentials.h
   }
 
@@ -316,33 +315,23 @@ void httpSetup(void)
   // wifiMulti.addAP(WIFI_SSID_1, WIFI_PASSWORD_1);
   //  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
 
-  Serial.println("HttpSetup --> Connecting Wifi Multi ...");
+  Serial.println("HttpSetup --> Connecting Wifi Multi in cyclic part...");
   // wifiMulti.run(5000) blocking for 5000ms timeout
-  while (wifiMulti.run(5000) != WL_CONNECTED)
-  { // Wait for the Wi-Fi to connect
-    Serial.print('+');
-  }
+  //while (wifiMulti.run() != WL_CONNECTED)
+  //{ // Wait for the Wi-Fi to connect
+  //  Serial.print('+');
+  //}
 
-  Serial.println("HttpSetup --> Connecting Wifi ...");
+  //Serial.println("HttpSetup --> Connecting Wifi ...");
   // WiFi.mode(WIFI_STA);
   // WiFi.begin(ssid, password);
 
   // Wait for connection
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-
-  Serial.println("");
-  Serial.print("HttpSetup --> Connected to: ");
-  Serial.println(WiFi.SSID());
-  Serial.print("HttpSetup --> IP address: ");
-  Serial.println(WiFi.localIP());
-  Assembly.localIp = WiFi.localIP().toString();
-  Assembly.wlanConnectedProcess();
-  Serial.print("HttpSetup --> Signal Strength (RSSI):");
-  Serial.println(WiFi.RSSI());
+  //while (WiFi.status() != WL_CONNECTED)
+  //{
+  //  delay(500);
+  //  Serial.print(".");
+  //}
 
   Serial.println("HttpSetup --> Mound File System: LittleFS");
   // Start the SPI Flash Files System
@@ -397,6 +386,9 @@ void httpSetup(void)
 
 void httpLoop(void)
 {
+  //connect to strongest wifi, and reconnect
+  wifiMulti.run();
+
   server.handleClient();
 
   if (triggerActivityTime != 0)

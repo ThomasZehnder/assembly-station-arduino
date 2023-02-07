@@ -25,7 +25,7 @@ void setup()
 
     mqttSetup(); // call before httpSetup, to engage callback functions
 
-    httpSetup(); // will block until WLAN connected
+    httpSetup(); // will not longer block until WLAN connected
 
     hwSetup();
     
