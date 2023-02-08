@@ -44,9 +44,9 @@ void loop()
     {
         if (Assembly.mqttConnected)
         {
-            mqttPublishLong("assembly-001/millis", hwGetMillis());
-            mqttPublishLong("assembly-001/jitter", hwGetMillis() % 1000);
-            mqttPublishLong("assembly-001/rssi", httpRssi());
+            mqttPublishLong("millis", hwGetMillis());
+            mqttPublishLong("jitter", hwGetMillis() % 1000);
+            mqttPublishLong("rssi", httpRssi());
         }
         if (Assembly.getProcessState() == "boot")
         {

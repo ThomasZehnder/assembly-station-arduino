@@ -121,14 +121,14 @@ void hwKeyMqttPublish(void)
 {
     if (keyEdge(0))
     {
-        mqttPublishLong("assembly-001/key-1", keyPressedCounter(0));
+        mqttPublishLong("key-1", keyPressedCounter(0));
     }
     if (keyEdge(1))
     {
-        mqttPublishLong("assembly-001/key-2", keyPressedCounter(1));
+        mqttPublishLong("key-2", keyPressedCounter(1));
     }
     if (keyEdge(2))
     {
-        mqttPublishLong("assembly-001/key-3", keyPressedCounter(2));
+        mqttPublishLong("key-3", keyPressedCounter(2));
     }
 }

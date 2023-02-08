@@ -182,7 +182,10 @@ void mqttPublishLong(const char *topic, long x)
 {
   char s[200];
   ltoa(x, s, 10);
-  mqttClient.publish(topic, 0, true, s);
+  String t(Assembly.deviceId);
+  t += "/";
+  t += topic;
+  mqttClient.publish(t.c_str(), 0, true, s);
   // Serial.println("Publishing long at QoS 0");
   // Serial.print(topic);
   // Serial.print(" : ");
@@ -190,7 +193,10 @@ void mqttPublishLong(const char *topic, long x)
 }
 void mqttPublishString(const char *topic, String s)
 {
-  mqttClient.publish(topic, 0, true, s.c_str());
+  String t(Assembly.deviceId);
+  t += "/";
+  t += topic;
+  mqttClient.publish(t.c_str(), 0, true, s.c_str());
   // Serial.println("Publishing String at QoS 0");
   // Serial.print(topic);
   // Serial.print(" : ");

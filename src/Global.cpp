@@ -52,7 +52,7 @@ void clAssembly::setupDevice()
 
         // Serial.println(String("Assembly.setup --> configfile number of entries: ") + doc.size());
 
-        strncpy(deviceId, doc["DEVICE"]| DEVICEID, sizeof(deviceId));
+        strncpy(deviceId, doc["DEVICEID"]| DEVICEID, sizeof(deviceId));
 
         Serial.println(String("Assembly.setupDevice --> deviceid: ") + deviceId);
 
@@ -61,7 +61,7 @@ void clAssembly::setupDevice()
     else
     {
         Serial.println(String("Assembly.setupDevice --> error: NO ") + filename + " found, works with default defines.");
-        strcpy(deviceId, "Assembly-001");
+        strcpy(deviceId, DEVICEID);
     }
 }
 
