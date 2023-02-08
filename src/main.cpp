@@ -68,7 +68,7 @@ void loop()
 
         if (Assembly.getChangeState())
         {
-            mqttPublishString("assembly-001/processState", Assembly.getProcessState());
+            mqttPublishString("processState", Assembly.getProcessState());
             ledSetState(Assembly.getProcessState());
         }
     }

@@ -17,7 +17,7 @@ Ticker wifiReconnectTimer;
 
 String mqttHost;
 
-#define ASSENMBLY_JOB_TOPIC "assembly-001/job"
+#define ASSENMBLY_JOB_TOPIC "job"
 
 void connectToMqtt()
 {
@@ -110,9 +110,9 @@ void onMqttConnect(bool sessionPresent)
     Serial.print("Publishing at QoS 2, packetId: ");
     Serial.println(packetIdPub2); */
 
-  mqttPublishString("assembly-001/myIpAddr", Assembly.localIp);
-  mqttPublishString("assembly-001/compileDate", Assembly.compileDate);
-  mqttPublishString("assembly-001/processState", Assembly.getProcessState());
+  mqttPublishString("myIpAddr", Assembly.localIp);
+  mqttPublishString("compileDate", Assembly.compileDate);
+  mqttPublishString("processState", Assembly.getProcessState());
 
   // subscribe assembly job
   uint16_t packetIdSub = mqttClient.subscribe(ASSENMBLY_JOB_TOPIC, 2);
