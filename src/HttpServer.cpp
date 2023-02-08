@@ -96,7 +96,7 @@ void handleJson()
   // Use https://arduinojson.org/v6/assistant to compute the capacity.
   StaticJsonDocument<500> doc;
 
-  doc["assembly"] = "001";
+  doc["device_id"] = Assembly.deviceId;
   doc["millis"] = millis();
   doc["rssi"] = httpRssi();
 
@@ -134,7 +134,7 @@ void assemblyJson()
   StaticJsonDocument<1024> doc;
 
   doc["hostname"] = WiFi.hostname();
-  doc["assembly"] = "001";
+  doc["device_id"] = Assembly.deviceId;
   doc["compiledate"] = Assembly.compileDate;
   doc["mqttBroker"] = Assembly.mqttBroker;
 
@@ -333,9 +333,12 @@ void httpSetup(void)
   //  Serial.print(".");
   //}
 
-  Serial.println("HttpSetup --> Setting the AP Mode with SSID, Password...");
+  Serial.println("HttpSetup --> Setting the AP Mode with SSID, NO Password...");
+  Serial.println();
+
+
     //Setting the AP Mode with SSID, Password, and Max Connection Limit
-  if(WiFi.softAP("IIOTBox","",1,false,1)==true)
+  if(WiFi.softAP(Assembly.deviceId,"",1,false,1)==true)
   {
     Serial.print("Access Point is Creadted with MAC ADDDR: ");
     Serial.println(WiFi.softAPmacAddress());

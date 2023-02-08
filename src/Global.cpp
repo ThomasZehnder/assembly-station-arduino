@@ -29,13 +29,49 @@ void SerialFileOut(const char *filename)
     file.close(); // Close the file again
 }
 
+#define DEVICEID "Assembly-001"
+void clAssembly::setupDevice()
+{
+    char filename[] = "/config_main.json";
+
+    if (LittleFS.exists(filename))
+    {
+        // SerialFileOut(filename);
+
+        File file = LittleFS.open(filename, "r"); // Open the file again
+
+        // parse JSON
+        DeserializationError error = deserializeJson(doc, file);
+
+        // Test if parsing succeeds.
+        if (error)
+        {
+            Serial.print(F("Assembly.setupDevice --> deserializeJson() failed: "));
+            Serial.println(error.f_str());
+        }
+
+        // Serial.println(String("Assembly.setup --> configfile number of entries: ") + doc.size());
+
+        strncpy(deviceId, doc["DEVICE"]| DEVICEID, sizeof(deviceId));
+
+        Serial.println(String("Assembly.setupDevice --> deviceid: ") + deviceId);
+
+        file.close(); // Close the file again
+    }
+    else
+    {
+        Serial.println(String("Assembly.setupDevice --> error: NO ") + filename + " found, works with default defines.");
+        strcpy(deviceId, "Assembly-001");
+    }
+}
+
 void clAssembly::setupWifi()
 {
     char filename[] = "/config_wlan.json";
 
     if (LittleFS.exists(filename))
     {
-        //SerialFileOut(filename);
+        // SerialFileOut(filename);
 
         File file = LittleFS.open(filename, "r"); // Open the file again
 
@@ -87,7 +123,7 @@ void clAssembly::setupMqtt()
 
     if (LittleFS.exists(filename))
     {
-        //SerialFileOut(filename);
+        // SerialFileOut(filename);
 
         File file = LittleFS.open(filename, "r"); // Open the file again
 
@@ -147,7 +183,7 @@ void clAssembly::setup()
 {
     Serial.println("Assembly.setup --> begin");
 
-    //compile date
+    // compile date
     compileDate = __TIMESTAMP__;
     Serial.print("Assembly.setup --> compile date: ");
     Serial.println(compileDate);
@@ -158,6 +194,7 @@ void clAssembly::setup()
         delay(1000);
     }
 
+    setupDevice();
     setupWifi();
     setupMqtt();
 

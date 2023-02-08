@@ -38,6 +38,7 @@ class clAssembly
 {
 public:
     String compileDate;
+    char deviceId[32];
 
     bool wifiConnected = false;
     bool mqttConnected = false;
@@ -69,6 +70,7 @@ public:
     void processKeys();
 
 private:
+    void setupDevice();
     void setupWifi();
     void setupMqtt();
 };
