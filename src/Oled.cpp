@@ -214,7 +214,7 @@ void drawAssemblyInfo()
     display.drawString(64, Y_OFFSET, String("MQTT On: ") + String(Assembly.mqttConnected));
 
     // Job Name
-    display.drawString(0, Y_OFFSET + 12, "Job: XYZ");
+    display.drawString(0, Y_OFFSET + 12, String("Job: ") + Assembly.job);
     // display.drawString(X_OFFSET_1, Y_OFFSET + 12, String(Assembly.job));
 
     // Draw Key Counter

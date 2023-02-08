@@ -56,7 +56,7 @@ private:
 
 public:
     void setup();
-    void newProcess();
+    void newProcess(const char *);
     void startProcess();
     void finishProcess();
     void abortProcess();
@@ -64,6 +64,7 @@ public:
     void rebootProcess();
     void wlanConnectedProcess();
 
+    String job;
     String getProcessState();
     bool getChangeState();
 

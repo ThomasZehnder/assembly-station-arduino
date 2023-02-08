@@ -201,8 +201,9 @@ void clAssembly::setup()
     Serial.println("Assembly.setup --> end");
 }
 
-void clAssembly::newProcess()
+void clAssembly::newProcess(const char * j)
 {
+    job = j;
     processState = 1;
     changedState = true;
 }

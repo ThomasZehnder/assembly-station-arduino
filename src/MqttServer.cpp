@@ -35,8 +35,6 @@ void onWifiConnect(const WiFiEventStationModeGotIP &event)
   Assembly.ssid = WiFi.SSID();
   Assembly.wlanConnectedProcess();
 
-
-
   // select mqtt server dependend to found Wifi
   byte cfgIndex = 0;
   for (cfgIndex = 0; cfgIndex < (sizeof(Assembly.cfg.wifi) / sizeof(Assembly.cfg.wifi[0])); cfgIndex++)
@@ -165,10 +163,18 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   Serial.print("  total: ");
   Serial.println(total);
 
-
   if (mqttCheckTopic(ASSENMBLY_JOB_TOPIC, topic))
   {
-    Assembly.newProcess();
+    char s[32];
+    memset(s, 0, sizeof(s));
+    size_t l = len;
+    if (len > sizeof(s) - 1)
+    {
+      l = sizeof(s) - 1;
+    }
+    memcpy(s,payload,l);
+
+    Assembly.newProcess(s);
   }
 }
 
@@ -191,11 +197,12 @@ void mqttSubscribe(const char *topic)
   Serial.print(t);
 }
 
-bool mqttCheckTopic(const char *topic, const char *inTopic){
+bool mqttCheckTopic(const char *topic, const char *inTopic)
+{
   String t(Assembly.deviceId);
   t += "/";
   t += topic;
-  return(strcmp(t.c_str(), inTopic) == 0);
+  return (strcmp(t.c_str(), inTopic) == 0);
 }
 
 void mqttPublishLong(const char *topic, long x)
