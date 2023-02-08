@@ -114,10 +114,8 @@ void onMqttConnect(bool sessionPresent)
   mqttPublishString("compileDate", Assembly.compileDate);
   mqttPublishString("processState", Assembly.getProcessState());
 
-  // subscribe assembly job
-  uint16_t packetIdSub = mqttClient.subscribe(ASSENMBLY_JOB_TOPIC, 2);
-  Serial.print("Subscribing at QoS 2, packetId: ");
-  Serial.println(packetIdSub);
+  // subscribe assembly "job"
+  mqttSubscribe(ASSENMBLY_JOB_TOPIC);
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason)
@@ -152,6 +150,8 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   Serial.println("Publish received.");
   Serial.print("  topic: ");
   Serial.println(topic);
+  Serial.print("  payload: ");
+  Serial.println(payload);
   Serial.print("  qos: ");
   Serial.println(properties.qos);
   Serial.print("  dup: ");
@@ -165,7 +165,8 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   Serial.print("  total: ");
   Serial.println(total);
 
-  if (strcmp(topic, ASSENMBLY_JOB_TOPIC) == 0)
+
+  if (mqttCheckTopic(ASSENMBLY_JOB_TOPIC, topic))
   {
     Assembly.newProcess();
   }
@@ -176,6 +177,25 @@ void onMqttPublish(uint16_t packetId)
   Serial.println("Publish acknowledged.");
   Serial.print("  packetId: ");
   Serial.println(packetId);
+}
+
+void mqttSubscribe(const char *topic)
+{
+  String t(Assembly.deviceId);
+  t += "/";
+  t += topic;
+  uint16_t packetIdSub = mqttClient.subscribe(t.c_str(), 2);
+  Serial.print("Subscribing at QoS 2, packetId: ");
+  Serial.print(packetIdSub);
+  Serial.print(" topic: ");
+  Serial.print(t);
+}
+
+bool mqttCheckTopic(const char *topic, const char *inTopic){
+  String t(Assembly.deviceId);
+  t += "/";
+  t += topic;
+  return(strcmp(t.c_str(), inTopic) == 0);
 }
 
 void mqttPublishLong(const char *topic, long x)
