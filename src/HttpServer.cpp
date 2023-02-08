@@ -292,8 +292,8 @@ void jsError(void)
 {
   triggerActivity();
   String msg = "";
-  msg += "cycle time: " + String(tinyJs.cycleTime)+"ms";
-  msg += "; execute time: " + String(tinyJs.executeTime)+"ms";
+  msg += "cycle time: " + String(tinyJs.cycleTime) + "ms";
+  msg += "; execute time: " + String(tinyJs.executeTime) + "ms";
   msg += "\n-->" + tinyJs.errorStr;
   server.send(200, "text/html", msg);
 }
@@ -311,46 +311,30 @@ void httpSetup(void)
     wifiMulti.addAP(Assembly.cfg.wifi[i].ssid, Assembly.cfg.wifi[i].pw); // add Wi-Fi networks you want to connect to, see credentials.h
   }
 
-  // wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD); // add Wi-Fi networks you want to connect to, see credentials.h
-  // wifiMulti.addAP(WIFI_SSID_1, WIFI_PASSWORD_1);
-  //  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
-
-  Serial.println("HttpSetup --> Connecting Wifi Multi in cyclic part...");
-  // wifiMulti.run(5000) blocking for 5000ms timeout
-  //while (wifiMulti.run() != WL_CONNECTED)
-  //{ // Wait for the Wi-Fi to connect
-  //  Serial.print('+');
-  //}
-
-  //Serial.println("HttpSetup --> Connecting Wifi ...");
-  // WiFi.mode(WIFI_STA);
-  // WiFi.begin(ssid, password);
-
-  // Wait for connection
-  //while (WiFi.status() != WL_CONNECTED)
-  //{
-  //  delay(500);
-  //  Serial.print(".");
-  //}
-
-  Serial.println("HttpSetup --> Setting the AP Mode with SSID, NO Password...");
-  Serial.println();
-
-
-    //Setting the AP Mode with SSID, Password, and Max Connection Limit
-  if(WiFi.softAP(Assembly.deviceId,"",1,false,1)==true)
+  Serial.println("HttpSetup --> Connecting Wifi Multi part...");
+    if (wifiMulti.run(1000) == WL_CONNECTED)
   {
-    Serial.print("Access Point is Creadted with MAC ADDDR: ");
-    Serial.println(WiFi.softAPmacAddress());
-    Serial.print("Access Point IP: ");
-    Serial.println(WiFi.softAPIP());
-    Serial.print("getFlashChipId: ");
-    Serial.println(ESP.getFlashChipId());
-
+    Serial.println("HttpSetup --> connected Wifi ...");
   }
   else
   {
-    Serial.println("Unable to Create Access Point");
+    Serial.println("HttpSetup --> Setting the AP Mode with SSID, NO Password...");
+    Serial.println();
+
+    // Setting the AP Mode with SSID, Password, and Max Connection Limit
+    if (WiFi.softAP(Assembly.deviceId, "", 1, false, 1) == true)
+    {
+      Serial.print("Access Point is Creadted with MAC ADDDR: ");
+      Serial.println(WiFi.softAPmacAddress());
+      Serial.print("Access Point IP: ");
+      Serial.println(WiFi.softAPIP());
+      Serial.print("getFlashChipId: ");
+      Serial.println(ESP.getFlashChipId());
+    }
+    else
+    {
+      Serial.println("Unable to Create Access Point");
+    }
   }
 
   Serial.println("HttpSetup --> Mound File System: LittleFS");
@@ -379,7 +363,7 @@ void httpSetup(void)
 
   server.on("/upload", HTTP_GET, []() { // if the client requests the upload page
     triggerActivity();
-    if (!handleFileRead("/a-upload.html"))                // send it if it exists
+    if (!handleFileRead("/a-upload.html"))              // send it if it exists
       server.send(404, "text/plain", "404: Not Found"); // otherwise, respond with a 404 (Not Found) error
   });
 
@@ -406,7 +390,7 @@ void httpSetup(void)
 
 void httpLoop(void)
 {
-  //connect to strongest wifi, and reconnect
+  // connect to strongest wifi, and reconnect
   wifiMulti.run();
 
   server.handleClient();
