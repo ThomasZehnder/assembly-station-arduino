@@ -69,7 +69,7 @@ void drawStartScreen()
     display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 0, "Assembly-001");
+    display.drawString(0, 0, Assembly.deviceId);
     display.setFont(ArialMT_Plain_16);
     display.drawString(0, 0 + Y_OFFSET, "Search WiFi");
     display.setFont(ArialMT_Plain_10);
@@ -84,7 +84,7 @@ void drawRebootScreen()
     // create more fonts at http://oleddisplay.squix.ch/
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 0, "Assembly-001");
+    display.drawString(0, 0, Assembly.deviceId);
     display.setFont(ArialMT_Plain_16);
     display.drawString(0, 0 + Y_OFFSET, "Reboot active");
     // display.setFont(ArialMT_Plain_24);
@@ -103,7 +103,7 @@ void drawProgressScreen()
 
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 0, "Assembly-001");
+    display.drawString(0, 0, Assembly.deviceId);
 
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
@@ -161,7 +161,7 @@ void oledShowNetworks()
 
     // Show Assembly Name
     display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.drawString(0, 0, "Assembly-001"); // top left
+    display.drawString(0, 0, Assembly.deviceId); // top left
     display.setTextAlignment(TEXT_ALIGN_LEFT);
 
     // WiFi.scanNetworks will return the number of networks found
