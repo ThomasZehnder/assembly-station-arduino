@@ -99,11 +99,7 @@ void ArduinoTinyJs::loop()
       Serial.println("tinyJsLoop Stopped");
     }
   }
-  else if (errorActive)
-  {
-    Serial.print("tinyJsLoop Error: ");
-    Serial.println(errorStr);
-  } 
+
 }
 
 void ArduinoTinyJs::tearDown()
@@ -124,7 +120,7 @@ void ArduinoTinyJs::execute(const String *code, const char *context)
   catch (CScriptException *e)
   {
     Serial.print(context);
-    Serial.print(" ERROR: ");
+    Serial.print("ArduinoTinyJs ERROR: ");
     Serial.println(e->text.c_str());
     errorStr = (String)e->text.c_str();
     errorActive = true;
@@ -132,7 +128,7 @@ void ArduinoTinyJs::execute(const String *code, const char *context)
   catch (...)
   {
     Serial.print(context);
-    Serial.println(" ERROR: Catch all...");
+    Serial.println("ArduinoTinyJs ERROR: Catch all...");
     errorStr = "unknown exeption";
     errorActive = true;
   }
