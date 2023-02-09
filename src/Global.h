@@ -2,6 +2,7 @@
 #define GLOBAL_H
 // global object definition
 #include <Arduino.h>
+#include <ArduinoJson.h>
 
 struct tstCfgWifi
 {
@@ -77,5 +78,9 @@ private:
 };
 
 extern clAssembly Assembly;
+
+// Allocate a static JsonDocument
+// Use https://arduinojson.org/v6/assistant to compute the capacity.
+extern StaticJsonDocument<2048> doc;
 
 #endif // GLOBAL_H

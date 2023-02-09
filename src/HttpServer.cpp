@@ -92,10 +92,6 @@ void handleJson()
 
   // see: https://arduinojson.org/
 
-  // Allocate a temporary JsonDocument
-  // Use https://arduinojson.org/v6/assistant to compute the capacity.
-  StaticJsonDocument<500> doc;
-
   doc["device_id"] = Assembly.deviceId;
   doc["millis"] = millis();
   doc["rssi"] = httpRssi();
@@ -113,9 +109,9 @@ void handleJson()
     // digitalValues.add("pin");
   }
 
-  Serial.print(F("Sending: "));
-  serializeJson(doc, Serial);
-  Serial.println();
+  // Serial.print(F("Sending: "));
+  // serializeJson(doc, Serial);
+  // Serial.println();
 
   // Lastly, you can print the resulting JSON to a String
   String output;
@@ -128,10 +124,6 @@ void assemblyJson()
   triggerActivity();
 
   // see: https://arduinojson.org/
-
-  // Allocate a temporary JsonDocument
-  // Use https://arduinojson.org/v6/assistant to compute the capacity.
-  StaticJsonDocument<1024> doc;
 
   doc["hostname"] = WiFi.hostname();
   doc["device_id"] = Assembly.deviceId;
@@ -312,7 +304,7 @@ void httpSetup(void)
   }
 
   Serial.println("HttpSetup --> Connecting Wifi Multi part...");
-    if (wifiMulti.run(1000) == WL_CONNECTED)
+  if (wifiMulti.run(1000) == WL_CONNECTED)
   {
     Serial.println("HttpSetup --> connected Wifi ...");
   }

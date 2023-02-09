@@ -9,10 +9,8 @@
 // global object definition
 clAssembly Assembly;
 
-// Inside the brackets, 200 is the capacity of the memory pool in bytes.
-// Don't forget to change this value to match your JSON document.
 // Use http://arduinojson.org/v6/assistant to compute the capacity.
-StaticJsonDocument<1024> doc;
+StaticJsonDocument<2048> doc;
 
 void SerialFileOut(const char *filename)
 {
