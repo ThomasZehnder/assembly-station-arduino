@@ -25,6 +25,7 @@ struct tstCfg
 {
     tstCfgWifi wifi[NBRCONNECTIONS];
     tstCfgMqtt mqtt[NBRCONNECTIONS];
+    bool accessPointEnabled;
 };
 
 struct tstKey

@@ -92,9 +92,11 @@ void handleJson()
 
   // see: https://arduinojson.org/
 
+  doc.clear();
   doc["device_id"] = Assembly.deviceId;
   doc["millis"] = millis();
   doc["rssi"] = httpRssi();
+  doc["accesspoint_ip"] = WiFi.softAPIP().toString();
 
   // Create the "digital" array
   JsonArray digitalValues = doc.createNestedArray("digital");
@@ -124,9 +126,11 @@ void assemblyJson()
   triggerActivity();
 
   // see: https://arduinojson.org/
+  doc.clear();
 
   doc["hostname"] = WiFi.hostname();
   doc["device_id"] = Assembly.deviceId;
+  doc["accesspoint_enable"] = Assembly.cfg.accessPointEnabled;
   doc["compiledate"] = Assembly.compileDate;
   doc["mqttBroker"] = Assembly.mqttBroker;
 
@@ -304,15 +308,16 @@ void httpSetup(void)
   }
 
   Serial.println("HttpSetup --> Connecting Wifi Multi part...");
+  bool wifiConnectError = true;
   if (wifiMulti.run(2000) == WL_CONNECTED)
   {
     Serial.println("HttpSetup --> connected Wifi ...");
+    wifiConnectError = false;
   }
-  else
+
+  if (Assembly.cfg.accessPointEnabled || wifiConnectError)
   {
     Serial.println("HttpSetup --> Setting the AP Mode with SSID, NO Password...");
-    Serial.println();
-
     // Setting the AP Mode with SSID, Password, and Max Connection Limit
     if (WiFi.softAP(Assembly.deviceId, "", 1, false, 1) == true)
     {

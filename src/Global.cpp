@@ -50,9 +50,11 @@ void clAssembly::setupDevice()
 
         // Serial.println(String("Assembly.setup --> configfile number of entries: ") + doc.size());
 
-        strncpy(deviceId, doc["DEVICEID"]| DEVICEID, sizeof(deviceId));
+        strncpy(deviceId, doc["DEVICEID"] | DEVICEID, sizeof(deviceId));
+        cfg.accessPointEnabled = doc["ACCESSPOINT"];
 
         Serial.println(String("Assembly.setupDevice --> deviceid: ") + deviceId);
+        Serial.println(String("Assembly.setupDevice --> accesspoint_enable: ") + cfg.accessPointEnabled );
 
         file.close(); // Close the file again
     }
@@ -60,6 +62,7 @@ void clAssembly::setupDevice()
     {
         Serial.println(String("Assembly.setupDevice --> error: NO ") + filename + " found, works with default defines.");
         strcpy(deviceId, DEVICEID);
+        cfg.accessPointEnabled = true;
     }
 }
 
@@ -199,7 +202,7 @@ void clAssembly::setup()
     Serial.println("Assembly.setup --> end");
 }
 
-void clAssembly::newProcess(const char * j)
+void clAssembly::newProcess(const char *j)
 {
     job = j;
     processState = 1;
