@@ -200,21 +200,21 @@ void registerMathFunctions(CTinyJS *tinyJS) {
     tinyJS->addNative("function Math.range(x,a,b)", scMathRange, 0);
     tinyJS->addNative("function Math.sign(a)", scMathSign, 0);
     
-    tinyJS->addNative("function Math.PI()", scMathPI, 0);
-    tinyJS->addNative("function Math.toDegrees(a)", scMathToDegrees, 0);
-    tinyJS->addNative("function Math.toRadians(a)", scMathToRadians, 0);
-    tinyJS->addNative("function Math.sin(a)", scMathSin, 0);
-    tinyJS->addNative("function Math.asin(a)", scMathASin, 0);
-    tinyJS->addNative("function Math.cos(a)", scMathCos, 0);
-    tinyJS->addNative("function Math.acos(a)", scMathACos, 0);
-    tinyJS->addNative("function Math.tan(a)", scMathTan, 0);
-    tinyJS->addNative("function Math.atan(a)", scMathATan, 0);
+    // tinyJS->addNative("function Math.PI()", scMathPI, 0);
+    // tinyJS->addNative("function Math.toDegrees(a)", scMathToDegrees, 0);
+    // tinyJS->addNative("function Math.toRadians(a)", scMathToRadians, 0);
+    // tinyJS->addNative("function Math.sin(a)", scMathSin, 0);
+    // tinyJS->addNative("function Math.asin(a)", scMathASin, 0);
+    // tinyJS->addNative("function Math.cos(a)", scMathCos, 0);
+    // tinyJS->addNative("function Math.acos(a)", scMathACos, 0);
+    // tinyJS->addNative("function Math.tan(a)", scMathTan, 0);
+    // tinyJS->addNative("function Math.atan(a)", scMathATan, 0);
        
-    tinyJS->addNative("function Math.E()", scMathE, 0);
-    tinyJS->addNative("function Math.log(a)", scMathLog, 0);
-    tinyJS->addNative("function Math.log10(a)", scMathLog10, 0);
-    tinyJS->addNative("function Math.exp(a)", scMathExp, 0);
-    tinyJS->addNative("function Math.pow(a,b)", scMathPow, 0);
+    // tinyJS->addNative("function Math.E()", scMathE, 0);
+    // tinyJS->addNative("function Math.log(a)", scMathLog, 0);
+    // tinyJS->addNative("function Math.log10(a)", scMathLog10, 0);
+    // tinyJS->addNative("function Math.exp(a)", scMathExp, 0);
+    // tinyJS->addNative("function Math.pow(a,b)", scMathPow, 0);
     
     tinyJS->addNative("function Math.sqr(a)", scMathSqr, 0);
     tinyJS->addNative("function Math.sqrt(a)", scMathSqrt, 0);    

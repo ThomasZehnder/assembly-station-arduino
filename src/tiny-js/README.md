@@ -66,21 +66,6 @@ This is simple, but relatively slow for large structures or arrays.
     Math.range(x,a,b)", scMathRange, 0);
     Math.sign(a)", scMathSign, 0);
     
-    Math.PI()", scMathPI, 0);
-    Math.toDegrees(a)", scMathToDegrees, 0);
-    Math.toRadians(a)", scMathToRadians, 0);
-
-    Math.sin(a)", scMathSin, 0);
-    Math.asin(a)", scMathASin, 0);
-    Math.cos(a)", scMathCos, 0);
-    Math.acos(a)", scMathACos, 0);
-    Math.tan(a)", scMathTan, 0);
-    Math.atan(a)", scMathATan, 0);
-       
-    Math.E()", scMathE, 0);
-    Math.log(a)", scMathLog, 0);
-    Math.log10(a)", scMathLog10, 0);
-    Math.exp(a)", scMathExp, 0);
     Math.pow(a,b)", scMathPow, 0);
     
     Math.sqr(a)", scMathSqr, 0);

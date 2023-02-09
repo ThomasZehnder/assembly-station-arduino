@@ -58,7 +58,7 @@ void ArduinoTinyJs::setup()
 
   /* add the functions from TinyJS_Functions.cpp */
   registerFunctions(js);
-  //registerMathFunctions(js);
+  registerMathFunctions(js); //no trigonomic functions
   registerEspFunctions(js);
 
   /* Add a native function */
