@@ -304,7 +304,7 @@ void httpSetup(void)
   }
 
   Serial.println("HttpSetup --> Connecting Wifi Multi part...");
-  if (wifiMulti.run(1000) == WL_CONNECTED)
+  if (wifiMulti.run(2000) == WL_CONNECTED)
   {
     Serial.println("HttpSetup --> connected Wifi ...");
   }
