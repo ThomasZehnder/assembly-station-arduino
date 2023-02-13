@@ -57,8 +57,10 @@ This is simple, but relatively slow for large structures or arrays.
     Wifi.connected(); //return if Wifi is connected
     Mqtt.connected(); //return if Mqtt is connected
 
-### Math function
+    Mqtt.publish(topic, value); //publish String or Integer under topic. 
+    Mqtt.subscribe(topic); //subscribe topic. return value one's first received
 
+### Math function
     // --- Math and Trigonometry functions ---
     Math.abs(a)", scMathAbs, 0);
     Math.round(a)", scMathRound, 0);

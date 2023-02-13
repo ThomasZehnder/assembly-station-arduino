@@ -13,6 +13,8 @@
 
 #include "TinyJS_EspFunctions.h"
 
+#include "MqttServer.h"
+
 // CScriptVar shortcut macro
 // #define scIsBool(a) (c->getParameter(a)->isBool())
 #define scIsInt(a) (c->getParameter(a)->isInt())
@@ -158,6 +160,47 @@ void scMqttConnected(CScriptVar *c, void *)
     scReturnInt(Assembly.mqttConnected);
 }
 
+void scMqttPublish(CScriptVar *c, void *)
+{
+    if (scIsString("topic") && scIsString("value"))
+    {
+        String topic = scGetString("topic").c_str();
+        String value = scGetString("value").c_str();
+
+        Serial.print("scMqttPublish String: topic=");
+        Serial.print(topic);
+        Serial.print(" value=");
+        Serial.println(value);
+
+        mqttPublishString(topic.c_str(), value);
+    }
+    else if (scIsString("topic") && scIsInt("value"))
+    {
+        String topic = scGetString("topic").c_str();
+        long value = scGetInt("value");
+
+        Serial.print("scMqttPublish Int: topic=");
+        Serial.print(topic);
+        Serial.print(" value=");
+        Serial.println(value);
+
+        mqttPublishLong(topic.c_str(), value);
+    }
+    scReturnUndefined();
+}
+
+void scMqttSubscribe(CScriptVar *c, void *)
+{
+    if (scIsString("topic"))
+    {
+        String topic = scGetString("topic").c_str();
+        String value = scGetString("value").c_str();
+
+        mqttSubscribe(topic.c_str());
+    }
+    scReturnString("hallo");
+}
+
 // ----------------------------------------------- Register Functions
 void registerEspFunctions(CTinyJS *tinyJS)
 {
@@ -169,9 +212,12 @@ void registerEspFunctions(CTinyJS *tinyJS)
     tinyJS->addNative("function Esp.getKeyCounter(key)", scEspKeyPressedCounter, 0); // get key pressed counter stat
 
     tinyJS->addNative("function Esp.millis()", scEspMillis, 0); // return millisecouns of ESP
-    
+
     tinyJS->addNative("function JS.setCycleTime(time)", scEspJsSetCycleTime, 0); // set JS cycle time [200..10'000ms]
 
     tinyJS->addNative("function Wifi.connected()", scWifiConnected, 0); // //return if Wifi is connected
     tinyJS->addNative("function Mqtt.connected()", scMqttConnected, 0); // return if Mqtt is connected
+
+    tinyJS->addNative("function Mqtt.publish(topic, value)", scMqttPublish, 0); // publish String under topic.
+    tinyJS->addNative("function Mqtt.subscribe(topic)", scMqttSubscribe, 0);    // subscribe topic. return value one's first received
 }
