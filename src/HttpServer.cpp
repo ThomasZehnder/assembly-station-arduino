@@ -140,6 +140,10 @@ void assemblyJson()
   doc["wifiConnected"] = Assembly.wifiConnected;
   doc["mqttConnected"] = Assembly.mqttConnected;
 
+  doc["js_set_cycle_time"] = tinyJs.setCycleTime;
+  doc["js_execute_time"] = tinyJs.executeTime;
+
+
   doc["key_1"] = Assembly.keys[0].pressed;
   doc["key_2"] = Assembly.keys[1].pressed;
   doc["key_3"] = Assembly.keys[2].pressed;

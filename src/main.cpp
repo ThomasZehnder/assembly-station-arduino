@@ -39,7 +39,7 @@ void loop()
 
     hwLoop();
 
-    // secound tick
+    // secound tick, if MQTT connected
     if (hwSecoundTick())
     {
         if (Assembly.mqttConnected)
@@ -52,8 +52,7 @@ void loop()
         {
             ws2812Demo();
         }
-        
-        tinyJs.loop();
+
     }
     // 10ms tick
     if (hwCentiSecoundTick())
@@ -72,6 +71,9 @@ void loop()
             ledSetState(Assembly.getProcessState());
         }
     }
+
+            
+    tinyJs.loop(); //default 500ms cyclic
 
     mqttLoop();
     httpLoop();

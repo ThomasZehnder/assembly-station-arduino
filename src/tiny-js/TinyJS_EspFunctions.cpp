@@ -9,6 +9,8 @@
 #include "Global.h"
 #include "Ws2812.h"
 
+#include "ArduinoTinyJs.h"
+
 #include "TinyJS_EspFunctions.h"
 
 // CScriptVar shortcut macro
@@ -113,13 +115,40 @@ void scEspKeyPressedCounter(CScriptVar *c, void *)
     scReturnUndefined();
 }
 
-//millis()
+// millis()
 void scEspMillis(CScriptVar *c, void *)
 {
     scReturnInt(millis());
 }
 
-//connection state
+// set cycle time of js interpreter
+void scEspJsSetCycleTime(CScriptVar *c, void *)
+{
+    if (scIsInt("time"))
+    {
+        int time = scGetInt("time");
+        if (time < 200)
+        {
+            tinyJs.setCycleTime = 200;
+            scReturnInt(tinyJs.setCycleTime);
+            return;
+        }
+        else if (time > 10000)
+        {
+            tinyJs.setCycleTime = 1000;
+            scReturnInt(tinyJs.setCycleTime);
+            return;
+        }
+        else
+        {
+            tinyJs.setCycleTime = time;
+            scReturnInt(tinyJs.setCycleTime);
+        }
+    }
+    scReturnUndefined();
+}
+
+// connection state
 void scWifiConnected(CScriptVar *c, void *)
 {
     scReturnInt(Assembly.wifiConnected);
@@ -140,8 +169,9 @@ void registerEspFunctions(CTinyJS *tinyJS)
     tinyJS->addNative("function Esp.getKeyCounter(key)", scEspKeyPressedCounter, 0); // get key pressed counter stat
 
     tinyJS->addNative("function Esp.millis()", scEspMillis, 0); // return millisecouns of ESP
+    
+    tinyJS->addNative("function JS.setCycleTime(time)", scEspJsSetCycleTime, 0); // set JS cycle time [200..10'000ms]
 
     tinyJS->addNative("function Wifi.connected()", scWifiConnected, 0); // //return if Wifi is connected
     tinyJS->addNative("function Mqtt.connected()", scMqttConnected, 0); // return if Mqtt is connected
-
 }

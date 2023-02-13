@@ -37,6 +37,8 @@ public:
     void loadLoop();
     void loadTearDown();
 
+    //time settinge
+    int setCycleTime;
     //time meassurment
     unsigned long startTime;
     unsigned long executeTime;

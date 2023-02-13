@@ -82,7 +82,11 @@ void ArduinoTinyJs::setup()
 
 void ArduinoTinyJs::loop()
 {
-
+  //check cyclic timer
+  if ((signed long)(millis()-startTime-setCycleTime)<0)
+  {
+    return; //wait until new cycle
+  }
 
   if (!errorActive && (singleRun||cyclicRun))
   {
@@ -189,4 +193,6 @@ ArduinoTinyJs::ArduinoTinyJs()
 
   errorActive = false;
   cyclicRun = true; 
+
+  setCycleTime = 1000; //start with 1000ms
 }
