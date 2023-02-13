@@ -6,7 +6,7 @@
 #include "Global.h"
 
 // interval at which to blink (milliseconds)
-const long SECOUND_INTERVAL = 1000;
+const long SECOUND_INTERVAL = 500;
 unsigned long preSecoundMillis = 0;
 bool secoundTick = false;
 
@@ -55,10 +55,10 @@ void hwLoop(void)
     // secound tick
     if ((long)(currentMillis - preSecoundMillis) > 0)
     {
-        // Blink fast if not connected
+        // Blink slow if not connected to MQTT
         if (!Assembly.mqttConnected)
         {
-            preSecoundMillis = currentMillis + SECOUND_INTERVAL / 5;
+            preSecoundMillis = currentMillis + SECOUND_INTERVAL*2;
         }
         else
         {
