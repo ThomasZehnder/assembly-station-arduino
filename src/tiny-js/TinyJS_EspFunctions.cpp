@@ -145,6 +145,7 @@ void scEspJsSetCycleTime(CScriptVar *c, void *)
         {
             tinyJs.setCycleTime = time;
             scReturnInt(tinyJs.setCycleTime);
+            return;
         }
     }
     scReturnUndefined();
@@ -199,7 +200,12 @@ void scMqttSubscribe(CScriptVar *c, void *)
         String value = scGetString("value").c_str();
 
         mqttSubscribe(topic.c_str());
-        scReturnString(mqttGetSubscribeValue(topic.c_str()).c_str());
+        //get value 
+        String v= mqttGetSubscribeValue(topic.c_str());
+        Serial.print("scMqttSubscribe : value=");
+        Serial.println(v);
+        scReturnString(v.c_str());
+        return;
     }
     scReturnUndefined();
 }
