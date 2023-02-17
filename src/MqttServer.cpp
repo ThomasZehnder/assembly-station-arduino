@@ -174,9 +174,11 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
     l = sizeof(s) - 1;
   }
   memcpy(s, payload, l);
+
   // set received topic to list
   SubscriptionList.set(topic, String(s));
 
+  // check on job, fixe defined
   if (mqttCheckTopic(ASSENMBLY_JOB_TOPIC, topic))
   {
     Assembly.newProcess(s);
@@ -197,7 +199,7 @@ void mqttSubscribe(const char *topic)
   t += topic;
 
   // check is subscription still done
-  if (SubscriptionList.get(t)=="ndef")
+  if (SubscriptionList.get(t) == "ndef")
   {
 
     uint16_t packetIdSub = mqttClient.subscribe(t.c_str(), 2);
@@ -205,14 +207,12 @@ void mqttSubscribe(const char *topic)
     // add to list
     SubscriptionList.set(t, "new...");
 
-    Serial.print("Subscribing at QoS 2, packetId: ");
+    Serial.print("Add to list: Subscribing at QoS 2, packetId: ");
     Serial.print(packetIdSub);
     Serial.print(" topic: ");
-    Serial.print(t);
+    Serial.println(t);
   }
-  else
-  {
-  }
+
 }
 
 bool mqttCheckTopic(const char *topic, const char *inTopic)
@@ -231,6 +231,9 @@ void mqttPublishLong(const char *topic, long x)
   t += "/";
   t += topic;
   mqttClient.publish(t.c_str(), 0, true, s);
+  //add to local list (only for test)
+  //SubscriptionList.set(t,s);
+
   // Serial.println("Publishing long at QoS 0");
   // Serial.print(topic);
   // Serial.print(" : ");
@@ -242,6 +245,9 @@ void mqttPublishString(const char *topic, String s)
   t += "/";
   t += topic;
   mqttClient.publish(t.c_str(), 0, true, s.c_str());
+  //add to local list (only for test)
+  //SubscriptionList.set(t,s);
+
   // Serial.println("Publishing String at QoS 0");
   // Serial.print(topic);
   // Serial.print(" : ");
@@ -251,17 +257,16 @@ void mqttPublishString(const char *topic, String s)
 // get value as String of subscripted value
 String mqttGetSubscribeValue(const char *topic)
 {
-
   // search value in topic list
   String t(Assembly.deviceId);
   t += "/";
   t += topic;
   String value = SubscriptionList.get(t);
 
-  Serial.print("mqttGetTopic ");
-  Serial.print(topic);
-  Serial.print(" : ");
-  Serial.println(value);
+  //Serial.print("mqttGetTopic ");
+  //Serial.print(topic);
+  //Serial.print(" : ");
+  //Serial.println(value);
 
   return value;
 }

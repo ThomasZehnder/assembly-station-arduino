@@ -14,6 +14,9 @@
 
 #include "Global.h"
 
+#include "dictionary.h"
+extern Dictionary<String, String> SubscriptionList;
+
 ESP8266WiFiMulti wifiMulti; // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
 
 ESP8266WebServer server(80);
@@ -275,6 +278,18 @@ void dir(void)
   msg += "</table>";
   server.send(200, "text/html", msg);
 }
+void subscriptionList(void)
+{
+  triggerActivity();
+
+  String msg = "<pre>";
+  for (byte i = 0; i < SubscriptionList.length(); i++)
+  {
+    msg += "Key: " + SubscriptionList.getKeyByIndex(i) + " Value: " + SubscriptionList.getByIndex(i) +"\n";
+  }
+  msg +=  "</pre>";
+  server.send(200, "text/html", msg);
+}
 
 void jsConsole(void)
 {
@@ -358,6 +373,9 @@ void httpSetup(void)
 
   server.on("/success", success);
   server.on("/dir", dir);
+  
+  server.on("/subscriptionList", subscriptionList);
+  
 
   server.on("/jsconsole", jsConsole);
   server.on("/jserror", jsError);
