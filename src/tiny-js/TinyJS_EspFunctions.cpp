@@ -162,9 +162,11 @@ void scMqttConnected(CScriptVar *c, void *)
 
 void scMqttPublish(CScriptVar *c, void *)
 {
+    String topic ="";
+
     if (scIsString("topic") && scIsString("value"))
     {
-        String topic = scGetString("topic").c_str();
+        topic = scGetString("topic").c_str();
         String value = scGetString("value").c_str();
 
         Serial.print("scMqttPublish String: topic=");
@@ -176,7 +178,7 @@ void scMqttPublish(CScriptVar *c, void *)
     }
     else if (scIsString("topic") && scIsInt("value"))
     {
-        String topic = scGetString("topic").c_str();
+        topic = scGetString("topic").c_str();
         long value = scGetInt("value");
 
         Serial.print("scMqttPublish Int: topic=");
@@ -186,7 +188,7 @@ void scMqttPublish(CScriptVar *c, void *)
 
         mqttPublishLong(topic.c_str(), value);
     }
-    scReturnUndefined();
+    scReturnString(mqttGetSubscribeValue(topic.c_str()).c_str());
 }
 
 void scMqttSubscribe(CScriptVar *c, void *)
@@ -197,8 +199,9 @@ void scMqttSubscribe(CScriptVar *c, void *)
         String value = scGetString("value").c_str();
 
         mqttSubscribe(topic.c_str());
+        scReturnString(mqttGetSubscribeValue(topic.c_str()).c_str());
     }
-    scReturnString("hallo");
+    scReturnUndefined();
 }
 
 // ----------------------------------------------- Register Functions

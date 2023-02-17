@@ -7,6 +7,7 @@
 #include "Global.h"
 
 #include "MqttServer.h"
+#include "dictionary.h"
 
 AsyncMqttClient mqttClient;
 Ticker mqttReconnectTimer;
@@ -16,6 +17,8 @@ WiFiEventHandler wifiDisconnectHandler;
 Ticker wifiReconnectTimer;
 
 String mqttHost;
+
+Dictionary<String, String> SubscriptionList;
 
 #define ASSENMBLY_JOB_TOPIC "job"
 
@@ -163,17 +166,19 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   Serial.print("  total: ");
   Serial.println(total);
 
+  char s[255];
+  memset(s, 0, sizeof(s));
+  size_t l = len;
+  if (len > sizeof(s) - 1)
+  {
+    l = sizeof(s) - 1;
+  }
+  memcpy(s, payload, l);
+  // set received topic to list
+  SubscriptionList.set(topic, String(s));
+
   if (mqttCheckTopic(ASSENMBLY_JOB_TOPIC, topic))
   {
-    char s[32];
-    memset(s, 0, sizeof(s));
-    size_t l = len;
-    if (len > sizeof(s) - 1)
-    {
-      l = sizeof(s) - 1;
-    }
-    memcpy(s,payload,l);
-
     Assembly.newProcess(s);
   }
 }
@@ -190,11 +195,24 @@ void mqttSubscribe(const char *topic)
   String t(Assembly.deviceId);
   t += "/";
   t += topic;
-  uint16_t packetIdSub = mqttClient.subscribe(t.c_str(), 2);
-  Serial.print("Subscribing at QoS 2, packetId: ");
-  Serial.print(packetIdSub);
-  Serial.print(" topic: ");
-  Serial.print(t);
+
+  // check is subscription still done
+  if (SubscriptionList.get(t)=="ndef")
+  {
+
+    uint16_t packetIdSub = mqttClient.subscribe(t.c_str(), 2);
+
+    // add to list
+    SubscriptionList.set(t, "new...");
+
+    Serial.print("Subscribing at QoS 2, packetId: ");
+    Serial.print(packetIdSub);
+    Serial.print(" topic: ");
+    Serial.print(t);
+  }
+  else
+  {
+  }
 }
 
 bool mqttCheckTopic(const char *topic, const char *inTopic)
@@ -229,6 +247,25 @@ void mqttPublishString(const char *topic, String s)
   // Serial.print(" : ");
   // Serial.println(s);
 }
+
+// get value as String of subscripted value
+String mqttGetSubscribeValue(const char *topic)
+{
+
+  // search value in topic list
+  String t(Assembly.deviceId);
+  t += "/";
+  t += topic;
+  String value = SubscriptionList.get(t);
+
+  Serial.print("mqttGetTopic ");
+  Serial.print(topic);
+  Serial.print(" : ");
+  Serial.println(value);
+
+  return value;
+}
+
 void mqttSetup()
 {
 
