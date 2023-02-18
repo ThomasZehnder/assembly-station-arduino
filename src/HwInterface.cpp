@@ -6,7 +6,7 @@
 #include "Global.h"
 
 // interval at which to blink (milliseconds)
-const long SECOUND_INTERVAL = 500;
+const long SECOUND_INTERVAL = 2000;
 unsigned long preSecoundMillis = 0;
 bool secoundTick = false;
 
