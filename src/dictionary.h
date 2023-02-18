@@ -61,4 +61,10 @@ public:
     {
         return KeyList.size();
     }
+
+    void clear()
+    {
+       ValList.clear();
+       KeyList.clear(); 
+    }
 };

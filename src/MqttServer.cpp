@@ -198,11 +198,13 @@ void mqttSubscribe(const char *topic)
   t += "/";
   t += topic;
 
+  //uint16_t packetIdSub = mqttClient.subscribe(t.c_str(), 0);
+
   // check is subscription still done
   if (SubscriptionList.get(t) == "ndef")
   {
 
-    uint16_t packetIdSub = mqttClient.subscribe(t.c_str(), 2);
+    uint16_t packetIdSub = mqttClient.subscribe(t.c_str(), 0);
 
     // add to list
     SubscriptionList.set(t, "new...");
@@ -269,6 +271,12 @@ String mqttGetSubscribeValue(const char *topic)
   //Serial.println(value);
 
   return value;
+}
+
+void mqttClear(void)
+{
+  Serial.println("mqttClear()");
+  SubscriptionList.clear();
 }
 
 void mqttSetup()

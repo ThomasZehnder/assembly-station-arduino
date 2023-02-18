@@ -210,6 +210,13 @@ void scMqttSubscribe(CScriptVar *c, void *)
     scReturnUndefined();
 }
 
+void scMqttClear(CScriptVar *c, void *)
+{
+    mqttClear();
+    scReturnUndefined();
+}
+
+
 // ----------------------------------------------- Register Functions
 void registerEspFunctions(CTinyJS *tinyJS)
 {
@@ -229,4 +236,5 @@ void registerEspFunctions(CTinyJS *tinyJS)
 
     tinyJS->addNative("function Mqtt.publish(topic, value)", scMqttPublish, 0); // publish String under topic.
     tinyJS->addNative("function Mqtt.subscribe(topic)", scMqttSubscribe, 0);    // subscribe topic. return value one's first received
+    tinyJS->addNative("function Mqtt.clear()", scMqttClear, 0);    // clear all subscribed topics.
 }
