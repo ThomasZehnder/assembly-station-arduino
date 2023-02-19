@@ -14,7 +14,7 @@ Ticker mqttReconnectTimer;
 
 WiFiEventHandler wifiConnectHandler;
 WiFiEventHandler wifiDisconnectHandler;
-Ticker wifiReconnectTimer;
+// Ticker wifiReconnectTimer;  //Wifi is handled in Http Context
 
 String mqttHost;
 
@@ -148,11 +148,21 @@ void onMqttUnsubscribe(uint16_t packetId)
 
 void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total)
 {
+  //interpretate payload as zeroended string
+    char s[255];
+  memset(s, 0, sizeof(s));
+  size_t l = len;
+  if (len > sizeof(s) - 1)
+  {
+    l = sizeof(s) - 1;
+  }
+  memcpy(s, payload, l);
+
   Serial.println("Publish received.");
   Serial.print("  topic: ");
   Serial.println(topic);
   Serial.print("  payload: ");
-  Serial.println(payload);
+  Serial.println(s); //as zeroended string
   Serial.print("  qos: ");
   Serial.println(properties.qos);
   Serial.print("  dup: ");
@@ -165,15 +175,6 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   Serial.println(index);
   Serial.print("  total: ");
   Serial.println(total);
-
-  char s[255];
-  memset(s, 0, sizeof(s));
-  size_t l = len;
-  if (len > sizeof(s) - 1)
-  {
-    l = sizeof(s) - 1;
-  }
-  memcpy(s, payload, l);
 
   // set received topic to list
   SubscriptionList.set(topic, String(s));
