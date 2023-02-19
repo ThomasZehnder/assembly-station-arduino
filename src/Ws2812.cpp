@@ -36,12 +36,12 @@ void colorWipe(uint32_t c, uint8_t wait)
         delay(wait);
     }
 }
-#define DEMO_DELAY 100
+#define DEMO_DELAY 50
 void fullColorWipe(bool mode)
 {
     Serial.println("fullColorWipe --> Start");
     // Some example procedures showing how to display to the pixels:
-    colorWipe(strip.Color(16, 32, 255),DEMO_DELAY); // White RGB
+    colorWipe(strip.Color(32, 32, 32),DEMO_DELAY); // White RGB
     colorWipe(strip.Color(16, 0, 0), DEMO_DELAY); // Red
     
     if (mode)

@@ -13,6 +13,7 @@
 #include "tiny-js/ArduinoTinyJs.h"
 
 #include "Global.h"
+#include "Ws2812.h"
 
 #include "dictionary.h"
 extern Dictionary<String, String> SubscriptionList;
@@ -425,6 +426,7 @@ void httpLoop(void)
   // reboot after 1000ms
   if (triggerRebootTime != 0)
   {
+    fullColorWipe(Assembly.cfg.jsEnabled);
     if ((long)millis() - triggerRebootTime - 1000 > 0)
     {
       Serial.println("httpLoop --> Reboot REST service");
