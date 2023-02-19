@@ -1,5 +1,5 @@
 {
     "DEVICEID": "iot7",
     "ACCESSPOINT": true,
-    "JSACTIVE": true
+    "JSENABLE": true
 }
