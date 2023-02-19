@@ -52,9 +52,11 @@ void clAssembly::setupDevice()
 
         strncpy(deviceId, doc["DEVICEID"] | DEVICEID, sizeof(deviceId));
         cfg.accessPointEnabled = doc["ACCESSPOINT"];
+        cfg.jsEnabled = doc["JSENABLE"];
 
         Serial.println(String("Assembly.setupDevice --> deviceid: ") + deviceId);
         Serial.println(String("Assembly.setupDevice --> accesspoint_enable: ") + cfg.accessPointEnabled );
+        Serial.println(String("Assembly.setupDevice --> js_enable: ") + cfg.jsEnabled );
 
         file.close(); // Close the file again
     }

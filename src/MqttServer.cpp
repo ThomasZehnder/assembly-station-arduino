@@ -210,7 +210,7 @@ void mqttSubscribe(const char *topic)
     // add to list
     SubscriptionList.set(t, "new...");
 
-    Serial.print("Add to list: Subscribing at QoS 2, packetId: ");
+    Serial.print("Add to list: Subscribing at QoS 0, packetId: ");
     Serial.print(packetIdSub);
     Serial.print(" topic: ");
     Serial.println(t);

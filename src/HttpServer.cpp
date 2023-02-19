@@ -309,7 +309,7 @@ void jsError(void)
   String msg = "";
   msg += "cycle time: " + String(tinyJs.cycleTime) + "ms";
   msg += "; execute time: " + String(tinyJs.executeTime) + "ms";
-  msg += "\n-->" + tinyJs.errorStr;
+  msg += "\n--> " + tinyJs.errorStr;
   server.send(200, "text/html", msg);
 }
 

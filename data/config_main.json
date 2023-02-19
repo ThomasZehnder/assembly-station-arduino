@@ -1,4 +1,5 @@
 {
-    "DEVICEID": "Assembly-001",
-    "ACCESSPOINT": true
+    "DEVICEID": "iot7",
+    "ACCESSPOINT": true,
+    "JSACTIVE": true
 }

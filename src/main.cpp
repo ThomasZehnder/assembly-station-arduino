@@ -15,12 +15,12 @@ void setup()
     Serial.begin(115200);
     Serial.println();
 
-    Assembly.setup(); //read config file
+    Assembly.setup(); // read config file
 
     ws2812Setup();
     oledSetup();
 
-    //scanNetworks(); // call before httpSetup, show result in serial out
+    // scanNetworks(); // call before httpSetup, show result in serial out
     oledShowNetworks(); // show result on OLED
 
     mqttSetup(); // call before httpSetup, to engage callback functions
@@ -28,11 +28,17 @@ void setup()
     httpSetup(); // will not longer block until WLAN connected
 
     hwSetup();
-    
-    tinyJs.setup();
+
+    if (Assembly.cfg.jsEnabled)
+    {
+        tinyJs.setup();
+    }
+    else
+    {
+        tinyJs.consoleStr[2] = "JS Disabled, enable in main config if required...";
+        tinyJs.errorStr = "JS Disabled";
+    }
 }
-
-
 
 void loop()
 {
@@ -40,7 +46,7 @@ void loop()
     hwLoop();
 
     // secound tick, if MQTT connected
-    if (hwSecoundTick())
+    if (hwSecoundTick() && !Assembly.cfg.jsEnabled)
     {
         if (Assembly.mqttConnected)
         {
@@ -52,7 +58,6 @@ void loop()
         {
             ws2812Demo();
         }
-
     }
     // 10ms tick
     if (hwCentiSecoundTick())
@@ -61,19 +66,25 @@ void loop()
         ws2812Loop();
 
         pollKeyPressed();
-        hwKeyMqttPublish();
 
-        Assembly.processKeys();
-
-        if (Assembly.getChangeState())
+        if (!Assembly.cfg.jsEnabled)
         {
-            mqttPublishString("processState", Assembly.getProcessState());
-            ledSetState(Assembly.getProcessState());
+            hwKeyMqttPublish();
+
+            Assembly.processKeys();
+
+            if (Assembly.getChangeState())
+            {
+                mqttPublishString("processState", Assembly.getProcessState());
+                ledSetState(Assembly.getProcessState());
+            }
         }
     }
 
-            
-    tinyJs.loop(); //default 500ms cyclic
+    if (Assembly.cfg.jsEnabled)
+    {
+        tinyJs.loop(); // default 500ms cyclic
+    }
 
     mqttLoop();
     httpLoop();

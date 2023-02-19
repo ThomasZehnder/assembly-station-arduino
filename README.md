@@ -52,6 +52,32 @@ After creating and saving the file or files you want to upload under the data fo
 * Select Build Filesystem Image.
 * Finally, click Upload Filesystem Image.
 
+## Libraries
+
+### Ticker
+
+see [https://arduino-esp8266.readthedocs.io/en/latest/libraries.html#ticker]
+
+
+# Configure IIot Demonstrator
+
+DEVICEID (String): Used as Identification of device and is used as prefix in the MQTT Topic definition.
+
+ACCESSPOINT (bool): force to switch on accesspoint even WIFI is connected. 
+
+JSENABLE (bool): 
+* true, all resources are used from in context wit the Tiny-JS
+interpreter.
+* false, a default IIOT assembly model is implemented, Keys, OLED, LED and MQTT are used. Tiny-JS interpreter is fully disabled!
+
+### Sample Configuration
+
+    {
+        "DEVICEID": "iot7",
+        "ACCESSPOINT": true,
+        "JSENABLE": true
+    }
+
 ## configure Wifi and Webserver
 
 https://tttapa.github.io/ESP8266/Chap12%20-%20Uploading%20to%20Server.html
