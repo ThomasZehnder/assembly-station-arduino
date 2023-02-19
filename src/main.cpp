@@ -19,6 +19,7 @@ void setup()
 
     ws2812Setup();
     oledSetup();
+    fullColorWipe(Assembly.cfg.jsEnabled);
 
     // scanNetworks(); // call before httpSetup, show result in serial out
     oledShowNetworks(); // show result on OLED
@@ -38,6 +39,7 @@ void setup()
         tinyJs.consoleStr[2] = "JS Disabled, enable in main config if required...";
         tinyJs.errorStr = "JS Disabled";
     }
+    fullColorWipe(Assembly.cfg.jsEnabled);
 }
 
 void loop()

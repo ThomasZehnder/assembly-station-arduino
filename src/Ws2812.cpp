@@ -36,15 +36,23 @@ void colorWipe(uint32_t c, uint8_t wait)
         delay(wait);
     }
 }
-#define DEMO_DELAY 50
-void fullColorWipe(void)
+#define DEMO_DELAY 100
+void fullColorWipe(bool mode)
 {
     Serial.println("fullColorWipe --> Start");
     // Some example procedures showing how to display to the pixels:
-    colorWipe(strip.Color(16, 0, 0), DEMO_DELAY);  // Red
-    colorWipe(strip.Color(0, 32, 0), DEMO_DELAY);  // Green
-    colorWipe(strip.Color(0, 0, 255), DEMO_DELAY); // Blue
-    /// colorWipe(strip.Color(16, 32, 255), 50); // White RGB
+    colorWipe(strip.Color(16, 32, 255),DEMO_DELAY); // White RGB
+    colorWipe(strip.Color(16, 0, 0), DEMO_DELAY); // Red
+    
+    if (mode)
+    {
+        colorWipe(strip.Color(0, 0, 255), DEMO_DELAY); // Blue
+    }
+    else
+    {
+        
+        colorWipe(strip.Color(0, 32, 0), DEMO_DELAY); // Green
+    }
 }
 
 void ws2812Setup()
@@ -53,9 +61,8 @@ void ws2812Setup()
 
     strip.begin();
     strip.setBrightness(50);
+    strip.clear();
     strip.show(); // Initialize all pixels to 'off'
-
-    fullColorWipe();
 
     Serial.println("Ws2812Setup --> End");
 }
@@ -101,7 +108,7 @@ void ledSetState(String s)
     }
     else if (s == "started")
     {
-        //strip.setPixelColor(3, strip.Color(0, 0, 128)); // blue
+        // strip.setPixelColor(3, strip.Color(0, 0, 128)); // blue
         strip.setPixelColor(2, strip.Color(16, 32, 128)); // white
     }
     else if (s == "finished")

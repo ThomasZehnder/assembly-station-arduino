@@ -7,5 +7,6 @@ void ws2812Loop(void);
 void ws2812Demo(void);
 
 void ledSetState(String);
+void fullColorWipe(bool mode);
 
 extern Adafruit_NeoPixel strip;
