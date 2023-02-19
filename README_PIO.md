@@ -25,3 +25,14 @@ $ pio run -e nodemcuv2 --target upload
 # Clean build files
 $ pio run --target clean
 ```
+
+
+## exception decoding
+see [https://www.dzombak.com/blog/2021/10/ESP8266-PlatformIO-Serial-Console-Monitoring-with-Exception-Decoding.html]
+
+first add "monitor_filters = time, colorize, log2file, esp32_exception_decoder" to platformio.ini file
+or only = esp8266_exception_decoder, default
+
+run "pio device monitor" in Pio CLI
+
+try to run  "pio run -t monitor"
