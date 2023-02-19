@@ -202,8 +202,8 @@ void scMqttSubscribe(CScriptVar *c, void *)
         mqttSubscribe(topic.c_str());
         //get value 
         String v= mqttGetSubscribeValue(topic.c_str());
-        Serial.print("scMqttSubscribe : value=");
-        Serial.println(v);
+        //Serial.print("scMqttSubscribe : value=");
+        //Serial.println(v);
         scReturnString(v.c_str());
         return;
     }
